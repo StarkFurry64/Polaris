@@ -1,6 +1,15 @@
-import { Zap, CheckCircle2, AlertTriangle, Sparkles, ExternalLink, ThumbsUp } from 'lucide-react';
+import {
+  Zap,
+  CheckCircle2,
+  AlertTriangle,
+  Sparkles,
+  ExternalLink,
+  ThumbsUp,
+} from 'lucide-react';
 
 export function TechStackPage() {
+  /* ---------------- EXISTING STATIC RECOMMENDATIONS ---------------- */
+
   const recommendations = [
     {
       id: 1,
@@ -44,6 +53,8 @@ export function TechStackPage() {
     },
   ];
 
+  /* ---------------- CURRENT STACK ---------------- */
+
   const currentStack = [
     { name: 'React', version: '18.2', status: 'current', health: 'excellent' },
     { name: 'TypeScript', version: '5.0', status: 'current', health: 'excellent' },
@@ -53,13 +64,43 @@ export function TechStackPage() {
     { name: 'TensorFlow', version: '2.13', status: 'update-available', health: 'fair' },
   ];
 
+  /* ---------------- AI DELIVERY-DRIVEN TECH STACK INSIGHTS ---------------- */
+
+  const deliveryDrivenInsights = [
+    {
+      technology: 'Custom JWT Authentication',
+      signal: 'High bug reopen rate in authentication-related Jira issues',
+      impact: 'Repeated rework and increased delivery risk',
+      recommendation: 'Adopt OAuth2 or a managed identity provider',
+      confidence: 'High',
+    },
+    {
+      technology: 'Node.js + Express',
+      signal: 'Auth and middleware logic modified across multiple repositories',
+      impact: 'High coupling and coordination overhead',
+      recommendation: 'Migrate to NestJS for modular architecture and clearer ownership',
+      confidence: 'Medium',
+    },
+    {
+      technology: 'Manual CI/CD Scripts',
+      signal: 'Delayed PR merges and inconsistent deployment timelines',
+      impact: 'Reduced delivery predictability',
+      recommendation: 'Standardize pipelines using GitHub Actions reusable workflows',
+      confidence: 'High',
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* ---------------- HEADER ---------------- */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900">Tech Stack Advisor</h2>
-          <p className="text-slate-600 mt-1">AI-powered recommendations for your projects</p>
+          <h2 className="text-2xl font-semibold text-slate-900">
+            Tech Stack Advisor
+          </h2>
+          <p className="text-slate-600 mt-1">
+            AI-powered recommendations based on delivery and execution signals
+          </p>
         </div>
         <button className="flex items-center gap-2 bg-gradient-to-br from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-blue-500/20">
           <Sparkles className="size-4" />
@@ -67,36 +108,38 @@ export function TechStackPage() {
         </button>
       </div>
 
-      {/* Current Stack Overview */}
+      {/* ---------------- CURRENT STACK ---------------- */}
       <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-        <h3 className="font-semibold text-slate-900 mb-4">Current Technology Stack</h3>
+        <h3 className="font-semibold text-slate-900 mb-4">
+          Current Technology Stack
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {currentStack.map((tech, idx) => (
             <div
               key={idx}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-slate-100 transition-colors"
+              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100"
             >
-              <div className="flex-1">
+              <div>
                 <p className="font-medium text-slate-900">{tech.name}</p>
                 <p className="text-sm text-slate-600">v{tech.version}</p>
               </div>
-              <div className="flex items-center gap-2">
-                {tech.status === 'current' ? (
-                  <CheckCircle2 className="size-5 text-emerald-600" />
-                ) : (
-                  <AlertTriangle className="size-5 text-amber-600" />
-                )}
-              </div>
+              {tech.status === 'current' ? (
+                <CheckCircle2 className="size-5 text-emerald-600" />
+              ) : (
+                <AlertTriangle className="size-5 text-amber-600" />
+              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Recommendations */}
+      {/* ---------------- STATIC RECOMMENDATIONS ---------------- */}
       <div>
         <div className="mb-4 flex items-center gap-2">
           <Zap className="size-5 text-blue-600" />
-          <h3 className="font-semibold text-slate-900">AI-Powered Recommendations</h3>
+          <h3 className="font-semibold text-slate-900">
+            AI-Powered Recommendations
+          </h3>
           <span className="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">
             Updated 1 hour ago
           </span>
@@ -106,69 +149,91 @@ export function TechStackPage() {
           {recommendations.map((rec) => (
             <div
               key={rec.id}
-              className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all"
+              className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h4 className="font-semibold text-slate-900">{rec.recommended}</h4>
-                    {rec.status === 'highly-recommended' && (
-                      <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1">
-                        <Sparkles className="size-3" />
-                        Highly Recommended
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-slate-600 mb-1">{rec.category}</p>
-                  <p className="text-sm text-slate-700 leading-relaxed">{rec.reason}</p>
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h4 className="font-semibold text-slate-900">
+                    {rec.recommended}
+                  </h4>
+                  <p className="text-sm text-slate-600">{rec.category}</p>
+                  <p className="text-sm text-slate-700 mt-1">{rec.reason}</p>
                 </div>
-                <div className="ml-4 text-right">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-2xl font-semibold text-slate-900">{rec.confidence}%</span>
-                  </div>
+                <div className="text-right">
+                  <p className="text-2xl font-semibold">{rec.confidence}%</p>
                   <p className="text-xs text-slate-600">Confidence</p>
                 </div>
               </div>
 
-              {/* Benefits */}
-              <div className="mb-4">
-                <p className="text-xs font-medium text-slate-700 mb-2">Key Benefits</p>
-                <div className="flex flex-wrap gap-2">
-                  {rec.benefits.map((benefit, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-emerald-50 text-emerald-700 text-xs px-3 py-1.5 rounded-lg border border-emerald-100 flex items-center gap-1.5"
-                    >
-                      <CheckCircle2 className="size-3" />
-                      {benefit}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {rec.benefits.map((b, i) => (
+                  <span
+                    key={i}
+                    className="bg-emerald-50 text-emerald-700 text-xs px-3 py-1.5 rounded-lg border border-emerald-100 flex items-center gap-1.5"
+                  >
+                    <CheckCircle2 className="size-3" />
+                    {b}
+                  </span>
+                ))}
               </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                <div className="flex items-center gap-4 text-sm">
-                  <span className="text-slate-600">
-                    Learning Time: <span className="font-medium text-slate-900">{rec.learning}</span>
+              <div className="flex justify-between pt-3 border-t border-slate-100">
+                <span className="text-sm text-slate-600">
+                  Learning Time:{' '}
+                  <span className="font-medium text-slate-900">
+                    {rec.learning}
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button className="text-slate-600 hover:text-blue-600 transition-colors p-2 rounded-lg hover:bg-blue-50">
-                    <ThumbsUp className="size-4" />
-                  </button>
-                  <button className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium">
-                    Learn More
-                    <ExternalLink className="size-3.5" />
-                  </button>
-                </div>
+                </span>
+                <button className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
+                  Learn More <ExternalLink className="size-3.5" />
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Integration Status */}
+      {/* ---------------- AI DELIVERY-DRIVEN INSIGHTS ---------------- */}
+      <div>
+        <div className="mb-4 flex items-center gap-2">
+          <Sparkles className="size-5 text-indigo-600" />
+          <h3 className="font-semibold text-slate-900">
+            AI Delivery-Driven Tech Stack Insights
+          </h3>
+          <span className="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-medium">
+            Based on Jira & GitHub
+          </span>
+        </div>
+
+        <div className="space-y-4">
+          {deliveryDrivenInsights.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm"
+            >
+              <div className="flex justify-between mb-2">
+                <h4 className="font-semibold text-slate-900">
+                  {item.technology}
+                </h4>
+                <span className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-medium">
+                  Confidence: {item.confidence}
+                </span>
+              </div>
+              <p className="text-sm text-slate-600">
+                <strong>Observed Signal:</strong> {item.signal}
+              </p>
+              <p className="text-sm text-slate-600">
+                <strong>Delivery Impact:</strong> {item.impact}
+              </p>
+              <p className="text-indigo-700 font-medium mt-2">
+                Recommendation → {item.recommendation}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ---------------- INTEGRATION STATUS ---------------- */}
       <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-white/10 p-2 rounded-lg">
@@ -176,20 +241,22 @@ export function TechStackPage() {
           </div>
           <div>
             <h3 className="font-semibold">Integration Analysis</h3>
-            <p className="text-sm text-slate-300">Based on your GitHub repositories and Jira projects</p>
+            <p className="text-sm text-slate-300">
+              Based on GitHub repositories and Jira projects
+            </p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <p className="text-sm text-slate-300 mb-1">Repositories Analyzed</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white/10 rounded-xl p-4">
+            <p className="text-sm text-slate-300">Repositories Analyzed</p>
             <p className="text-2xl font-semibold">24</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <p className="text-sm text-slate-300 mb-1">Technologies Detected</p>
+          <div className="bg-white/10 rounded-xl p-4">
+            <p className="text-sm text-slate-300">Technologies Detected</p>
             <p className="text-2xl font-semibold">47</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <p className="text-sm text-slate-300 mb-1">Compatibility Score</p>
+          <div className="bg-white/10 rounded-xl p-4">
+            <p className="text-sm text-slate-300">Compatibility Score</p>
             <p className="text-2xl font-semibold">93%</p>
           </div>
         </div>
