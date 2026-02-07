@@ -1,59 +1,29 @@
-import { useState } from 'react';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { DashboardPage } from './components/DashboardPage';
-import { TeamsPage } from './components/TeamsPage';
-import { AnalyticsPage } from './components/AnalyticsPage';
-import { TechStackPage } from './components/TechStackPage';
-import { AnalysisModal } from './components/AnalysisModal';
-import { AnalysisDetailsPage } from './components/AnalysisDetailsPage';
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
-  const [showDetailsPage, setShowDetailsPage] = useState(false);
+const queryClient = new QueryClient();
 
-  const handleViewDetails = () => {
-    setShowAnalysisModal(false);
-    setShowDetailsPage(true);
-  };
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
-  const handleBackToDashboard = () => {
-    setShowDetailsPage(false);
-    setActiveTab('dashboard');
-  };
-
-  const renderPage = () => {
-    if (showDetailsPage) {
-      return <AnalysisDetailsPage onBack={handleBackToDashboard} />;
-    }
-
-    switch (activeTab) {
-      case 'teams':
-        return <TeamsPage />;
-      case 'analytics':
-        return <AnalyticsPage />;
-      case 'stack':
-        return <TechStackPage />;
-      default:
-        return <DashboardPage onGenerateAnalysis={() => setShowAnalysisModal(true)} />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {activeTab === 'dashboard' && !showDetailsPage && <Hero onGenerateAnalysis={() => setShowAnalysisModal(true)} />}
-        {renderPage()}
-      </main>
-
-      <AnalysisModal 
-        isOpen={showAnalysisModal} 
-        onClose={() => setShowAnalysisModal(false)}
-        onViewDetails={handleViewDetails}
-      />
-    </div>
-  );
-}
+export default App;
