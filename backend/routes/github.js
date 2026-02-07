@@ -59,6 +59,31 @@ router.get('/repos/:owner/:repo/contributors', async (req, res) => {
     }
 });
 
+// Get issues for a repo with flagging
+router.get('/repos/:owner/:repo/issues', async (req, res) => {
+    try {
+        const { owner, repo } = req.params;
+        const { state = 'all', perPage = 50 } = req.query;
+        const issues = await githubService.getIssues(owner, repo, state, parseInt(perPage));
+
+        // Add summary stats
+        const stats = {
+            total: issues.length,
+            open: issues.filter(i => i.state === 'open').length,
+            closed: issues.filter(i => i.state === 'closed').length,
+            bugs: issues.filter(i => i.isBug).length,
+            enhancements: issues.filter(i => i.isEnhancement).length,
+            priority: issues.filter(i => i.isPriority).length,
+            stale: issues.filter(i => i.isStale && i.state === 'open').length,
+            unassigned: issues.filter(i => !i.assignee && i.state === 'open').length
+        };
+
+        res.json({ success: true, data: issues, stats });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Get PR metrics for a repo
 router.get('/repos/:owner/:repo/pr-metrics', async (req, res) => {
     try {

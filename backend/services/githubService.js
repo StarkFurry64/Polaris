@@ -102,6 +102,34 @@ export async function getContributors(owner, repo) {
     }));
 }
 
+// Get issues for a repository
+export async function getIssues(owner, repo, state = 'all', perPage = 50) {
+    const issues = await githubRequest(`/repos/${owner}/${repo}/issues?state=${state}&per_page=${perPage}`);
+    return issues
+        .filter(issue => !issue.pull_request) // Exclude PRs (GitHub API returns PRs as issues too)
+        .map(issue => ({
+            id: issue.id,
+            number: issue.number,
+            title: issue.title,
+            state: issue.state,
+            user: issue.user?.login,
+            labels: issue.labels?.map(l => ({ name: l.name, color: l.color })) || [],
+            assignee: issue.assignee?.login,
+            assignees: issue.assignees?.map(a => a.login) || [],
+            createdAt: issue.created_at,
+            updatedAt: issue.updated_at,
+            closedAt: issue.closed_at,
+            body: issue.body?.slice(0, 500), // Truncate body
+            url: issue.html_url,
+            comments: issue.comments,
+            // Flag critical issues
+            isBug: issue.labels?.some(l => l.name.toLowerCase().includes('bug')),
+            isEnhancement: issue.labels?.some(l => l.name.toLowerCase().includes('enhancement') || l.name.toLowerCase().includes('feature')),
+            isPriority: issue.labels?.some(l => l.name.toLowerCase().includes('priority') || l.name.toLowerCase().includes('urgent') || l.name.toLowerCase().includes('critical')),
+            isStale: (new Date() - new Date(issue.updated_at)) > (14 * 24 * 60 * 60 * 1000) // 14 days
+        }));
+}
+
 // Calculate PR metrics
 export function calculatePRMetrics(pullRequests) {
     const merged = pullRequests.filter(pr => pr.mergedAt);
@@ -181,6 +209,7 @@ export default {
     getCommits,
     getPullRequests,
     getContributors,
+    getIssues,
     calculatePRMetrics,
     calculateDeploymentFrequency,
     getContributionDistribution,

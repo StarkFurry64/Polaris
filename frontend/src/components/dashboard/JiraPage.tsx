@@ -3,15 +3,28 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  FolderKanban, 
+import {
+  FolderKanban,
   Bug,
-  CheckCircle2, 
-  Clock, 
+  CheckCircle2,
+  Clock,
   RefreshCw,
   Circle,
-  AlertCircle
+  AlertCircle,
+  Search,
+  Filter,
+  UserPlus,
+  ChevronDown,
+  X,
+  ArrowUp,
+  ArrowRight,
+  ArrowDown,
+  Users,
+  Mail
 } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { getContributors } from '@/api/github';
+import { useToast } from '@/hooks/use-toast';
 
 interface JiraIssue {
   key: string;
@@ -25,14 +38,36 @@ interface JiraIssue {
   created: string;
 }
 
+interface Contributor {
+  login: string;
+  avatar_url: string;
+  contributions: number;
+}
+
 interface JiraPageProps {
-  selectedRepo: string | null;
+  selectedRepo: any;
 }
 
 export function JiraPage({ selectedRepo }: JiraPageProps) {
   const [issues, setIssues] = useState<JiraIssue[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [contributors, setContributors] = useState<Contributor[]>([]);
+  const { toast } = useToast();
+
+  // Filter states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [priorityFilter, setPriorityFilter] = useState<string>('all');
+
+  // Assignment modal state
+  const [assigningIssue, setAssigningIssue] = useState<string | null>(null);
+
+  // Email input modal state
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [emailModalData, setEmailModalData] = useState<{ assignee: string; issue: JiraIssue | null }>({ assignee: '', issue: null });
+  const [manualEmail, setManualEmail] = useState('');
 
   const loadIssues = async () => {
     setLoading(true);
@@ -52,9 +87,52 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
     }
   };
 
+  const loadContributors = async () => {
+    if (selectedRepo?.name) {
+      try {
+        const contribData = await getContributors(selectedRepo.name);
+        setContributors(contribData);
+      } catch (err) {
+        console.error('Failed to load contributors:', err);
+      }
+    }
+  };
+
   useEffect(() => {
     loadIssues();
-  }, []);
+    loadContributors();
+  }, [selectedRepo]);
+
+  // Priority helpers
+  const getPriorityIcon = (priority: string) => {
+    switch (priority?.toLowerCase()) {
+      case 'high':
+      case 'highest':
+        return <ArrowUp className="h-4 w-4 text-red-500" />;
+      case 'medium':
+        return <ArrowRight className="h-4 w-4 text-amber-500" />;
+      case 'low':
+      case 'lowest':
+        return <ArrowDown className="h-4 w-4 text-green-500" />;
+      default:
+        return <ArrowRight className="h-4 w-4 text-slate-400" />;
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority?.toLowerCase()) {
+      case 'high':
+      case 'highest':
+        return 'bg-red-100 text-red-700 border-red-200';
+      case 'medium':
+        return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'low':
+      case 'lowest':
+        return 'bg-green-100 text-green-700 border-green-200';
+      default:
+        return 'bg-slate-100 text-slate-600 border-slate-200';
+    }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status?.toLowerCase()) {
@@ -87,14 +165,161 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
     return <FolderKanban className="h-4 w-4 text-blue-500" />;
   };
 
+  // Filter issues
+  const filteredIssues = issues.filter(issue => {
+    const matchesSearch = searchQuery === '' ||
+      issue.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      issue.key.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || issue.status?.toLowerCase() === statusFilter.toLowerCase();
+    const matchesType = typeFilter === 'all' || issue.type?.toLowerCase() === typeFilter.toLowerCase();
+    const matchesPriority = priorityFilter === 'all' || issue.priority?.toLowerCase() === priorityFilter.toLowerCase();
+    return matchesSearch && matchesStatus && matchesType && matchesPriority;
+  });
+
   // Calculate stats
   const stats = {
     total: issues.length,
     bugs: issues.filter(i => i.type?.toLowerCase() === 'bug').length,
+    stories: issues.filter(i => i.type?.toLowerCase() === 'story').length,
+    tasks: issues.filter(i => i.type?.toLowerCase() === 'task').length,
     done: issues.filter(i => i.status?.toLowerCase() === 'done' || i.status?.toLowerCase() === 'closed').length,
     inProgress: issues.filter(i => i.status?.toLowerCase() === 'in progress').length,
     todo: issues.filter(i => i.status?.toLowerCase() === 'to do' || i.status?.toLowerCase() === 'open').length
   };
+
+  // Chart data
+  const typeDistribution = [
+    { name: 'Bugs', value: stats.bugs, color: '#ef4444' },
+    { name: 'Stories', value: stats.stories, color: '#3b82f6' },
+    { name: 'Tasks', value: stats.tasks, color: '#10b981' },
+  ].filter(d => d.value > 0);
+
+  const statusDistribution = [
+    { name: 'Done', value: stats.done, color: '#10b981' },
+    { name: 'In Progress', value: stats.inProgress, color: '#3b82f6' },
+    { name: 'To Do', value: stats.todo, color: '#94a3b8' },
+  ].filter(d => d.value > 0);
+
+  // Send email notification helper
+  const sendEmailNotification = async (recipientEmail: string, assignee: string, issue: JiraIssue) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/notifications/assignment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipientEmail,
+          recipientName: assignee,
+          issueKey: issue.key,
+          issueSummary: issue.summary,
+          priority: issue.priority,
+          assignerName: 'Polaris Dashboard'
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "✅ Email Sent",
+          description: `Notification sent to ${assignee} at ${recipientEmail}`,
+        });
+      } else {
+        toast({
+          title: "⚠️ Email Failed",
+          description: data.error || 'Failed to send notification',
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Failed to send email notification:', error);
+      toast({
+        title: "⚠️ Error",
+        description: 'Network error sending notification',
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Handle email modal submission
+  const handleEmailSubmit = async () => {
+    if (manualEmail && manualEmail.includes('@') && emailModalData.issue) {
+      setEmailModalOpen(false);
+      await sendEmailNotification(manualEmail.trim(), emailModalData.assignee, emailModalData.issue);
+      setManualEmail('');
+      setEmailModalData({ assignee: '', issue: null });
+    } else {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Close email modal without sending
+  const handleEmailCancel = () => {
+    setEmailModalOpen(false);
+    setManualEmail('');
+    setEmailModalData({ assignee: '', issue: null });
+    toast({
+      title: "✅ Task Assigned",
+      description: `Assigned without email notification`,
+    });
+  };
+
+  // Assign issue handler with email notification
+  const handleAssign = async (issueKey: string, assignee: string) => {
+    const issue = issues.find(i => i.key === issueKey);
+
+    // Update local state
+    setIssues(prev => prev.map(i =>
+      i.key === issueKey ? { ...i, assignee } : i
+    ));
+    setAssigningIssue(null);
+
+    // Send email notification if assigning to someone (not unassigning)
+    if (assignee && assignee !== 'Unassigned' && issue) {
+      try {
+        // Fetch real email from contributor's GitHub commits
+        let recipientEmail = null;
+
+        if (selectedRepo?.name) {
+          const emailResponse = await fetch(
+            `http://localhost:3001/api/github/repos/${selectedRepo.name}/contributors/${assignee}/email`
+          );
+          const emailData = await emailResponse.json();
+
+          // Only use email if it's NOT a noreply GitHub email
+          if (emailData.success && emailData.email && !emailData.email.includes('noreply.github.com')) {
+            recipientEmail = emailData.email;
+          }
+        }
+
+        // If valid email found, send notification directly
+        if (recipientEmail) {
+          await sendEmailNotification(recipientEmail, assignee, issue);
+        } else {
+          // Open email modal for manual entry
+          setEmailModalData({ assignee, issue });
+          setEmailModalOpen(true);
+        }
+      } catch (error) {
+        console.error('Failed to fetch email:', error);
+        // Open email modal as fallback
+        setEmailModalData({ assignee, issue });
+        setEmailModalOpen(true);
+      }
+    }
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('all');
+    setTypeFilter('all');
+    setPriorityFilter('all');
+  };
+
+  const hasActiveFilters = searchQuery || statusFilter !== 'all' || typeFilter !== 'all' || priorityFilter !== 'all';
 
   return (
     <div className="space-y-6">
@@ -176,29 +401,176 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
         </Card>
       </div>
 
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Issue Type Distribution */}
+        <Card className="border-0 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Bug className="h-5 w-5 text-red-500" />
+              Issue Type Distribution
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {typeDistribution.length > 0 ? (
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={typeDistribution}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {typeDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[200px] flex items-center justify-center text-slate-500">
+                No data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Status Distribution */}
+        <Card className="border-0 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              Status Distribution
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {statusDistribution.length > 0 ? (
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={statusDistribution}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {statusDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[200px] flex items-center justify-center text-slate-500">
+                No data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Search and Filters */}
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-4">
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search issues by key or summary..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Filter Dropdowns */}
+            <div className="flex gap-2 flex-wrap">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Status</option>
+                <option value="to do">To Do</option>
+                <option value="in progress">In Progress</option>
+                <option value="done">Done</option>
+              </select>
+
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Types</option>
+                <option value="bug">Bug</option>
+                <option value="story">Story</option>
+                <option value="task">Task</option>
+              </select>
+
+              <select
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All Priorities</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+
+              {hasActiveFilters && (
+                <Button variant="outline" size="sm" onClick={clearFilters} className="text-slate-600">
+                  <X className="h-4 w-4 mr-1" />
+                  Clear
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Active filter pills */}
+          {hasActiveFilters && (
+            <div className="mt-3 flex items-center gap-2 text-sm">
+              <Filter className="h-4 w-4 text-slate-400" />
+              <span className="text-slate-500">Showing {filteredIssues.length} of {issues.length} issues</span>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Issues List */}
       <Card className="border-0 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FolderKanban className="h-5 w-5 text-blue-600" />
-            All Issues ({issues.length})
+            All Issues ({filteredIssues.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="h-16 w-full" />
+                <Skeleton key={i} className="h-20 w-full" />
               ))}
             </div>
-          ) : issues.length === 0 ? (
+          ) : filteredIssues.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
               <FolderKanban className="h-12 w-12 mx-auto mb-3 text-slate-300" />
-              <p>No issues found</p>
+              <p>{issues.length === 0 ? 'No issues found' : 'No issues match your filters'}</p>
             </div>
           ) : (
             <div className="space-y-2">
-              {issues.map((issue) => (
+              {filteredIssues.map((issue) => (
                 <div
                   key={issue.key}
                   className="flex items-start justify-between p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-100"
@@ -217,12 +589,63 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
                         <Badge variant="outline" className="bg-slate-50 text-slate-600 border-slate-200">
                           {issue.type}
                         </Badge>
+                        {/* Priority Badge */}
+                        <Badge variant="outline" className={getPriorityColor(issue.priority)}>
+                          {getPriorityIcon(issue.priority)}
+                          <span className="ml-1">{issue.priority || 'Medium'}</span>
+                        </Badge>
                       </div>
                       <p className="text-base font-medium text-slate-900 mt-2">
                         {issue.summary}
                       </p>
                       <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
-                        <span>Assignee: <span className="font-medium text-slate-700">{issue.assignee}</span></span>
+                        {/* Assignee with dropdown */}
+                        <div className="relative">
+                          <button
+                            onClick={() => setAssigningIssue(assigningIssue === issue.key ? null : issue.key)}
+                            className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                          >
+                            <Users className="h-3 w-3" />
+                            <span>Assignee: <span className="font-medium text-slate-700">{issue.assignee || 'Unassigned'}</span></span>
+                            <ChevronDown className="h-3 w-3" />
+                          </button>
+
+                          {/* Assignment Dropdown */}
+                          {assigningIssue === issue.key && (
+                            <div className="absolute top-full left-0 mt-1 z-50 bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[200px]">
+                              <div className="px-3 py-2 border-b border-slate-100">
+                                <p className="text-xs font-medium text-slate-500 uppercase">Assign to</p>
+                              </div>
+                              <button
+                                onClick={() => handleAssign(issue.key, 'Unassigned')}
+                                className="w-full px-3 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2"
+                              >
+                                <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
+                                  <X className="h-3 w-3 text-slate-500" />
+                                </div>
+                                Unassigned
+                              </button>
+                              {contributors.map((contrib) => (
+                                <button
+                                  key={contrib.login}
+                                  onClick={() => handleAssign(issue.key, contrib.login)}
+                                  className="w-full px-3 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2"
+                                >
+                                  <img
+                                    src={contrib.avatar_url}
+                                    alt={contrib.login}
+                                    className="w-6 h-6 rounded-full"
+                                  />
+                                  {contrib.login}
+                                </button>
+                              ))}
+                              {contributors.length === 0 && (
+                                <p className="px-3 py-2 text-sm text-slate-500">No contributors found</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
                         {issue.labels && issue.labels.length > 0 && (
                           <div className="flex gap-1">
                             {issue.labels.slice(0, 2).map(label => (
@@ -245,6 +668,65 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
           )}
         </CardContent>
       </Card>
+
+      {/* Click outside to close dropdown */}
+      {assigningIssue && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setAssigningIssue(null)}
+        />
+      )}
+
+      {/* Email Input Modal */}
+      {emailModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-blue-100 rounded-full">
+                <Mail className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">Enter Email Address</h3>
+                <p className="text-sm text-slate-500">
+                  GitHub privacy enabled for <span className="font-medium">{emailModalData.assignee}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Email for notification:
+              </label>
+              <input
+                type="email"
+                value={manualEmail}
+                onChange={(e) => setManualEmail(e.target.value)}
+                placeholder="contributor@email.com"
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                autoFocus
+                onKeyDown={(e) => e.key === 'Enter' && handleEmailSubmit()}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                onClick={handleEmailCancel}
+                variant="outline"
+                className="flex-1"
+              >
+                Skip Notification
+              </Button>
+              <Button
+                onClick={handleEmailSubmit}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Send Email
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

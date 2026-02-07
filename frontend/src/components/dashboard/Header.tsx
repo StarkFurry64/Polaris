@@ -1,4 +1,4 @@
-import { Sparkles, GitPullRequest, UserCircle, Brain, Building2, FolderKanban } from 'lucide-react';
+import { Sparkles, Lightbulb, UserCircle, Brain, Building2, FolderKanban } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -8,7 +8,7 @@ interface HeaderProps {
 export function Header({ activeTab, setActiveTab }: HeaderProps) {
   const navItems = [
     { id: 'executive', label: 'Executive', icon: Building2 },
-    { id: 'prs', label: 'PRs', icon: GitPullRequest },
+    { id: 'prs', label: 'Insights', icon: Lightbulb },
     { id: 'developers', label: 'Developers', icon: UserCircle },
     { id: 'jira', label: 'Jira', icon: FolderKanban },
     { id: 'ai', label: 'AI Insights', icon: Brain },

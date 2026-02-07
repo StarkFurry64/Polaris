@@ -33,6 +33,13 @@ export async function getJiraIssues() {
     return data.success ? data.data : [];
 }
 
+// GitHub Issues API
+export async function getGitHubIssues(repo: string) {
+    const res = await fetch(`${API_BASE}/github/repos/${repo}/issues`);
+    const data = await res.json();
+    return data.success ? data.data : [];
+}
+
 // AI API
 export async function askAI(question: string, context: any = {}) {
     const res = await fetch(`${API_BASE}/ai/ask`, {
