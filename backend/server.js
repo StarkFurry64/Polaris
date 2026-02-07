@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { fetchRepositories, fetchCommits, fetchPullRequests, fetchContributors } from "./githubClient.js";
+import { fetchRepositories, fetchCommits, fetchPullRequests, fetchContributors, fetchContributorEmail } from "./githubClient.js";
 import { fetchJiraIssues } from "./jiraClient.js";
 import { aiRouter } from "./routes/ai.js";
+import notificationsRoutes from "./src/routes/notifications.js";
 
 dotenv.config();
 
@@ -69,6 +70,20 @@ app.get("/api/github/repos/:repo/contributors", async (req, res) => {
     }
 });
 
+// Get contributor's email from their commits
+app.get("/api/github/repos/:repo/contributors/:username/email", async (req, res) => {
+    try {
+        const email = await fetchContributorEmail(req.params.repo, req.params.username);
+        if (email) {
+            res.json({ success: true, email });
+        } else {
+            res.json({ success: false, error: 'Email not found in commits' });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Jira Routes - locked to JIRA_PROJECT_KEY
 app.get("/api/jira/issues", async (req, res) => {
     try {
@@ -81,6 +96,9 @@ app.get("/api/jira/issues", async (req, res) => {
 
 // AI Routes
 app.use('/api/ai', aiRouter);
+
+// Notifications Routes (Email)
+app.use('/api/notifications', notificationsRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

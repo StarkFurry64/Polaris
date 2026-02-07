@@ -5,6 +5,7 @@ import githubRoutes from './routes/github.js';
 import jiraRoutes from './routes/jira.js';
 import aiRoutes from './routes/ai.js';
 import metricsRoutes from './routes/metrics.js';
+import notificationsRoutes from './routes/notifications.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use('/api/github', githubRoutes);
 app.use('/api/jira', jiraRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/metrics', metricsRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
