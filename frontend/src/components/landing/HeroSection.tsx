@@ -8,9 +8,9 @@ const HeroSection = () => {
     <section className="relative min-h-screen pt-16 overflow-hidden">
       {/* Background - Blue gradient hero */}
       <div className="absolute inset-0 bg-hero-gradient" />
-      
+
       {/* Subtle pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage: `linear-gradient(hsl(0 0% 100%) 1px, transparent 1px), 
@@ -43,9 +43,9 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
           >
-            <span className="text-white">Transform Your Business</span>
+            <span className="text-white">Software Delivery</span>
             <br />
-            <span className="text-white/90">with Intelligent Insights</span>
+            <span className="text-white/90">Intelligence Platform</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -55,8 +55,8 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10"
           >
-            Leverage Jira integration, BERT NLP analysis, and GitHub repository insights to
-            identify gaps, optimize teams, and make data-driven decisions with confidence.
+            Measure DORA metrics, optimize PR cycle time, detect bottlenecks, and automate
+            your engineering workflows with AI-powered insights.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -86,10 +86,10 @@ const HeroSection = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-20 max-w-5xl mx-auto"
         >
           {[
-            { icon: TrendingUp, label: "Skill Gap Analysis", value: "12 Gaps Found", subtext: "+3 this week", iconBg: "from-rose-500 to-pink-600", subtextColor: "text-rose-400" },
-            { icon: Users, label: "Resource Optimization", value: "89% Efficiency", subtext: "+12% improvement", iconBg: "from-violet-500 to-purple-600", subtextColor: "text-violet-400" },
-            { icon: TrendingUp, label: "Predictive Analytics", value: "94% Accuracy", subtext: "23 predictions", iconBg: "from-emerald-500 to-green-600", subtextColor: "text-emerald-400" },
-            { icon: Code, label: "Tech Stack Advisor", value: "5 Suggestions", subtext: "Updated today", iconBg: "from-[#6edeff] to-cyan-500", subtextColor: "text-[#6edeff]" },
+            { icon: TrendingUp, label: "DORA Metrics", value: "Elite Rating", subtext: "4 metrics tracked", iconBg: "from-emerald-500 to-green-600", subtextColor: "text-emerald-400" },
+            { icon: Code, label: "PR Cycle Time", value: "18.5 hours", subtext: "-12% this week", iconBg: "from-blue-500 to-cyan-600", subtextColor: "text-blue-400" },
+            { icon: Users, label: "Team Velocity", value: "94% Efficiency", subtext: "+8% improvement", iconBg: "from-violet-500 to-purple-600", subtextColor: "text-violet-400" },
+            { icon: TrendingUp, label: "Bottlenecks", value: "3 Detected", subtext: "Auto-resolved: 2", iconBg: "from-[#6edeff] to-cyan-500", subtextColor: "text-[#6edeff]" },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}

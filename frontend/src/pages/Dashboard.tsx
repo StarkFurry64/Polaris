@@ -1,59 +1,47 @@
 import { useState } from 'react';
 import { Header } from '@/components/dashboard/Header';
-import { Hero } from '@/components/dashboard/Hero';
-import { DashboardPage } from '@/components/dashboard/DashboardPage';
-import { TeamsPage } from '@/components/dashboard/TeamsPage';
-import { AnalyticsPage } from '@/components/dashboard/AnalyticsPage';
-import { TechStackPage } from '@/components/dashboard/TechStackPage';
-import { AnalysisModal } from '@/components/dashboard/AnalysisModal';
-import { AnalysisDetailsPage } from '@/components/dashboard/AnalysisDetailsPage';
+import { RepositorySelector } from '@/components/dashboard/RepositorySelector';
+import { LoginPage } from '@/components/auth/LoginPage';
+import { PRAnalyticsPage } from '@/components/dashboard/PRAnalyticsPage';
+import { DeveloperMetricsPage } from '@/components/dashboard/DeveloperMetricsPage';
+import { AIInsightsPage } from '@/components/dashboard/AIInsightsPage';
+import { ExecutiveDashboard } from '@/components/dashboard/ExecutiveDashboard';
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
-  const [showDetailsPage, setShowDetailsPage] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [activeTab, setActiveTab] = useState('executive');
+  const [selectedRepo, setSelectedRepo] = useState(null);
 
-  const handleViewDetails = () => {
-    setShowAnalysisModal(false);
-    setShowDetailsPage(true);
-  };
-
-  const handleBackToDashboard = () => {
-    setShowDetailsPage(false);
-    setActiveTab('dashboard');
-  };
+  if (!isAuthenticated) {
+    return <LoginPage onLoginSuccess={() => setIsAuthenticated(true)} />;
+  }
 
   const renderPage = () => {
-    if (showDetailsPage) {
-      return <AnalysisDetailsPage onBack={handleBackToDashboard} />;
-    }
-
     switch (activeTab) {
-      case 'teams':
-        return <TeamsPage />;
-      case 'analytics':
-        return <AnalyticsPage />;
-      case 'stack':
-        return <TechStackPage />;
+      case 'executive':
+        return <ExecutiveDashboard selectedRepo={selectedRepo} />;
+      case 'prs':
+        return <PRAnalyticsPage selectedRepo={selectedRepo} />;
+      case 'developers':
+        return <DeveloperMetricsPage selectedRepo={selectedRepo} />;
+      case 'ai':
+        return <AIInsightsPage selectedRepo={selectedRepo} />;
       default:
-        return <DashboardPage onGenerateAnalysis={() => setShowAnalysisModal(true)} />;
+        return <ExecutiveDashboard selectedRepo={selectedRepo} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {activeTab === 'dashboard' && !showDetailsPage && <Hero onGenerateAnalysis={() => setShowAnalysisModal(true)} />}
+
+      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+        <RepositorySelector
+          selectedRepo={selectedRepo}
+          onRepositorySelect={setSelectedRepo}
+        />
         {renderPage()}
       </main>
-
-      <AnalysisModal 
-        isOpen={showAnalysisModal} 
-        onClose={() => setShowAnalysisModal(false)}
-        onViewDetails={handleViewDetails}
-      />
     </div>
   );
 };

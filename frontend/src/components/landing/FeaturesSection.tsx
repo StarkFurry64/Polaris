@@ -1,68 +1,68 @@
 import { motion } from "framer-motion";
-import { 
-  Target, 
-  Users, 
-  TrendingUp, 
-  Code, 
-  Brain, 
+import {
+  Target,
+  Users,
+  TrendingUp,
+  Code,
+  Brain,
   GitBranch,
-  ArrowUpRight 
+  ArrowUpRight
 } from "lucide-react";
 
 const features = [
   {
     icon: Target,
-    title: "Skill Gap Analysis",
-    description: "Identify missing capabilities by analyzing ticket complexity vs. team expertise. Get actionable insights on where to invest in training or hiring.",
-    color: "from-polaris-coral to-polaris-coral/70",
-    bgColor: "bg-polaris-coral/10",
-    iconColor: "text-polaris-coral",
-    metrics: ["12 gaps identified", "+3 this week"],
-  },
-  {
-    icon: Users,
-    title: "Resource Optimization",
-    description: "Smart allocation recommendations for maximum efficiency. Detect over-allocated resources and single points of failure in your teams.",
-    color: "from-polaris-purple to-polaris-purple/70",
-    bgColor: "bg-polaris-purple/10",
-    iconColor: "text-polaris-purple",
-    metrics: ["89% efficiency", "+12% improvement"],
-  },
-  {
-    icon: TrendingUp,
-    title: "Predictive Analytics",
-    description: "Validate solutions with AI-powered forecasting. Simulate impact of proposed changes before committing resources.",
-    color: "from-polaris-green to-polaris-green/70",
-    bgColor: "bg-polaris-green/10",
-    iconColor: "text-polaris-green",
-    metrics: ["94% accuracy", "23 predictions"],
-  },
-  {
-    icon: Code,
-    title: "Tech Stack Advisor",
-    description: "Get technology recommendations based on your project requirements, team capabilities, and industry best practices.",
-    color: "from-polaris-teal to-polaris-teal/70",
-    bgColor: "bg-polaris-teal/10",
-    iconColor: "text-polaris-teal",
-    metrics: ["5 suggestions", "Updated today"],
-  },
-  {
-    icon: Brain,
-    title: "BERT NLP Processing",
-    description: "Advanced natural language processing to understand context, sentiment, and patterns in tickets and documentation.",
-    color: "from-polaris-blue to-polaris-blue/70",
-    bgColor: "bg-polaris-blue/10",
-    iconColor: "text-polaris-blue",
-    metrics: ["10K+ tickets analyzed", "Real-time processing"],
+    title: "DORA Metrics",
+    description: "Track the four key metrics that define elite engineering teams: Deployment Frequency, Lead Time, MTTR, and Change Failure Rate.",
+    color: "from-emerald-500 to-emerald-600",
+    bgColor: "bg-emerald-500/10",
+    iconColor: "text-emerald-600",
+    metrics: ["Elite rating achieved", "4 metrics tracked"],
   },
   {
     icon: GitBranch,
-    title: "Repository Analysis",
-    description: "Analyze commit patterns, code contributions, and development activity to understand team productivity and code quality.",
-    color: "from-polaris-orange to-polaris-orange/70",
-    bgColor: "bg-polaris-orange/10",
-    iconColor: "text-polaris-orange",
-    metrics: ["GitHub integrated", "50+ repos supported"],
+    title: "PR Cycle Time",
+    description: "Analyze pull request lifecycle from creation to merge. Identify bottlenecks in code review and optimize your delivery pipeline.",
+    color: "from-blue-500 to-blue-600",
+    bgColor: "bg-blue-500/10",
+    iconColor: "text-blue-600",
+    metrics: ["18.5h avg cycle time", "-12% this week"],
+  },
+  {
+    icon: Users,
+    title: "Developer Metrics",
+    description: "Understand individual and team contributions. Track commits, reviews, and collaboration patterns without surveillance.",
+    color: "from-violet-500 to-violet-600",
+    bgColor: "bg-violet-500/10",
+    iconColor: "text-violet-600",
+    metrics: ["23 developers", "94% active"],
+  },
+  {
+    icon: TrendingUp,
+    title: "Bottleneck Detection",
+    description: "Automatically identify where work is getting stuck. Get alerts for stale PRs, blocked pipelines, and long review queues.",
+    color: "from-rose-500 to-rose-600",
+    bgColor: "bg-rose-500/10",
+    iconColor: "text-rose-600",
+    metrics: ["3 bottlenecks found", "2 auto-resolved"],
+  },
+  {
+    icon: Brain,
+    title: "Workflow Automation",
+    description: "gitStream-powered automation for PRs. Auto-assign reviewers, auto-merge safe changes, and enforce quality gates.",
+    color: "from-amber-500 to-amber-600",
+    bgColor: "bg-amber-500/10",
+    iconColor: "text-amber-600",
+    metrics: ["4 active rules", "143 executions"],
+  },
+  {
+    icon: Code,
+    title: "Real-time Alerts",
+    description: "Get notified when metrics drop below thresholds. Connect to Slack, email, or webhooks for instant awareness.",
+    color: "from-cyan-500 to-cyan-600",
+    bgColor: "bg-cyan-500/10",
+    iconColor: "text-cyan-600",
+    metrics: ["3 active alerts", "Slack connected"],
   },
 ];
 
@@ -83,7 +83,7 @@ const FeaturesSection = () => {
             <span className="text-gradient-primary">intelligent optimization</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Our AI-powered platform provides comprehensive insights across multiple dimensions 
+            Our AI-powered platform provides comprehensive insights across multiple dimensions
             to help you make data-driven decisions.
           </p>
         </motion.div>
