@@ -1,18 +1,30 @@
 import fetch from 'node-fetch';
 
-const JIRA_URL = process.env.JIRA_URL;
-const JIRA_EMAIL = process.env.JIRA_EMAIL;
-const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN;
+// Lazy loading for env vars - ensures dotenv is loaded first
+let config = null;
+
+function getConfig() {
+    if (!config) {
+        config = {
+            jiraUrl: process.env.JIRA_URL || process.env.JIRA_BASE_URL,
+            jiraEmail: process.env.JIRA_EMAIL,
+            jiraApiToken: process.env.JIRA_API_TOKEN
+        };
+    }
+    return config;
+}
 
 // Create base64 auth header for Jira
 const getAuthHeader = () => {
-    const credentials = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString('base64');
+    const { jiraEmail, jiraApiToken } = getConfig();
+    const credentials = Buffer.from(`${jiraEmail}:${jiraApiToken}`).toString('base64');
     return `Basic ${credentials}`;
 };
 
 // Make authenticated Jira API request
 async function jiraRequest(endpoint, method = 'GET', body = null) {
-    const url = `${JIRA_URL}/rest/api/3${endpoint}`;
+    const { jiraUrl } = getConfig();
+    const url = `${jiraUrl}/rest/api/3${endpoint}`;
 
     const options = {
         method,
@@ -49,16 +61,18 @@ export async function getProjects() {
     }));
 }
 
-// Get issues for a project with JQL
+// Get issues for a project with JQL - using NEW /search/jql endpoint
 export async function getIssues(projectKey, maxResults = 50) {
     const jql = `project = ${projectKey} ORDER BY created DESC`;
-    const data = await jiraRequest(`/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&expand=changelog`);
+    // Using the new /search/jql endpoint (old /search was deprecated)
+    const data = await jiraRequest(`/search/jql?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=summary,status,priority,issuetype,assignee,reporter,created,updated,resolutiondate,labels,components`);
 
-    return data.issues.map(issue => ({
+    return (data.issues || []).map(issue => ({
         id: issue.id,
         key: issue.key,
         summary: issue.fields.summary,
         status: issue.fields.status?.name,
+        statusCategory: issue.fields.status?.statusCategory?.key,
         priority: issue.fields.priority?.name,
         issueType: issue.fields.issuetype?.name,
         assignee: issue.fields.assignee?.displayName,
@@ -114,7 +128,7 @@ export function calculateVelocity(issues) {
         todo: todo.length,
         avgCycleTimeDays: Math.round(avgCycleTime * 10) / 10,
         weeklyThroughput: completedLastWeek,
-        completionRate: Math.round((completed.length / issues.length) * 100)
+        completionRate: issues.length > 0 ? Math.round((completed.length / issues.length) * 100) : 0
     };
 }
 
