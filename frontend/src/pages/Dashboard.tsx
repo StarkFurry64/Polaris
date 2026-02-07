@@ -6,6 +6,7 @@ import { PRAnalyticsPage } from '@/components/dashboard/PRAnalyticsPage';
 import { DeveloperMetricsPage } from '@/components/dashboard/DeveloperMetricsPage';
 import { AIInsightsPage } from '@/components/dashboard/AIInsightsPage';
 import { ExecutiveDashboard } from '@/components/dashboard/ExecutiveDashboard';
+import { JiraPage } from '@/components/dashboard/JiraPage';
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -24,6 +25,8 @@ const Dashboard = () => {
         return <PRAnalyticsPage selectedRepo={selectedRepo} />;
       case 'developers':
         return <DeveloperMetricsPage selectedRepo={selectedRepo} />;
+      case 'jira':
+        return <JiraPage selectedRepo={selectedRepo} />;
       case 'ai':
         return <AIInsightsPage selectedRepo={selectedRepo} />;
       default:

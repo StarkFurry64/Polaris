@@ -22,11 +22,12 @@ export async function fetchJiraIssues() {
         throw new Error("Missing Jira configuration in .env");
     }
 
-    const jql = `project=${projectKey}`;
-    // Only fetch required fields - no comments, changelogs, attachments
-    const fields = "issuetype,status,assignee,updated";
+    const jql = `project=${projectKey} ORDER BY updated DESC`;
+    // Fetch all important fields including summary
+    const fields = "summary,issuetype,status,priority,assignee,labels,updated,created";
 
-    const url = `${baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}&fields=${fields}`;
+    // Using new /search/jql endpoint (old /search was deprecated)
+    const url = `${baseUrl}/rest/api/3/search/jql?jql=${encodeURIComponent(jql)}&fields=${fields}&maxResults=100`;
 
     const auth = Buffer.from(`${email}:${apiToken}`).toString("base64");
 
@@ -50,9 +51,13 @@ export async function fetchJiraIssues() {
 
     return data.issues.map(issue => ({
         key: issue.key,
+        summary: issue.fields.summary,
         type: issue.fields.issuetype?.name,
         status: issue.fields.status?.name,
+        priority: issue.fields.priority?.name || 'Medium',
         assignee: issue.fields.assignee?.displayName ?? "Unassigned",
-        updated: issue.fields.updated
+        labels: issue.fields.labels || [],
+        updated: issue.fields.updated,
+        created: issue.fields.created
     }));
 }
