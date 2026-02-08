@@ -244,10 +244,13 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                         <div className="space-y-3">
                             {(() => {
                                 const sortedContribs = [...contributors].sort((a, b) => (b.contributions || 0) - (a.contributions || 0));
-                                const maxContribs = sortedContribs[0]?.contributions || 1;
+                                const totalContribs = sortedContribs.reduce((sum, c) => sum + (c.contributions || 0), 0);
+                                const topContribs = sortedContribs.slice(0, 5);
+                                const topTotal = topContribs.reduce((sum, c) => sum + (c.contributions || 0), 0);
 
-                                return sortedContribs.slice(0, 5).map((contributor, idx) => {
-                                    const percentage = Math.round(((contributor.contributions || 0) / maxContribs) * 100);
+                                return topContribs.map((contributor, idx) => {
+                                    // Calculate percentage relative to total contributions (adds up to ~100% for top 5)
+                                    const percentage = topTotal > 0 ? Math.round(((contributor.contributions || 0) / topTotal) * 100) : 0;
                                     return (
                                         <div key={contributor.login} className="flex items-center gap-3">
                                             <div className="w-24 text-sm text-muted-foreground truncate">{contributor.login}</div>

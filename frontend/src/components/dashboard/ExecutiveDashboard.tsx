@@ -375,6 +375,8 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
     const [jiraIssues, setJiraIssues] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [aiInsights, setAiInsights] = useState<DetailedInsight[]>([]);
+    const [weeklySummary, setWeeklySummary] = useState<string>('');
+    const [summaryLoading, setSummaryLoading] = useState(false);
 
     const fetchData = async () => {
         if (!selectedRepo) return;
@@ -431,6 +433,9 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
 
             // Generate AI insights based on data
             generateAIInsights(commitsData, prsData, mappedIssues, contribData);
+
+            // Generate AI Weekly Summary
+            generateWeeklySummary(commitsData, prsData, mappedIssues, contribData);
 
         } catch (err: any) {
             setError(err.message || 'Failed to fetch data');
@@ -559,6 +564,113 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
         }
 
         setAiInsights(insights);
+    };
+
+    // Generate AI-powered weekly summary
+    const generateWeeklySummary = async (commits: any[], prs: any[], issues: any[], contribs: any[]) => {
+        setSummaryLoading(true);
+        try {
+            // Calculate weekly stats
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+
+            const weeklyCommits = commits.filter(c => new Date(c.commit?.author?.date) > weekAgo);
+            const weeklyPRs = prs.filter(p => new Date(p.created_at) > weekAgo);
+            const mergedPRs = prs.filter(p => p.merged_at && new Date(p.merged_at) > weekAgo);
+            const completedTasks = issues.filter(i =>
+                i.status?.toLowerCase() === 'done' ||
+                (i.closed_at && new Date(i.closed_at) > weekAgo)
+            );
+            const openBugs = issues.filter(i =>
+                i.type?.toLowerCase() === 'bug' &&
+                (i.status?.toLowerCase() !== 'done' && i.state !== 'closed')
+            );
+
+            // Top contributors this week - prioritize GitHub login over git config name
+            const weeklyContribMap: Record<string, number> = {};
+            weeklyCommits.forEach(c => {
+                // Use GitHub login first (actual username), then fall back to git author name
+                const author = c.author?.login || c.commit?.author?.name || 'Unknown';
+                weeklyContribMap[author] = (weeklyContribMap[author] || 0) + 1;
+            });
+            const topWeeklyContributors = Object.entries(weeklyContribMap)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([name, count]) => `${name} (${count} commits)`);
+
+            // Get recent commit messages for context
+            const recentCommitMessages = weeklyCommits.slice(0, 10).map(c =>
+                c.commit?.message?.split('\n')[0] || ''
+            ).filter(Boolean);
+
+            // Generate summary using AI API
+            const repoFullName = selectedRepo?.fullName || selectedRepo?.name || 'Repository';
+            const prompt = `Generate a detailed executive weekly summary for the repository "${repoFullName}". 
+
+DATA:
+- ${weeklyCommits.length} commits this week
+- ${weeklyPRs.length} new PRs opened, ${mergedPRs.length} merged
+- ${completedTasks.length} tasks completed
+- ${openBugs.length} open bugs requiring attention
+- Top contributors: ${topWeeklyContributors.join(', ') || 'N/A'}
+- Total active contributors: ${contribs.length}
+
+RECENT WORK (commit messages):
+${recentCommitMessages.map((m, i) => `${i + 1}. ${m}`).join('\n')}
+
+Write a SHORT PARAGRAPH (3-4 sentences) summarizing what the team accomplished this week. Mention specific features, fixes, or improvements based on the commit messages. Be quantitative and professional. End with a brief assessment of team velocity or health.`;
+
+            const response = await fetch('http://localhost:3001/api/ai/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: prompt, repo: repoFullName })
+            });
+
+            // Get bug titles for listing
+            const bugTitles = openBugs.slice(0, 5).map(b => b.title || b.summary || b.key).filter(Boolean);
+
+            const data = await response.json();
+            console.log('🤖 AI Summary response:', data);
+
+            if (data.success && data.answer) {
+                // Append bug list if there are bugs
+                let summary = data.answer;
+                if (bugTitles.length > 0) {
+                    summary += `\n\n🐛 Open Bugs:\n${bugTitles.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}`;
+                }
+                setWeeklySummary(summary);
+            } else {
+                // Detailed fallback summary using commit messages
+                const workHighlights = recentCommitMessages.slice(0, 5).map(m => {
+                    // Extract key feature/fix from commit message
+                    if (m.toLowerCase().startsWith('feat:')) return m.replace(/^feat:\s*/i, '✨ ');
+                    if (m.toLowerCase().startsWith('fix:')) return m.replace(/^fix:\s*/i, '🔧 ');
+                    if (m.toLowerCase().startsWith('docs:')) return m.replace(/^docs:\s*/i, '📚 ');
+                    return '• ' + m;
+                });
+
+                let fallback = `📈 Weekly Summary\n\nThis week the team pushed ${weeklyCommits.length} commits with ${mergedPRs.length} PRs merged and ${completedTasks.length} tasks completed.\n\n`;
+
+                if (workHighlights.length > 0) {
+                    fallback += `📋 Recent Work:\n${workHighlights.join('\n')}\n\n`;
+                }
+
+                if (topWeeklyContributors.length > 0) {
+                    fallback += `👥 Top Contributors: ${topWeeklyContributors.join(', ')}`;
+                }
+
+                if (bugTitles.length > 0) {
+                    fallback += `\n\n🐛 Open Bugs (${openBugs.length}):\n${bugTitles.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}`;
+                }
+                setWeeklySummary(fallback);
+            }
+        } catch (error) {
+            console.error('Failed to generate weekly summary:', error);
+            // Fallback summary
+            setWeeklySummary(`📊 Weekly activity: ${commits.length} total commits, ${prs.length} pull requests, ${contribs.length} active contributors.`);
+        } finally {
+            setSummaryLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -832,6 +944,36 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                     sparklineData={[5, 4, 6, 3, 4, jiraMetrics.bugs]}
                     trend={jiraMetrics.bugs > 5 ? 'down' : 'up'}
                 />
+            </div>
+
+            {/* AI Weekly Summary Card */}
+            <div className="linear-card border-glow p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20">
+                        <Brain className="size-6 text-purple-400" />
+                    </div>
+                    <div>
+                        <h3 className="font-semibold text-foreground">
+                            AI Weekly Summary
+                        </h3>
+                        <p className="text-sm text-muted-foreground">Auto-generated insights for the past 7 days</p>
+                    </div>
+                </div>
+
+                {summaryLoading ? (
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                        <Loader2 className="size-5 animate-spin" />
+                        <span>Generating AI summary...</span>
+                    </div>
+                ) : weeklySummary ? (
+                    <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl p-4 border border-purple-500/20">
+                        <p className="text-foreground leading-relaxed whitespace-pre-line">{weeklySummary}</p>
+                    </div>
+                ) : (
+                    <div className="text-muted-foreground italic">
+                        Weekly summary will be generated based on repository activity.
+                    </div>
+                )}
             </div>
 
             {/* Charts Row */}
