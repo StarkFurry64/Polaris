@@ -147,7 +147,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       case 'lowest':
         return <ArrowDown className="h-4 w-4 text-green-500" />;
       default:
-        return <ArrowRight className="h-4 w-4 text-slate-400" />;
+        return <ArrowRight className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -157,12 +157,12 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       case 'highest':
         return 'bg-red-100 text-red-700 border-red-200';
       case 'medium':
-        return 'bg-amber-100 text-amber-700 border-amber-200';
+        return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
       case 'low':
       case 'lowest':
         return 'bg-green-100 text-green-700 border-green-200';
       default:
-        return 'bg-slate-100 text-slate-600 border-slate-200';
+        return 'bg-secondary text-muted-foreground border-border';
     }
   };
 
@@ -174,7 +174,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       case 'in progress':
         return <Clock className="h-4 w-4 text-blue-500" />;
       default:
-        return <Circle className="h-4 w-4 text-slate-400" />;
+        return <Circle className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -184,9 +184,9 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       case 'closed':
         return 'bg-green-100 text-green-700 border-green-200';
       case 'in progress':
-        return 'bg-blue-100 text-blue-700 border-blue-200';
+        return 'bg-primary/20 text-primary border-blue-200';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
+        return 'bg-secondary text-slate-700 border-border';
     }
   };
 
@@ -370,11 +370,11 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <FolderKanban className="h-6 w-6 text-blue-600" />
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <FolderKanban className="h-6 w-6 text-primary" />
             Jira Dashboard
           </h2>
-          <p className="text-slate-600 mt-1">Track issues and project progress</p>
+          <p className="text-muted-foreground mt-1">Track issues and project progress</p>
         </div>
         <Button onClick={loadIssues} disabled={loading} variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
@@ -394,17 +394,17 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-slate-500 mb-1">
+            <div className="flex items-center gap-2 text-muted-foreground mb-1">
               <FolderKanban className="h-4 w-4" />
               <span className="text-sm">Total Issues</span>
             </div>
-            <p className="text-2xl font-bold text-slate-900">{stats.total}</p>
+            <p className="text-2xl font-bold text-foreground">{stats.total}</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-red-500 mb-1">
               <Bug className="h-4 w-4" />
@@ -414,27 +414,27 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-slate-500 mb-1">
+            <div className="flex items-center gap-2 text-muted-foreground mb-1">
               <Circle className="h-4 w-4" />
               <span className="text-sm">To Do</span>
             </div>
-            <p className="text-2xl font-bold text-slate-600">{stats.todo}</p>
+            <p className="text-2xl font-bold text-muted-foreground">{stats.todo}</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-blue-500 mb-1">
               <Clock className="h-4 w-4" />
               <span className="text-sm">In Progress</span>
             </div>
-            <p className="text-2xl font-bold text-blue-600">{stats.inProgress}</p>
+            <p className="text-2xl font-bold text-primary">{stats.inProgress}</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-green-500 mb-1">
               <CheckCircle2 className="h-4 w-4" />
@@ -477,7 +477,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-slate-500">
+              <div className="h-[200px] flex items-center justify-center text-muted-foreground">
                 No data available
               </div>
             )}
@@ -514,7 +514,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-slate-500">
+              <div className="h-[200px] flex items-center justify-center text-muted-foreground">
                 No data available
               </div>
             )}
@@ -528,13 +528,13 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search issues by key or summary..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -543,7 +543,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Status</option>
                 <option value="to do">To Do</option>
@@ -554,7 +554,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Types</option>
                 <option value="bug">Bug</option>
@@ -565,7 +565,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Priorities</option>
                 <option value="high">High</option>
@@ -574,7 +574,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               </select>
 
               {hasActiveFilters && (
-                <Button variant="outline" size="sm" onClick={clearFilters} className="text-slate-600">
+                <Button variant="outline" size="sm" onClick={clearFilters} className="text-muted-foreground">
                   <X className="h-4 w-4 mr-1" />
                   Clear
                 </Button>
@@ -585,8 +585,8 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
           {/* Active filter pills */}
           {hasActiveFilters && (
             <div className="mt-3 flex items-center gap-2 text-sm">
-              <Filter className="h-4 w-4 text-slate-400" />
-              <span className="text-slate-500">Showing {filteredIssues.length} of {issues.length} issues</span>
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Showing {filteredIssues.length} of {issues.length} issues</span>
             </div>
           )}
         </CardContent>
@@ -596,7 +596,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       <Card className="border-0 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FolderKanban className="h-5 w-5 text-blue-600" />
+            <FolderKanban className="h-5 w-5 text-primary" />
             All Issues ({filteredIssues.length})
           </CardTitle>
         </CardHeader>
@@ -608,7 +608,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               ))}
             </div>
           ) : filteredIssues.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-muted-foreground">
               <FolderKanban className="h-12 w-12 mx-auto mb-3 text-slate-300" />
               <p>{issues.length === 0 ? 'No issues found' : 'No issues match your filters'}</p>
             </div>
@@ -617,7 +617,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               {filteredIssues.map((issue) => (
                 <div
                   key={issue.key}
-                  className="flex items-start justify-between p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-100"
+                  className="flex items-start justify-between p-4 rounded-lg bg-secondary hover:bg-secondary transition-colors border border-border/50"
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-1">
@@ -625,12 +625,12 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono text-sm font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">{issue.key}</span>
+                        <span className="font-mono text-sm font-medium text-primary bg-blue-50 px-2 py-0.5 rounded">{issue.key}</span>
                         <Badge variant="outline" className={getStatusColor(issue.status)}>
                           {getStatusIcon(issue.status)}
                           <span className="ml-1">{issue.status}</span>
                         </Badge>
-                        <Badge variant="outline" className="bg-slate-50 text-slate-600 border-slate-200">
+                        <Badge variant="outline" className="bg-secondary text-muted-foreground border-border">
                           {issue.type}
                         </Badge>
                         {/* Priority Badge */}
@@ -639,10 +639,10 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                           <span className="ml-1">{issue.priority || 'Medium'}</span>
                         </Badge>
                       </div>
-                      <p className="text-base font-medium text-slate-900 mt-2">
+                      <p className="text-base font-medium text-foreground mt-2">
                         {issue.summary}
                       </p>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                      <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                         {/* Assignee with direct email input */}
                         <div className="relative">
                           <button
@@ -651,7 +651,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                               setEmailModalData({ assignee: issue.assignee || 'Team Member', issue });
                               setEmailModalOpen(true);
                             }}
-                            className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                            className="flex items-center gap-1 hover:text-primary transition-colors"
                           >
                             <Users className="h-3 w-3" />
                             <span>Assignee: <span className="font-medium text-slate-700">{issue.assignee || 'Unassigned'}</span></span>
@@ -671,7 +671,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                       </div>
                     </div>
                   </div>
-                  <div className="text-right text-sm text-slate-500 whitespace-nowrap ml-4">
+                  <div className="text-right text-sm text-muted-foreground whitespace-nowrap ml-4">
                     <p>Updated</p>
                     <p className="font-medium">{new Date(issue.updated).toLocaleDateString()}</p>
                   </div>
@@ -693,14 +693,14 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
       {/* Email Input Modal */}
       {emailModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+          <div className="bg-card rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-blue-100 rounded-full">
-                <Mail className="h-5 w-5 text-blue-600" />
+              <div className="p-2 bg-primary/20 rounded-full">
+                <Mail className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-900">Enter Email Address</h3>
-                <p className="text-sm text-slate-500">
+                <h3 className="text-lg font-semibold text-foreground">Enter Email Address</h3>
+                <p className="text-sm text-muted-foreground">
                   GitHub privacy enabled for <span className="font-medium">{emailModalData.assignee}</span>
                 </p>
               </div>
@@ -715,7 +715,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                 value={manualEmail}
                 onChange={(e) => setManualEmail(e.target.value)}
                 placeholder="contributor@email.com"
-                className="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 autoFocus
                 onKeyDown={(e) => e.key === 'Enter' && handleEmailSubmit()}
               />

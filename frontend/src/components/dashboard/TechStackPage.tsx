@@ -95,10 +95,10 @@ export function TechStackPage() {
       {/* ---------------- HEADER ---------------- */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900">
+          <h2 className="text-2xl font-semibold text-foreground">
             Tech Stack Advisor
           </h2>
-          <p className="text-slate-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             AI-powered recommendations based on delivery and execution signals
           </p>
         </div>
@@ -109,19 +109,19 @@ export function TechStackPage() {
       </div>
 
       {/* ---------------- CURRENT STACK ---------------- */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-        <h3 className="font-semibold text-slate-900 mb-4">
+      <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+        <h3 className="font-semibold text-foreground mb-4">
           Current Technology Stack
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {currentStack.map((tech, idx) => (
             <div
               key={idx}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100"
+              className="flex items-center justify-between p-4 bg-secondary rounded-xl border border-border/50"
             >
               <div>
-                <p className="font-medium text-slate-900">{tech.name}</p>
-                <p className="text-sm text-slate-600">v{tech.version}</p>
+                <p className="font-medium text-foreground">{tech.name}</p>
+                <p className="text-sm text-muted-foreground">v{tech.version}</p>
               </div>
               {tech.status === 'current' ? (
                 <CheckCircle2 className="size-5 text-emerald-600" />
@@ -136,11 +136,11 @@ export function TechStackPage() {
       {/* ---------------- STATIC RECOMMENDATIONS ---------------- */}
       <div>
         <div className="mb-4 flex items-center gap-2">
-          <Zap className="size-5 text-blue-600" />
-          <h3 className="font-semibold text-slate-900">
+          <Zap className="size-5 text-primary" />
+          <h3 className="font-semibold text-foreground">
             AI-Powered Recommendations
           </h3>
-          <span className="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-medium">
+          <span className="bg-blue-50 text-primary text-xs px-2.5 py-1 rounded-full font-medium">
             Updated 1 hour ago
           </span>
         </div>
@@ -149,19 +149,19 @@ export function TechStackPage() {
           {recommendations.map((rec) => (
             <div
               key={rec.id}
-              className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm"
+              className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h4 className="font-semibold text-slate-900">
+                  <h4 className="font-semibold text-foreground">
                     {rec.recommended}
                   </h4>
-                  <p className="text-sm text-slate-600">{rec.category}</p>
+                  <p className="text-sm text-muted-foreground">{rec.category}</p>
                   <p className="text-sm text-slate-700 mt-1">{rec.reason}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-semibold">{rec.confidence}%</p>
-                  <p className="text-xs text-slate-600">Confidence</p>
+                  <p className="text-xs text-muted-foreground">Confidence</p>
                 </div>
               </div>
 
@@ -169,7 +169,7 @@ export function TechStackPage() {
                 {rec.benefits.map((b, i) => (
                   <span
                     key={i}
-                    className="bg-emerald-50 text-emerald-700 text-xs px-3 py-1.5 rounded-lg border border-emerald-100 flex items-center gap-1.5"
+                    className="bg-emerald-50 text-emerald-400 text-xs px-3 py-1.5 rounded-lg border border-emerald-100 flex items-center gap-1.5"
                   >
                     <CheckCircle2 className="size-3" />
                     {b}
@@ -177,14 +177,14 @@ export function TechStackPage() {
                 ))}
               </div>
 
-              <div className="flex justify-between pt-3 border-t border-slate-100">
-                <span className="text-sm text-slate-600">
+              <div className="flex justify-between pt-3 border-t border-border/50">
+                <span className="text-sm text-muted-foreground">
                   Learning Time:{' '}
-                  <span className="font-medium text-slate-900">
+                  <span className="font-medium text-foreground">
                     {rec.learning}
                   </span>
                 </span>
-                <button className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
+                <button className="flex items-center gap-2 bg-blue-50 text-primary px-4 py-2 rounded-lg text-sm font-medium">
                   Learn More <ExternalLink className="size-3.5" />
                 </button>
               </div>
@@ -197,10 +197,10 @@ export function TechStackPage() {
       <div>
         <div className="mb-4 flex items-center gap-2">
           <Sparkles className="size-5 text-indigo-600" />
-          <h3 className="font-semibold text-slate-900">
+          <h3 className="font-semibold text-foreground">
             AI Delivery-Driven Tech Stack Insights
           </h3>
-          <span className="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-medium">
+          <span className="bg-indigo-50 text-primary text-xs px-2.5 py-1 rounded-full font-medium">
             Based on Jira & GitHub
           </span>
         </div>
@@ -209,23 +209,23 @@ export function TechStackPage() {
           {deliveryDrivenInsights.map((item, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm"
+              className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm"
             >
               <div className="flex justify-between mb-2">
-                <h4 className="font-semibold text-slate-900">
+                <h4 className="font-semibold text-foreground">
                   {item.technology}
                 </h4>
-                <span className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-medium">
+                <span className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-400 font-medium">
                   Confidence: {item.confidence}
                 </span>
               </div>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-muted-foreground">
                 <strong>Observed Signal:</strong> {item.signal}
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-muted-foreground">
                 <strong>Delivery Impact:</strong> {item.impact}
               </p>
-              <p className="text-indigo-700 font-medium mt-2">
+              <p className="text-primary font-medium mt-2">
                 Recommendation → {item.recommendation}
               </p>
             </div>
@@ -236,7 +236,7 @@ export function TechStackPage() {
       {/* ---------------- INTEGRATION STATUS ---------------- */}
       <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl p-6 text-white">
         <div className="flex items-center gap-3 mb-4">
-          <div className="bg-white/10 p-2 rounded-lg">
+          <div className="bg-card/10 p-2 rounded-lg">
             <Zap className="size-5" />
           </div>
           <div>
@@ -247,15 +247,15 @@ export function TechStackPage() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white/10 rounded-xl p-4">
+          <div className="bg-card/10 rounded-xl p-4">
             <p className="text-sm text-slate-300">Repositories Analyzed</p>
             <p className="text-2xl font-semibold">24</p>
           </div>
-          <div className="bg-white/10 rounded-xl p-4">
+          <div className="bg-card/10 rounded-xl p-4">
             <p className="text-sm text-slate-300">Technologies Detected</p>
             <p className="text-2xl font-semibold">47</p>
           </div>
-          <div className="bg-white/10 rounded-xl p-4">
+          <div className="bg-card/10 rounded-xl p-4">
             <p className="text-sm text-slate-300">Compatibility Score</p>
             <p className="text-2xl font-semibold">93%</p>
           </div>

@@ -32,11 +32,11 @@ export function AnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900">Analytics Dashboard</h2>
-          <p className="text-slate-600 mt-1">Comprehensive insights and performance metrics</p>
+          <h2 className="text-2xl font-semibold text-foreground">Analytics Dashboard</h2>
+          <p className="text-muted-foreground mt-1">Comprehensive insights and performance metrics</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-all">
+          <button className="flex items-center gap-2 bg-card border border-border text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-secondary transition-all">
             <Calendar className="size-4" />
             Last 6 Months
           </button>
@@ -51,7 +51,7 @@ export function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-5 text-white shadow-lg shadow-blue-500/20">
           <div className="flex items-center gap-3 mb-3">
-            <div className="bg-white/20 p-2 rounded-lg">
+            <div className="bg-card/20 p-2 rounded-lg">
               <Target className="size-5" />
             </div>
             <span className="text-sm font-medium opacity-90">Success Rate</span>
@@ -62,7 +62,7 @@ export function AnalyticsPage() {
 
         <div className="bg-gradient-to-br from-violet-500 to-violet-600 rounded-xl p-5 text-white shadow-lg shadow-violet-500/20">
           <div className="flex items-center gap-3 mb-3">
-            <div className="bg-white/20 p-2 rounded-lg">
+            <div className="bg-card/20 p-2 rounded-lg">
               <Users className="size-5" />
             </div>
             <span className="text-sm font-medium opacity-90">Team Velocity</span>
@@ -73,7 +73,7 @@ export function AnalyticsPage() {
 
         <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-5 text-white shadow-lg shadow-emerald-500/20">
           <div className="flex items-center gap-3 mb-3">
-            <div className="bg-white/20 p-2 rounded-lg">
+            <div className="bg-card/20 p-2 rounded-lg">
               <TrendingUp className="size-5" />
             </div>
             <span className="text-sm font-medium opacity-90">Efficiency</span>
@@ -84,7 +84,7 @@ export function AnalyticsPage() {
 
         <div className="bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl p-5 text-white shadow-lg shadow-rose-500/20">
           <div className="flex items-center gap-3 mb-3">
-            <div className="bg-white/20 p-2 rounded-lg">
+            <div className="bg-card/20 p-2 rounded-lg">
               <Code2 className="size-5" />
             </div>
             <span className="text-sm font-medium opacity-90">Code Quality</span>
@@ -97,10 +97,10 @@ export function AnalyticsPage() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Project Progress */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+        <div className="lg:col-span-2 bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
           <div className="mb-6">
-            <h3 className="font-semibold text-slate-900 mb-1">Project Progress</h3>
-            <p className="text-sm text-slate-600">Monthly project completion trends</p>
+            <h3 className="font-semibold text-foreground mb-1">Project Progress</h3>
+            <p className="text-sm text-muted-foreground">Monthly project completion trends</p>
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={projectData}>
@@ -125,10 +125,10 @@ export function AnalyticsPage() {
         </div>
 
         {/* Skill Distribution */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+        <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
           <div className="mb-6">
-            <h3 className="font-semibold text-slate-900 mb-1">Skill Distribution</h3>
-            <p className="text-sm text-slate-600">Team expertise breakdown</p>
+            <h3 className="font-semibold text-foreground mb-1">Skill Distribution</h3>
+            <p className="text-sm text-muted-foreground">Team expertise breakdown</p>
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
@@ -161,10 +161,10 @@ export function AnalyticsPage() {
       </div>
 
       {/* Tech Stack Usage */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+      <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
         <div className="mb-6">
-          <h3 className="font-semibold text-slate-900 mb-1">Technology Stack Usage</h3>
-          <p className="text-sm text-slate-600">Adoption rates across the organization</p>
+          <h3 className="font-semibold text-foreground mb-1">Technology Stack Usage</h3>
+          <p className="text-sm text-muted-foreground">Adoption rates across the organization</p>
         </div>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={techStackData} layout="vertical">

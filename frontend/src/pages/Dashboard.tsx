@@ -41,27 +41,30 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
+    <div className="min-h-screen bg-background animated-gradient">
+      {/* Gradient glow overlay */}
+      <div className="fixed inset-0 bg-gradient-glow pointer-events-none" />
+
       {/* User Profile Bar */}
-      <div className="bg-white border-b border-slate-200 px-6 py-2">
+      <div className="glass border-b border-border/30 px-6 py-2 relative z-10">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             {user?.photoURL && (
               <img
                 src={user.photoURL}
                 alt={user.displayName || 'User'}
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full ring-2 ring-primary/30"
               />
             )}
-            <span className="text-sm text-slate-600">
-              Welcome, <span className="font-medium text-slate-900">{user?.displayName || 'User'}</span>
+            <span className="text-sm text-muted-foreground">
+              Welcome, <span className="font-medium text-foreground">{user?.displayName || 'User'}</span>
             </span>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={handleSignOut}
-            className="text-slate-500 hover:text-slate-700"
+            className="text-muted-foreground hover:text-foreground hover:bg-secondary"
           >
             <LogOut className="h-4 w-4 mr-2" />
             Sign Out
@@ -71,7 +74,7 @@ const Dashboard = () => {
 
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6 relative z-10">
         <RepositorySelector
           selectedRepo={selectedRepo}
           onRepositorySelect={setSelectedRepo}

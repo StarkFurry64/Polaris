@@ -85,7 +85,7 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
 
   return (
     <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+      <div className="bg-card rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
         {/* Header */}
         <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
@@ -102,7 +102,7 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
             </div>
             <button
               onClick={onClose}
-              className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
+              className="text-white/60 hover:text-white transition-colors p-2 hover:bg-card/10 rounded-lg"
             >
               <X className="size-5" />
             </button>
@@ -126,8 +126,8 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                       isActive
                         ? 'bg-blue-50 border-2 border-blue-200'
                         : isComplete
-                        ? 'bg-emerald-50 border border-emerald-200'
-                        : 'bg-slate-50 border border-slate-200 opacity-50'
+                        ? 'bg-emerald-50 border border-emerald-500/30'
+                        : 'bg-secondary border border-border opacity-50'
                     }`}
                   >
                     <div
@@ -136,7 +136,7 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                           ? 'bg-blue-600 text-white'
                           : isComplete
                           ? 'bg-emerald-600 text-white'
-                          : 'bg-slate-300 text-slate-600'
+                          : 'bg-slate-300 text-muted-foreground'
                       }`}
                     >
                       {isComplete ? (
@@ -148,7 +148,7 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-slate-900">{s.label}</p>
+                      <p className="font-medium text-foreground">{s.label}</p>
                       {isActive && (
                         <div className="mt-2 bg-slate-200 rounded-full h-2 overflow-hidden">
                           <div
@@ -168,15 +168,15 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
           ) : (
             // Results State
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center pb-4 border-b border-slate-200">
-                <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full mb-3">
+              <div className="text-center pb-4 border-b border-border">
+                <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-400 px-4 py-2 rounded-full mb-3">
                   <CheckCircle2 className="size-5" />
                   <span className="font-medium">Analysis Complete</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 mb-1">
+                <h3 className="font-semibold text-foreground mb-1">
                   Found {findings.length} Key Insights
                 </h3>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-muted-foreground">
                   Based on Jira issues, GitHub commits, and team data
                 </p>
               </div>
@@ -189,8 +189,8 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                       key={idx}
                       className={`p-4 rounded-xl border-2 ${
                         finding.type === 'warning'
-                          ? 'bg-amber-50/50 border-amber-200'
-                          : 'bg-emerald-50/50 border-emerald-200'
+                          ? 'bg-amber-50/50 border-amber-500/30'
+                          : 'bg-emerald-50/50 border-emerald-500/30'
                       } animate-in slide-in-from-left duration-300`}
                       style={{ animationDelay: `${idx * 100}ms` }}
                     >
@@ -198,22 +198,22 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                         <div
                           className={`size-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
                             finding.type === 'warning'
-                              ? 'bg-amber-100 text-amber-600'
-                              : 'bg-emerald-100 text-emerald-600'
+                              ? 'bg-amber-500/20 text-amber-600'
+                              : 'bg-emerald-500/20 text-emerald-600'
                           }`}
                         >
                           <Icon className="size-5" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-semibold text-slate-900">{finding.title}</h4>
+                            <h4 className="font-semibold text-foreground">{finding.title}</h4>
                             <span
                               className={`text-xs px-2 py-1 rounded-full font-medium ${
                                 finding.priority === 'high'
                                   ? 'bg-rose-100 text-rose-700'
                                   : finding.priority === 'medium'
-                                  ? 'bg-amber-100 text-amber-700'
-                                  : 'bg-blue-100 text-blue-700'
+                                  ? 'bg-amber-500/20 text-amber-400'
+                                  : 'bg-primary/20 text-primary'
                               }`}
                             >
                               {finding.priority}
@@ -238,7 +238,7 @@ export function AnalysisModal({ isOpen, onClose, onViewDetails }: AnalysisModalP
                 </button>
                 <button
                   onClick={onClose}
-                  className="px-6 py-3 rounded-xl font-semibold border-2 border-slate-200 text-slate-700 hover:bg-slate-50 transition-all"
+                  className="px-6 py-3 rounded-xl font-semibold border-2 border-border text-slate-700 hover:bg-secondary transition-all"
                 >
                   Close
                 </button>

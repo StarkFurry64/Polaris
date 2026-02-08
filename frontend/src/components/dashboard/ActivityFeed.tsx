@@ -36,7 +36,7 @@ export function ActivityFeed() {
       title: 'Jira Sync Complete',
       description: '156 issues analyzed and categorized',
       time: '2 hours ago',
-      color: 'text-blue-600 bg-blue-50',
+      color: 'text-primary bg-blue-50',
     },
     {
       id: 5,
@@ -54,15 +54,15 @@ export function ActivityFeed() {
       title: 'Scheduled Analysis',
       description: 'Weekly team performance review',
       time: 'Tomorrow',
-      color: 'text-slate-600 bg-slate-50',
+      color: 'text-muted-foreground bg-secondary',
     },
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden h-full">
-      <div className="p-6 border-b border-slate-100">
-        <h3 className="font-semibold text-slate-900">Activity Feed</h3>
-        <p className="text-sm text-slate-600 mt-1">Recent system events</p>
+    <div className="bg-card rounded-2xl shadow-sm border border-border/60 overflow-hidden h-full">
+      <div className="p-6 border-b border-border/50">
+        <h3 className="font-semibold text-foreground">Activity Feed</h3>
+        <p className="text-sm text-muted-foreground mt-1">Recent system events</p>
       </div>
 
       <div className="p-4 space-y-3 max-h-[600px] overflow-y-auto">
@@ -71,20 +71,20 @@ export function ActivityFeed() {
           return (
             <div
               key={activity.id}
-              className="group flex gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
+              className="group flex gap-3 p-3 rounded-xl hover:bg-secondary transition-colors cursor-pointer"
             >
               <div className={`${activity.color} size-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
                 <Icon className="size-5" />
               </div>
               
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-slate-900 text-sm mb-0.5">
+                <h4 className="font-medium text-foreground text-sm mb-0.5">
                   {activity.title}
                 </h4>
-                <p className="text-sm text-slate-600 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {activity.description}
                 </p>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {activity.time}
                 </p>
               </div>

@@ -30,12 +30,12 @@ export function Hero({ onGenerateAnalysis }: HeroProps) {
         <div className="flex flex-wrap gap-4">
           <button 
             onClick={onGenerateAnalysis}
-            className="bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:bg-blue-50 transition-all shadow-lg shadow-white/20 hover:shadow-xl hover:-translate-y-0.5"
+            className="bg-card text-foreground px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:bg-blue-50 transition-all shadow-lg shadow-white/20 hover:shadow-xl hover:-translate-y-0.5"
           >
             Generate Analysis
             <ArrowRight className="size-4" />
           </button>
-          <button className="bg-white/10 backdrop-blur-sm text-white px-6 py-3 rounded-xl font-semibold border border-white/20 hover:bg-white/20 transition-all">
+          <button className="bg-card/10 backdrop-blur-sm text-white px-6 py-3 rounded-xl font-semibold border border-white/20 hover:bg-card/20 transition-all">
             View Demo
           </button>
         </div>

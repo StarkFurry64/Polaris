@@ -114,17 +114,17 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-secondary rounded-lg transition-colors"
           >
-            <ArrowLeft className="size-5 text-slate-600" />
+            <ArrowLeft className="size-5 text-muted-foreground" />
           </button>
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Detailed Analysis Report</h2>
-            <p className="text-slate-600 mt-1">Generated on February 7, 2026 at 2:34 PM</p>
+            <h2 className="text-2xl font-semibold text-foreground">Detailed Analysis Report</h2>
+            <p className="text-muted-foreground mt-1">Generated on February 7, 2026 at 2:34 PM</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-all">
+          <button className="flex items-center gap-2 bg-card border border-border text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-secondary transition-all">
             <Share2 className="size-4" />
             Share
           </button>
@@ -153,28 +153,28 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+            <div className="bg-card/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="size-5 text-blue-300" />
                 <span className="text-sm text-slate-300">Skill Gaps</span>
               </div>
               <p className="text-2xl font-semibold">8 Critical</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+            <div className="bg-card/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="size-5 text-emerald-300" />
                 <span className="text-sm text-slate-300">Teams Analyzed</span>
               </div>
               <p className="text-2xl font-semibold">4 Teams</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+            <div className="bg-card/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="size-5 text-violet-300" />
                 <span className="text-sm text-slate-300">Efficiency Gain</span>
               </div>
               <p className="text-2xl font-semibold">+8% Potential</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+            <div className="bg-card/10 backdrop-blur-sm rounded-xl p-4 border border-white/10">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="size-5 text-rose-300" />
                 <span className="text-sm text-slate-300">Action Items</span>
@@ -186,8 +186,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
       </div>
 
       {/* Critical Findings */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+      <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
           <AlertTriangle className="size-5 text-rose-600" />
           Critical Findings & Recommendations
         </h3>
@@ -202,8 +202,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
                   finding.type === 'critical'
                     ? 'bg-rose-50/50 border-rose-200'
                     : finding.type === 'warning'
-                    ? 'bg-amber-50/50 border-amber-200'
-                    : 'bg-emerald-50/50 border-emerald-200'
+                    ? 'bg-amber-50/50 border-amber-500/30'
+                    : 'bg-emerald-50/50 border-emerald-500/30'
                 }`}
               >
                 <div className="flex items-start gap-4">
@@ -212,8 +212,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
                       finding.type === 'critical'
                         ? 'bg-rose-100 text-rose-600'
                         : finding.type === 'warning'
-                        ? 'bg-amber-100 text-amber-600'
-                        : 'bg-emerald-100 text-emerald-600'
+                        ? 'bg-amber-500/20 text-amber-600'
+                        : 'bg-emerald-500/20 text-emerald-600'
                     }`}
                   >
                     <Icon className="size-6" />
@@ -221,14 +221,14 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
                   
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-slate-900">{finding.title}</h4>
+                      <h4 className="font-semibold text-foreground">{finding.title}</h4>
                       <span
                         className={`text-xs px-3 py-1 rounded-full font-medium ${
                           finding.impact === 'High'
                             ? 'bg-rose-100 text-rose-700'
                             : finding.impact === 'Medium'
-                            ? 'bg-amber-100 text-amber-700'
-                            : 'bg-emerald-100 text-emerald-700'
+                            ? 'bg-amber-500/20 text-amber-400'
+                            : 'bg-emerald-500/20 text-emerald-400'
                         }`}
                       >
                         {finding.impact} Impact
@@ -237,18 +237,18 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
                     
                     <p className="text-sm text-slate-700 mb-4 leading-relaxed">{finding.description}</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-white/60 rounded-lg border border-slate-200/50">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-card/60 rounded-lg border border-border/50">
                       <div>
-                        <p className="text-xs font-medium text-slate-600 mb-1">Recommendation</p>
-                        <p className="text-sm text-slate-900">{finding.recommendation}</p>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">Recommendation</p>
+                        <p className="text-sm text-foreground">{finding.recommendation}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-slate-600 mb-1">Timeline</p>
-                        <p className="text-sm text-slate-900">{finding.timeline}</p>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">Timeline</p>
+                        <p className="text-sm text-foreground">{finding.timeline}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-slate-600 mb-1">Resources</p>
-                        <p className="text-sm text-slate-900">{finding.resources}</p>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">Resources</p>
+                        <p className="text-sm text-foreground">{finding.resources}</p>
                       </div>
                     </div>
                   </div>
@@ -262,8 +262,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
       {/* Data Visualizations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Skill Gap Analysis */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-          <h3 className="font-semibold text-slate-900 mb-4">Skill Gap Analysis</h3>
+        <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+          <h3 className="font-semibold text-foreground mb-4">Skill Gap Analysis</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={skillGapData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -287,8 +287,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
         </div>
 
         {/* Team Performance Radar */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-          <h3 className="font-semibold text-slate-900 mb-4">Team Performance Comparison</h3>
+        <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+          <h3 className="font-semibold text-foreground mb-4">Team Performance Comparison</h3>
           <ResponsiveContainer width="100%" height={300}>
             <RadarChart data={teamPerformanceData}>
               <PolarGrid stroke="#e2e8f0" />
@@ -312,8 +312,8 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
       </div>
 
       {/* Efficiency Projection */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-        <h3 className="font-semibold text-slate-900 mb-4">Efficiency Projection with Recommendations</h3>
+      <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+        <h3 className="font-semibold text-foreground mb-4">Efficiency Projection with Recommendations</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={recommendationTimeline}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -351,9 +351,9 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
       </div>
 
       {/* Action Items */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-          <CheckCircle2 className="size-5 text-blue-600" />
+      <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <CheckCircle2 className="size-5 text-primary" />
           Recommended Action Items
         </h3>
         
@@ -361,7 +361,7 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
           {actionItems.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+              className="flex items-center gap-4 p-4 bg-secondary rounded-xl hover:bg-secondary transition-colors"
             >
               <div className="flex-shrink-0">
                 <div
@@ -377,19 +377,19 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
               
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
-                  <h4 className="font-medium text-slate-900">{item.title}</h4>
+                  <h4 className="font-medium text-foreground">{item.title}</h4>
                   <span
                     className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                       item.status === 'in-progress'
-                        ? 'bg-blue-100 text-blue-700'
+                        ? 'bg-primary/20 text-primary'
                         : 'bg-slate-200 text-slate-700'
                     }`}
                   >
                     {item.status === 'in-progress' ? 'In Progress' : 'Pending'}
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 mb-2">{item.description}</p>
-                <div className="flex items-center gap-4 text-xs text-slate-500">
+                <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   <span>Owner: {item.owner}</span>
                   <span>•</span>
                   <span>Due: {item.dueDate}</span>
@@ -401,23 +401,23 @@ export function AnalysisDetailsPage({ onBack }: AnalysisDetailsPageProps) {
       </div>
 
       {/* Data Sources */}
-      <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-          <Info className="size-5 text-slate-600" />
+      <div className="bg-secondary rounded-2xl p-6 border border-border">
+        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <Info className="size-5 text-muted-foreground" />
           Analysis Methodology & Data Sources
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <p className="font-medium text-slate-900 mb-2">Jira Integration</p>
-            <p className="text-slate-600">156 issues analyzed across 8 projects, spanning 6 months of activity</p>
+            <p className="font-medium text-foreground mb-2">Jira Integration</p>
+            <p className="text-muted-foreground">156 issues analyzed across 8 projects, spanning 6 months of activity</p>
           </div>
           <div>
-            <p className="font-medium text-slate-900 mb-2">GitHub Analysis</p>
-            <p className="text-slate-600">24 repositories scanned, 2,847 commits reviewed, 47 technologies detected</p>
+            <p className="font-medium text-foreground mb-2">GitHub Analysis</p>
+            <p className="text-muted-foreground">24 repositories scanned, 2,847 commits reviewed, 47 technologies detected</p>
           </div>
           <div>
-            <p className="font-medium text-slate-900 mb-2">BERT NLP Processing</p>
-            <p className="text-slate-600">Natural language processing applied to ticket descriptions and code comments</p>
+            <p className="font-medium text-foreground mb-2">BERT NLP Processing</p>
+            <p className="text-muted-foreground">Natural language processing applied to ticket descriptions and code comments</p>
           </div>
         </div>
       </div>

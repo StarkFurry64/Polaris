@@ -61,20 +61,20 @@ const resourceInsights = [
 
 export function InsightsPanel() {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+    <div className="bg-card rounded-2xl shadow-sm border border-border/60 overflow-hidden">
       {/* Header */}
-      <div className="p-6 border-b border-slate-100">
+      <div className="p-6 border-b border-border/50">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-slate-900 mb-1">
+            <h3 className="font-semibold text-foreground mb-1">
               Real-Time Insights
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               AI-powered analysis updated 2 minutes ago
             </p>
           </div>
           <div className="flex items-center gap-2 text-sm">
-            <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg">
+            <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-400 px-3 py-1.5 rounded-lg">
               <TrendingUp className="size-4" />
               <span className="font-medium">+12% efficiency</span>
             </div>
@@ -87,7 +87,7 @@ export function InsightsPanel() {
         <div>
           <div className="flex items-center gap-2 mb-4">
             <Users className="size-5 text-indigo-600" />
-            <h4 className="font-medium text-slate-900">
+            <h4 className="font-medium text-foreground">
               AI Resource Optimization Insights
             </h4>
           </div>
@@ -96,12 +96,12 @@ export function InsightsPanel() {
             {resourceInsights.map((item, index) => (
               <div
                 key={index}
-                className="p-4 rounded-xl border border-slate-200 bg-slate-50"
+                className="p-4 rounded-xl border border-border bg-secondary"
               >
-                <h5 className="font-medium text-slate-900 mb-1">
+                <h5 className="font-medium text-foreground mb-1">
                   {item.title}
                 </h5>
-                <p className="text-sm text-slate-600">{item.insight}</p>
+                <p className="text-sm text-muted-foreground">{item.insight}</p>
                 <div className="flex items-center gap-1.5 mt-2 text-sm text-indigo-600 font-medium">
                   <ArrowRightCircle className="size-4" />
                   {item.recommendation}
@@ -114,15 +114,15 @@ export function InsightsPanel() {
         {/* ---------------- Skill Gap Chart ---------------- */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-medium text-slate-900">Team Skill Coverage</h4>
+            <h4 className="font-medium text-foreground">Team Skill Coverage</h4>
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-1.5">
                 <div className="size-2.5 bg-blue-500 rounded-full" />
-                <span className="text-slate-600">Current Level</span>
+                <span className="text-muted-foreground">Current Level</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="size-2.5 bg-slate-300 rounded-full" />
-                <span className="text-slate-600">Required Level</span>
+                <span className="text-muted-foreground">Required Level</span>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ export function InsightsPanel() {
 
         {/* ---------------- Performance Trend ---------------- */}
         <div>
-          <h4 className="font-medium text-slate-900 mb-4">
+          <h4 className="font-medium text-foreground mb-4">
             Performance Trend
           </h4>
           <ResponsiveContainer width="100%" height={180}>
@@ -187,11 +187,11 @@ export function InsightsPanel() {
         {/* ---------------- Quick Stats ---------------- */}
         <div className="grid grid-cols-3 gap-3 pt-2">
           <div className="bg-blue-50/50 rounded-xl p-4 border border-blue-100/50">
-            <div className="flex items-center gap-2 text-blue-600 mb-1">
+            <div className="flex items-center gap-2 text-primary mb-1">
               <CheckCircle2 className="size-4" />
               <span className="text-xs font-medium">Completed</span>
             </div>
-            <p className="font-semibold text-slate-900">47 Tasks</p>
+            <p className="font-semibold text-foreground">47 Tasks</p>
           </div>
 
           <div className="bg-amber-50/50 rounded-xl p-4 border border-amber-100/50">
@@ -199,7 +199,7 @@ export function InsightsPanel() {
               <Clock className="size-4" />
               <span className="text-xs font-medium">In Progress</span>
             </div>
-            <p className="font-semibold text-slate-900">23 Tasks</p>
+            <p className="font-semibold text-foreground">23 Tasks</p>
           </div>
 
           <div className="bg-rose-50/50 rounded-xl p-4 border border-rose-100/50">
@@ -207,7 +207,7 @@ export function InsightsPanel() {
               <AlertCircle className="size-4" />
               <span className="text-xs font-medium">At Risk</span>
             </div>
-            <p className="font-semibold text-slate-900">5 Tasks</p>
+            <p className="font-semibold text-foreground">5 Tasks</p>
           </div>
         </div>
       </div>

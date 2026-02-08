@@ -25,7 +25,7 @@ const features = [
     description: "Analyze pull request lifecycle from creation to merge. Identify bottlenecks in code review and optimize your delivery pipeline.",
     color: "from-blue-500 to-blue-600",
     bgColor: "bg-blue-500/10",
-    iconColor: "text-blue-600",
+    iconColor: "text-primary",
     metrics: ["18.5h avg cycle time", "-12% this week"],
   },
   {

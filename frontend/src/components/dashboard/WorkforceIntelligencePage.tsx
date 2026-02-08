@@ -55,8 +55,8 @@ export function WorkforceIntelligencePage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Workforce Intelligence</h2>
-                    <p className="text-slate-600 mt-1">AI-powered workforce optimization and capacity planning</p>
+                    <h2 className="text-2xl font-semibold text-foreground">Workforce Intelligence</h2>
+                    <p className="text-muted-foreground mt-1">AI-powered workforce optimization and capacity planning</p>
                 </div>
                 <button
                     onClick={() => setIsAnalyzing(true)}
@@ -72,7 +72,7 @@ export function WorkforceIntelligencePage() {
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtOS45NDEgMC0xOCA4LjA1OS0xOCAxOHM4LjA1OSAxOCAxOCAxOCAxOC04LjA1OSAxOC0xOC04LjA1OS0xOC0xOC0xOHoiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-30" />
                 <div className="relative z-10 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="bg-white/20 p-4 rounded-2xl">
+                        <div className="bg-card/20 p-4 rounded-2xl">
                             <Brain className="size-8" />
                         </div>
                         <div>
@@ -90,41 +90,41 @@ export function WorkforceIntelligencePage() {
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Team Size</span>
-                        <Users className="size-5 text-blue-600" />
+                        <span className="text-muted-foreground text-sm">Team Size</span>
+                        <Users className="size-5 text-primary" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{totalTeamSize}</p>
-                    <p className="text-xs text-blue-600 mt-1">Across all teams</p>
+                    <p className="text-3xl font-semibold text-foreground">{totalTeamSize}</p>
+                    <p className="text-xs text-primary mt-1">Across all teams</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Avg Utilization</span>
+                        <span className="text-muted-foreground text-sm">Avg Utilization</span>
                         <Target className="size-5 text-emerald-600" />
                     </div>
                     <p className={`text-3xl font-semibold ${avgUtilization > 100 ? 'text-rose-600' : avgUtilization > 90 ? 'text-amber-600' : 'text-emerald-600'}`}>
                         {avgUtilization}%
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">{avgUtilization > 95 ? 'Overloaded' : 'Healthy'}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{avgUtilization > 95 ? 'Overloaded' : 'Healthy'}</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Critical Skill Gaps</span>
+                        <span className="text-muted-foreground text-sm">Critical Skill Gaps</span>
                         <AlertTriangle className="size-5 text-rose-600" />
                     </div>
                     <p className="text-3xl font-semibold text-rose-600">{criticalGaps}</p>
                     <p className="text-xs text-rose-600 mt-1">Need immediate action</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Burnout Risk</span>
+                        <span className="text-muted-foreground text-sm">Burnout Risk</span>
                         <Heart className="size-5 text-violet-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">10%</p>
+                    <p className="text-3xl font-semibold text-foreground">10%</p>
                     <p className="text-xs text-violet-600 mt-1">High risk employees</p>
                 </div>
             </div>
@@ -132,10 +132,10 @@ export function WorkforceIntelligencePage() {
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Team Capacity */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Team Capacity</h3>
-                        <p className="text-sm text-slate-600">Current headcount vs needed</p>
+                        <h3 className="font-semibold text-foreground mb-1">Team Capacity</h3>
+                        <p className="text-sm text-muted-foreground">Current headcount vs needed</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={teamCapacity} layout="vertical">
@@ -158,10 +158,10 @@ export function WorkforceIntelligencePage() {
                 </div>
 
                 {/* Skill Radar */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Team Skill Coverage</h3>
-                        <p className="text-sm text-slate-600">Current capability strength</p>
+                        <h3 className="font-semibold text-foreground mb-1">Team Skill Coverage</h3>
+                        <p className="text-sm text-muted-foreground">Current capability strength</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <RadarChart cx="50%" cy="50%" outerRadius="80%" data={skillRadar}>
@@ -177,17 +177,17 @@ export function WorkforceIntelligencePage() {
             {/* Skill Gaps & Burnout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Skill Gaps */}
-                <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="lg:col-span-2 bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Skill Gap Analysis</h3>
-                        <p className="text-sm text-slate-600">Demand vs supply for key skills</p>
+                        <h3 className="font-semibold text-foreground mb-1">Skill Gap Analysis</h3>
+                        <p className="text-sm text-muted-foreground">Demand vs supply for key skills</p>
                     </div>
                     <div className="space-y-4">
                         {skillGaps.map((skill) => (
                             <div key={skill.skill} className="flex items-center gap-4">
-                                <div className="w-28 font-medium text-slate-900">{skill.skill}</div>
+                                <div className="w-28 font-medium text-foreground">{skill.skill}</div>
                                 <div className="flex-1">
-                                    <div className="h-6 bg-slate-100 rounded-full relative overflow-hidden">
+                                    <div className="h-6 bg-secondary rounded-full relative overflow-hidden">
                                         <div
                                             className="absolute inset-y-0 left-0 bg-slate-300 rounded-full"
                                             style={{ width: `${skill.demand}%` }}
@@ -202,11 +202,11 @@ export function WorkforceIntelligencePage() {
                                 </div>
                                 <div className="w-16 text-right">
                                     <span className={`text-sm font-semibold ${skill.priority === 'critical' ? 'text-rose-600' :
-                                            skill.priority === 'high' ? 'text-amber-600' : 'text-blue-600'
+                                            skill.priority === 'high' ? 'text-amber-600' : 'text-primary'
                                         }`}>-{skill.gap}%</span>
                                 </div>
                                 <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${skill.priority === 'critical' ? 'bg-rose-100 text-rose-700' :
-                                        skill.priority === 'high' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
+                                        skill.priority === 'high' ? 'bg-amber-500/20 text-amber-400' : 'bg-primary/20 text-primary'
                                     }`}>
                                     {skill.priority}
                                 </span>
@@ -216,10 +216,10 @@ export function WorkforceIntelligencePage() {
                 </div>
 
                 {/* Burnout Risk */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Burnout Risk</h3>
-                        <p className="text-sm text-slate-600">Employee wellness indicators</p>
+                        <h3 className="font-semibold text-foreground mb-1">Burnout Risk</h3>
+                        <p className="text-sm text-muted-foreground">Employee wellness indicators</p>
                     </div>
                     <ResponsiveContainer width="100%" height={200}>
                         <PieChart>
@@ -244,9 +244,9 @@ export function WorkforceIntelligencePage() {
                             <div key={item.name} className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="size-3 rounded-full" style={{ backgroundColor: item.color }} />
-                                    <span className="text-sm text-slate-600">{item.name}</span>
+                                    <span className="text-sm text-muted-foreground">{item.name}</span>
                                 </div>
-                                <span className="font-semibold text-slate-900">{item.value}%</span>
+                                <span className="font-semibold text-foreground">{item.value}%</span>
                             </div>
                         ))}
                     </div>
@@ -254,11 +254,11 @@ export function WorkforceIntelligencePage() {
             </div>
 
             {/* Hiring ROI Table */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="font-semibold text-slate-900 mb-1">Hiring ROI Calculator</h3>
-                        <p className="text-sm text-slate-600">Prioritized hiring recommendations with business impact</p>
+                        <h3 className="font-semibold text-foreground mb-1">Hiring ROI Calculator</h3>
+                        <p className="text-sm text-muted-foreground">Prioritized hiring recommendations with business impact</p>
                     </div>
                     <button className="flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-medium">
                         <UserPlus className="size-4" />
@@ -269,34 +269,34 @@ export function WorkforceIntelligencePage() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="border-b border-slate-200">
-                                <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">Role</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Salary</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Impact Score</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Est. ROI</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Time to Fill</th>
-                                <th className="text-center py-3 px-4 text-sm font-medium text-slate-600">Priority</th>
+                            <tr className="border-b border-border">
+                                <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Role</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Salary</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Impact Score</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Est. ROI</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Time to Fill</th>
+                                <th className="text-center py-3 px-4 text-sm font-medium text-muted-foreground">Priority</th>
                             </tr>
                         </thead>
                         <tbody>
                             {hiringROI.map((hire) => (
-                                <tr key={hire.role} className="border-b border-slate-100 hover:bg-slate-50">
-                                    <td className="py-4 px-4 font-medium text-slate-900">{hire.role}</td>
-                                    <td className="py-4 px-4 text-right text-slate-600">${hire.salary.toLocaleString()}</td>
+                                <tr key={hire.role} className="border-b border-border/50 hover:bg-secondary">
+                                    <td className="py-4 px-4 font-medium text-foreground">{hire.role}</td>
+                                    <td className="py-4 px-4 text-right text-muted-foreground">${hire.salary.toLocaleString()}</td>
                                     <td className="py-4 px-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                            <div className="w-16 h-2 bg-secondary rounded-full overflow-hidden">
                                                 <div className="h-full bg-violet-500 rounded-full" style={{ width: `${hire.impactScore}%` }} />
                                             </div>
-                                            <span className="font-semibold text-slate-900">{hire.impactScore}</span>
+                                            <span className="font-semibold text-foreground">{hire.impactScore}</span>
                                         </div>
                                     </td>
                                     <td className="py-4 px-4 text-right font-semibold text-emerald-600">{hire.roi}%</td>
-                                    <td className="py-4 px-4 text-right text-slate-600">{hire.timeToFill}</td>
+                                    <td className="py-4 px-4 text-right text-muted-foreground">{hire.timeToFill}</td>
                                     <td className="py-4 px-4">
                                         <div className="flex justify-center">
                                             <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${hire.priority === 'critical' ? 'bg-rose-100 text-rose-700' :
-                                                    hire.priority === 'high' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
+                                                    hire.priority === 'high' ? 'bg-amber-500/20 text-amber-400' : 'bg-primary/20 text-primary'
                                                 }`}>
                                                 {hire.priority}
                                             </span>

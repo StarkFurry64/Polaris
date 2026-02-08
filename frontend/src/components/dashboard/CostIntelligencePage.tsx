@@ -49,11 +49,11 @@ export function CostIntelligencePage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Cost Intelligence</h2>
-                    <p className="text-slate-600 mt-1">Engineering investment analysis and ROI tracking</p>
+                    <h2 className="text-2xl font-semibold text-foreground">Cost Intelligence</h2>
+                    <p className="text-muted-foreground mt-1">Engineering investment analysis and ROI tracking</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-all">
+                    <button className="flex items-center gap-2 bg-card border border-border text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-secondary transition-all">
                         <Calendar className="size-4" />
                         Q4 2025
                     </button>
@@ -69,7 +69,7 @@ export function CostIntelligencePage() {
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtOS45NDEgMC0xOCA4LjA1OS0xOCAxOHM4LjA1OSAxOCAxOCAxOCAxOC04LjA1OSAxOC0xOC04LjA1OS0xOC0xOC0xOHoiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-30" />
                 <div className="relative z-10 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="bg-white/20 p-4 rounded-2xl">
+                        <div className="bg-card/20 p-4 rounded-2xl">
                             <DollarSign className="size-8" />
                         </div>
                         <div>
@@ -87,18 +87,18 @@ export function CostIntelligencePage() {
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Total Engineering Cost</span>
-                        <Building2 className="size-5 text-blue-600" />
+                        <span className="text-muted-foreground text-sm">Total Engineering Cost</span>
+                        <Building2 className="size-5 text-primary" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">${(totalCost / 1000).toFixed(0)}K</p>
-                    <p className="text-xs text-slate-500 mt-1">This quarter</p>
+                    <p className="text-3xl font-semibold text-foreground">${(totalCost / 1000).toFixed(0)}K</p>
+                    <p className="text-xs text-muted-foreground mt-1">This quarter</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Budget Variance</span>
+                        <span className="text-muted-foreground text-sm">Budget Variance</span>
                         {parseFloat(budgetVariance) > 0 ? (
                             <TrendingUp className="size-5 text-rose-600" />
                         ) : (
@@ -108,35 +108,35 @@ export function CostIntelligencePage() {
                     <p className={`text-3xl font-semibold ${parseFloat(budgetVariance) > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                         {parseFloat(budgetVariance) > 0 ? '+' : ''}{budgetVariance}%
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">vs planned budget</p>
+                    <p className="text-xs text-muted-foreground mt-1">vs planned budget</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Cost per Developer</span>
+                        <span className="text-muted-foreground text-sm">Cost per Developer</span>
                         <Users className="size-5 text-violet-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">$12.4K</p>
+                    <p className="text-3xl font-semibold text-foreground">$12.4K</p>
                     <p className="text-xs text-violet-600 mt-1">Monthly average</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Engineering Efficiency</span>
+                        <span className="text-muted-foreground text-sm">Engineering Efficiency</span>
                         <Target className="size-5 text-emerald-600" />
                     </div>
                     <p className="text-3xl font-semibold text-emerald-600">91%</p>
-                    <p className="text-xs text-slate-500 mt-1">Utilization rate</p>
+                    <p className="text-xs text-muted-foreground mt-1">Utilization rate</p>
                 </div>
             </div>
 
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Cost by Project */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Cost by Project</h3>
-                        <p className="text-sm text-slate-600">Actual vs planned spending</p>
+                        <h3 className="font-semibold text-foreground mb-1">Cost by Project</h3>
+                        <p className="text-sm text-muted-foreground">Actual vs planned spending</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={costByProject}>
@@ -160,10 +160,10 @@ export function CostIntelligencePage() {
                 </div>
 
                 {/* Cost Breakdown */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Cost Breakdown</h3>
-                        <p className="text-sm text-slate-600">Where the money goes</p>
+                        <h3 className="font-semibold text-foreground mb-1">Cost Breakdown</h3>
+                        <p className="text-sm text-muted-foreground">Where the money goes</p>
                     </div>
                     <div className="flex items-center gap-8">
                         <ResponsiveContainer width="50%" height={220}>
@@ -189,9 +189,9 @@ export function CostIntelligencePage() {
                                 <div key={item.name} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <div className="size-3 rounded-full" style={{ backgroundColor: item.color }} />
-                                        <span className="text-sm text-slate-600">{item.name}</span>
+                                        <span className="text-sm text-muted-foreground">{item.name}</span>
                                     </div>
-                                    <span className="font-semibold text-slate-900">{item.value}%</span>
+                                    <span className="font-semibold text-foreground">{item.value}%</span>
                                 </div>
                             ))}
                         </div>
@@ -200,10 +200,10 @@ export function CostIntelligencePage() {
             </div>
 
             {/* Monthly Trend */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="mb-6">
-                    <h3 className="font-semibold text-slate-900 mb-1">Monthly Cost Trend</h3>
-                    <p className="text-sm text-slate-600">Cost and efficiency over time</p>
+                    <h3 className="font-semibold text-foreground mb-1">Monthly Cost Trend</h3>
+                    <p className="text-sm text-muted-foreground">Cost and efficiency over time</p>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
                     <AreaChart data={monthlyTrend}>
@@ -228,13 +228,13 @@ export function CostIntelligencePage() {
             </div>
 
             {/* Feature Cost Table */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="font-semibold text-slate-900 mb-1">Cost Per Feature</h3>
-                        <p className="text-sm text-slate-600">Engineering investment by deliverable</p>
+                        <h3 className="font-semibold text-foreground mb-1">Cost Per Feature</h3>
+                        <p className="text-sm text-muted-foreground">Engineering investment by deliverable</p>
                     </div>
-                    <button className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    <button className="flex items-center gap-2 text-sm text-primary hover:text-primary font-medium">
                         <Calculator className="size-4" />
                         Estimate New Feature
                     </button>
@@ -243,25 +243,25 @@ export function CostIntelligencePage() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="border-b border-slate-200">
-                                <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">Feature</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Hours</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">Cost</th>
-                                <th className="text-center py-3 px-4 text-sm font-medium text-slate-600">Status</th>
-                                <th className="text-right py-3 px-4 text-sm font-medium text-slate-600">ROI</th>
+                            <tr className="border-b border-border">
+                                <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Feature</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Hours</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">Cost</th>
+                                <th className="text-center py-3 px-4 text-sm font-medium text-muted-foreground">Status</th>
+                                <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">ROI</th>
                             </tr>
                         </thead>
                         <tbody>
                             {featureCosts.map((feature) => (
-                                <tr key={feature.feature} className="border-b border-slate-100 hover:bg-slate-50">
-                                    <td className="py-4 px-4 font-medium text-slate-900">{feature.feature}</td>
-                                    <td className="py-4 px-4 text-right text-slate-600">{feature.hours}h</td>
-                                    <td className="py-4 px-4 text-right font-semibold text-slate-900">${feature.cost.toLocaleString()}</td>
+                                <tr key={feature.feature} className="border-b border-border/50 hover:bg-secondary">
+                                    <td className="py-4 px-4 font-medium text-foreground">{feature.feature}</td>
+                                    <td className="py-4 px-4 text-right text-muted-foreground">{feature.hours}h</td>
+                                    <td className="py-4 px-4 text-right font-semibold text-foreground">${feature.cost.toLocaleString()}</td>
                                     <td className="py-4 px-4">
                                         <div className="flex justify-center">
-                                            <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${feature.status === 'completed' ? 'bg-emerald-100 text-emerald-700' :
-                                                    feature.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                                                        'bg-slate-100 text-slate-600'
+                                            <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${feature.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
+                                                    feature.status === 'in-progress' ? 'bg-primary/20 text-primary' :
+                                                        'bg-secondary text-muted-foreground'
                                                 }`}>
                                                 {feature.status.replace('-', ' ')}
                                             </span>

@@ -95,7 +95,7 @@ const JiraDashboard = () => {
   const getStatusBadgeVariant = (statusCategory: string) => {
     switch (statusCategory) {
       case 'done': return 'bg-green-100 text-green-700 border-green-200';
-      case 'indeterminate': return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'indeterminate': return 'bg-primary/20 text-primary border-blue-200';
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   };
@@ -210,12 +210,12 @@ const JiraDashboard = () => {
             </Card>
             <Card className="border-0 shadow-md">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-100">
-                  <Clock className="h-5 w-5 text-blue-600" />
+                <div className="p-2 rounded-lg bg-primary/20">
+                  <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <p className="text-sm text-slate-500">In Progress</p>
-                  <p className="text-2xl font-bold text-blue-600">{stats.inProgress}</p>
+                  <p className="text-2xl font-bold text-primary">{stats.inProgress}</p>
                 </div>
               </CardContent>
             </Card>
@@ -262,7 +262,7 @@ const JiraDashboard = () => {
                         />
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-blue-600 font-mono">{issue.key}</span>
+                            <span className="text-sm text-primary font-mono">{issue.key}</span>
                             <span className="font-medium">{issue.fields.summary}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1">

@@ -50,17 +50,17 @@ function getAlertIcon(type: string) {
     switch (type) {
         case 'critical': return <AlertTriangle className="size-5 text-rose-600" />;
         case 'warning': return <AlertCircle className="size-5 text-amber-600" />;
-        case 'info': return <Info className="size-5 text-blue-600" />;
-        default: return <Bell className="size-5 text-slate-600" />;
+        case 'info': return <Info className="size-5 text-primary" />;
+        default: return <Bell className="size-5 text-muted-foreground" />;
     }
 }
 
 function getAlertBg(type: string) {
     switch (type) {
         case 'critical': return 'bg-rose-50 border-rose-200';
-        case 'warning': return 'bg-amber-50 border-amber-200';
+        case 'warning': return 'bg-amber-50 border-amber-500/30';
         case 'info': return 'bg-blue-50 border-blue-200';
-        default: return 'bg-slate-50 border-slate-200';
+        default: return 'bg-secondary border-border';
     }
 }
 
@@ -83,8 +83,8 @@ export function AlertsPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Alerts & Notifications</h2>
-                    <p className="text-slate-600 mt-1">Configure alerts and monitor delivery health</p>
+                    <h2 className="text-2xl font-semibold text-foreground">Alerts & Notifications</h2>
+                    <p className="text-muted-foreground mt-1">Configure alerts and monitor delivery health</p>
                 </div>
                 <button className="flex items-center gap-2 bg-gradient-to-br from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-blue-500/20">
                     <Plus className="size-4" />
@@ -94,46 +94,46 @@ export function AlertsPage() {
 
             {/* Alert Summary */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className={`rounded-xl p-5 border ${criticalAlerts.length > 0 ? 'bg-rose-50 border-rose-200' : 'bg-white border-slate-200'}`}>
+                <div className={`rounded-xl p-5 border ${criticalAlerts.length > 0 ? 'bg-rose-50 border-rose-200' : 'bg-card border-border'}`}>
                     <div className="flex items-center justify-between mb-2">
-                        <span className={`text-sm ${criticalAlerts.length > 0 ? 'text-rose-700' : 'text-slate-600'}`}>Critical Alerts</span>
-                        <AlertTriangle className={`size-5 ${criticalAlerts.length > 0 ? 'text-rose-600' : 'text-slate-400'}`} />
+                        <span className={`text-sm ${criticalAlerts.length > 0 ? 'text-rose-700' : 'text-muted-foreground'}`}>Critical Alerts</span>
+                        <AlertTriangle className={`size-5 ${criticalAlerts.length > 0 ? 'text-rose-600' : 'text-muted-foreground'}`} />
                     </div>
-                    <p className={`text-3xl font-semibold ${criticalAlerts.length > 0 ? 'text-rose-700' : 'text-slate-900'}`}>
+                    <p className={`text-3xl font-semibold ${criticalAlerts.length > 0 ? 'text-rose-700' : 'text-foreground'}`}>
                         {criticalAlerts.length}
                     </p>
-                    <p className={`text-xs mt-1 ${criticalAlerts.length > 0 ? 'text-rose-600' : 'text-slate-500'}`}>
+                    <p className={`text-xs mt-1 ${criticalAlerts.length > 0 ? 'text-rose-600' : 'text-muted-foreground'}`}>
                         {criticalAlerts.length > 0 ? 'Requires immediate attention' : 'All clear'}
                     </p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200">
+                <div className="bg-card rounded-xl p-5 border border-border">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Active Alerts</span>
+                        <span className="text-muted-foreground text-sm">Active Alerts</span>
                         <Bell className="size-5 text-amber-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{activeAlerts.length}</p>
-                    <p className="text-xs text-slate-500 mt-1">Unacknowledged</p>
+                    <p className="text-3xl font-semibold text-foreground">{activeAlerts.length}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Unacknowledged</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200">
+                <div className="bg-card rounded-xl p-5 border border-border">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Alert Rules</span>
-                        <Settings className="size-5 text-blue-600" />
+                        <span className="text-muted-foreground text-sm">Alert Rules</span>
+                        <Settings className="size-5 text-primary" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{alertThresholds.filter(t => t.enabled).length}</p>
-                    <p className="text-xs text-slate-500 mt-1">Active thresholds</p>
+                    <p className="text-3xl font-semibold text-foreground">{alertThresholds.filter(t => t.enabled).length}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Active thresholds</p>
                 </div>
             </div>
 
             {/* Active Alerts */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="font-semibold text-slate-900 mb-1">Active Alerts</h3>
-                        <p className="text-sm text-slate-600">Current alerts requiring attention</p>
+                        <h3 className="font-semibold text-foreground mb-1">Active Alerts</h3>
+                        <p className="text-sm text-muted-foreground">Current alerts requiring attention</p>
                     </div>
-                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    <button className="text-sm text-primary hover:text-primary font-medium">
                         Mark all as read
                     </button>
                 </div>
@@ -151,15 +151,15 @@ export function AlertsPage() {
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between mb-1">
-                                    <h4 className="font-medium text-slate-900">{alert.title}</h4>
+                                    <h4 className="font-medium text-foreground">{alert.title}</h4>
                                     {!alert.acknowledged && (
-                                        <button className="text-slate-400 hover:text-slate-600 p-1 hover:bg-white rounded transition-colors">
+                                        <button className="text-muted-foreground hover:text-muted-foreground p-1 hover:bg-card rounded transition-colors">
                                             <X className="size-4" />
                                         </button>
                                     )}
                                 </div>
-                                <p className="text-sm text-slate-600 mb-2">{alert.description}</p>
-                                <div className="flex items-center gap-4 text-xs text-slate-500">
+                                <p className="text-sm text-muted-foreground mb-2">{alert.description}</p>
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                     <span className="flex items-center gap-1">
                                         <Clock className="size-3" />
                                         {formatTimestamp(alert.timestamp)}
@@ -184,13 +184,13 @@ export function AlertsPage() {
             </div>
 
             {/* Alert Thresholds */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="font-semibold text-slate-900 mb-1">Alert Thresholds</h3>
-                        <p className="text-sm text-slate-600">Configure when to trigger alerts</p>
+                        <h3 className="font-semibold text-foreground mb-1">Alert Thresholds</h3>
+                        <p className="text-sm text-muted-foreground">Configure when to trigger alerts</p>
                     </div>
-                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                    <button className="text-sm text-primary hover:text-primary font-medium flex items-center gap-1">
                         <Plus className="size-4" />
                         Add Threshold
                     </button>
@@ -200,7 +200,7 @@ export function AlertsPage() {
                     {alertThresholds.map((threshold) => (
                         <div
                             key={threshold.id}
-                            className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                            className="flex items-center justify-between p-4 bg-secondary rounded-xl hover:bg-secondary transition-colors"
                         >
                             <div className="flex items-center gap-4">
                                 <button
@@ -208,14 +208,14 @@ export function AlertsPage() {
                                         }`}
                                 >
                                     <span
-                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${threshold.enabled ? 'translate-x-6' : 'translate-x-1'
+                                        className={`inline-block h-4 w-4 transform rounded-full bg-card shadow-sm transition-transform ${threshold.enabled ? 'translate-x-6' : 'translate-x-1'
                                             }`}
                                     />
                                 </button>
 
                                 <div>
-                                    <p className="font-medium text-slate-900">{threshold.metric}</p>
-                                    <p className="text-sm text-slate-600">
+                                    <p className="font-medium text-foreground">{threshold.metric}</p>
+                                    <p className="text-sm text-muted-foreground">
                                         Alert when {threshold.operator} {threshold.value} {threshold.unit}
                                     </p>
                                 </div>
@@ -225,12 +225,12 @@ export function AlertsPage() {
                                 <span
                                     className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${threshold.severity === 'critical'
                                             ? 'bg-rose-100 text-rose-700'
-                                            : 'bg-amber-100 text-amber-700'
+                                            : 'bg-amber-500/20 text-amber-400'
                                         }`}
                                 >
                                     {threshold.severity}
                                 </span>
-                                <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-white rounded-lg transition-colors">
+                                <button className="p-2 text-muted-foreground hover:text-muted-foreground hover:bg-card rounded-lg transition-colors">
                                     <Settings className="size-4" />
                                 </button>
                             </div>
@@ -240,10 +240,10 @@ export function AlertsPage() {
             </div>
 
             {/* Notification Channels */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="mb-6">
-                    <h3 className="font-semibold text-slate-900 mb-1">Notification Channels</h3>
-                    <p className="text-sm text-slate-600">Where to send alert notifications</p>
+                    <h3 className="font-semibold text-foreground mb-1">Notification Channels</h3>
+                    <p className="text-sm text-muted-foreground">Where to send alert notifications</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -253,27 +253,27 @@ export function AlertsPage() {
                             <div
                                 key={channel.id}
                                 className={`p-5 rounded-xl border ${channel.connected
-                                        ? 'border-emerald-200 bg-emerald-50/50'
-                                        : 'border-slate-200 bg-slate-50'
+                                        ? 'border-emerald-500/30 bg-emerald-50/50'
+                                        : 'border-border bg-secondary'
                                     }`}
                             >
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-3">
                                         <div
-                                            className={`p-2 rounded-lg ${channel.connected ? 'bg-emerald-100' : 'bg-slate-100'
+                                            className={`p-2 rounded-lg ${channel.connected ? 'bg-emerald-500/20' : 'bg-secondary'
                                                 }`}
                                         >
                                             <Icon
-                                                className={`size-5 ${channel.connected ? 'text-emerald-600' : 'text-slate-500'
+                                                className={`size-5 ${channel.connected ? 'text-emerald-600' : 'text-muted-foreground'
                                                     }`}
                                             />
                                         </div>
-                                        <span className="font-medium text-slate-900">{channel.name}</span>
+                                        <span className="font-medium text-foreground">{channel.name}</span>
                                     </div>
                                     <span
                                         className={`text-xs px-2 py-1 rounded-full font-medium ${channel.connected
-                                                ? 'bg-emerald-100 text-emerald-700'
-                                                : 'bg-slate-200 text-slate-600'
+                                                ? 'bg-emerald-500/20 text-emerald-400'
+                                                : 'bg-slate-200 text-muted-foreground'
                                             }`}
                                     >
                                         {channel.connected ? 'Connected' : 'Not configured'}
@@ -281,11 +281,11 @@ export function AlertsPage() {
                                 </div>
 
                                 {channel.connected ? (
-                                    <p className="text-sm text-slate-600">
+                                    <p className="text-sm text-muted-foreground">
                                         {channel.channel || channel.recipients || channel.endpoint}
                                     </p>
                                 ) : (
-                                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                    <button className="text-sm text-primary hover:text-primary font-medium">
                                         Configure →
                                     </button>
                                 )}

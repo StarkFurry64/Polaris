@@ -77,13 +77,13 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo, githubTok
     };
 
     return (
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
+        <div className="linear-card border-glow p-4">
             <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Folder className="size-4" />
                     <span className="font-medium">Repository:</span>
                     {githubToken && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/20 text-primary rounded-full text-xs">
                             <Github className="size-3" />
                             Your repos
                         </span>
@@ -93,41 +93,41 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo, githubTok
                 <div className="relative flex-1 max-w-md">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="w-full flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 hover:bg-slate-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-between gap-3 bg-secondary border border-border rounded-lg px-4 py-2.5 hover:bg-secondary/80 hover:border-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={loading || repos.length === 0}
                     >
                         {loading ? (
                             <>
-                                <Loader2 className="size-4 animate-spin text-blue-600" />
-                                <span className="text-slate-600">Loading repositories...</span>
+                                <Loader2 className="size-4 animate-spin text-primary" />
+                                <span className="text-muted-foreground">Loading repositories...</span>
                             </>
                         ) : repos.length === 0 ? (
-                            <span className="text-slate-500 text-sm">Select a repository to begin</span>
+                            <span className="text-muted-foreground text-sm">Select a repository to begin</span>
                         ) : selectedRepo ? (
                             <>
-                                <span className="font-medium text-slate-900">{selectedRepo.name}</span>
-                                <ChevronDown className={`size-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                                <span className="font-medium text-foreground">{selectedRepo.name}</span>
+                                <ChevronDown className={`size-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                             </>
                         ) : (
                             <>
-                                <span className="text-slate-500">Select Repository</span>
-                                <ChevronDown className="size-4 text-slate-400" />
+                                <span className="text-muted-foreground">Select Repository</span>
+                                <ChevronDown className="size-4 text-muted-foreground" />
                             </>
                         )}
                     </button>
 
                     {isOpen && !loading && repos.length > 0 && (
-                        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-[300px] overflow-y-auto z-50">
+                        <div className="absolute top-full left-0 mt-1 w-full bg-card border border-border rounded-lg shadow-elevated max-h-[300px] overflow-y-auto z-50">
                             {repos.map((repo) => (
                                 <button
                                     key={repo.name}
                                     onClick={() => handleSelect(repo)}
-                                    className={`w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-0 flex items-center justify-between ${selectedRepo?.name === repo.name ? 'bg-blue-50' : ''
+                                    className={`w-full text-left px-4 py-3 hover:bg-secondary border-b border-border/50 last:border-0 flex items-center justify-between transition-colors ${selectedRepo?.name === repo.name ? 'bg-primary/10 text-primary' : ''
                                         }`}
                                 >
-                                    <span className="font-medium text-slate-900">{repo.name}</span>
+                                    <span className="font-medium text-foreground">{repo.name}</span>
                                     {repo.private && (
-                                        <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">Private</span>
+                                        <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded">Private</span>
                                     )}
                                 </button>
                             ))}
@@ -138,10 +138,10 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo, githubTok
                 <button
                     onClick={fetchRepos}
                     disabled={loading}
-                    className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 transition-all disabled:opacity-50"
+                    className="p-2 bg-secondary rounded-lg hover:bg-secondary/80 hover:text-primary transition-all disabled:opacity-50"
                     title="Refresh"
                 >
-                    <RefreshCw className={`size-4 text-slate-600 ${loading ? 'animate-spin' : ''}`} />
+                    <RefreshCw className={`size-4 text-muted-foreground ${loading ? 'animate-spin' : ''}`} />
                 </button>
             </div>
         </div>

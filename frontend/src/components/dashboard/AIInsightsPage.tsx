@@ -129,10 +129,10 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
     // No repo selected
     if (!selectedRepo) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <FileQuestion className="size-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Select a Repository</h3>
-                <p className="text-slate-600">Choose a repository to get AI-powered insights.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Select a Repository</h3>
+                <p className="text-muted-foreground">Choose a repository to get AI-powered insights.</p>
             </div>
         );
     }
@@ -142,12 +142,12 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">AI Insights</h2>
-                    <p className="text-slate-600 mt-1">Ask questions about {selectedRepo.name}</p>
+                    <h2 className="text-2xl font-semibold text-foreground">AI Insights</h2>
+                    <p className="text-muted-foreground mt-1">Ask questions about {selectedRepo.name}</p>
                 </div>
                 <button
                     onClick={fetchContext}
-                    className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200"
+                    className="flex items-center gap-2 bg-secondary text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200"
                 >
                     <RefreshCw className="size-4" /> Refresh Context
                 </button>
@@ -156,53 +156,53 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
             {/* Context Summary */}
             {context && (
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
-                            <Sparkles className="size-4 text-blue-600" />
+                    <div className="bg-card rounded-xl p-4 border border-border">
+                        <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                            <Sparkles className="size-4 text-primary" />
                             <span className="text-sm">Commits</span>
                         </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.commits || 0}</p>
+                        <p className="text-2xl font-semibold text-foreground">{context.github?.commits || 0}</p>
                     </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
+                    <div className="bg-card rounded-xl p-4 border border-border">
+                        <div className="flex items-center gap-2 text-muted-foreground mb-1">
                             <Sparkles className="size-4 text-purple-600" />
                             <span className="text-sm">PRs</span>
                         </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.prs || 0}</p>
+                        <p className="text-2xl font-semibold text-foreground">{context.github?.prs || 0}</p>
                     </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
+                    <div className="bg-card rounded-xl p-4 border border-border">
+                        <div className="flex items-center gap-2 text-muted-foreground mb-1">
                             <Sparkles className="size-4 text-emerald-600" />
                             <span className="text-sm">Contributors</span>
                         </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.contributors || 0}</p>
+                        <p className="text-2xl font-semibold text-foreground">{context.github?.contributors || 0}</p>
                     </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
+                    <div className="bg-card rounded-xl p-4 border border-border">
+                        <div className="flex items-center gap-2 text-muted-foreground mb-1">
                             <Sparkles className="size-4 text-indigo-600" />
                             <span className="text-sm">Issues</span>
                         </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.issues?.total || 0}</p>
+                        <p className="text-2xl font-semibold text-foreground">{context.issues?.total || 0}</p>
                     </div>
                 </div>
             )}
 
             {/* Chat Area */}
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="bg-card rounded-2xl border border-border overflow-hidden">
                 {/* Messages */}
                 <div className="h-[400px] overflow-y-auto p-6 space-y-4">
                     {messages.length === 0 ? (
                         <div className="text-center py-12">
                             <Brain className="size-12 text-slate-300 mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-slate-900 mb-2">AI Assistant</h3>
-                            <p className="text-slate-600 mb-6">Ask me anything about {selectedRepo.name}</p>
+                            <h3 className="text-lg font-semibold text-foreground mb-2">AI Assistant</h3>
+                            <p className="text-muted-foreground mb-6">Ask me anything about {selectedRepo.name}</p>
 
                             <div className="flex flex-wrap justify-center gap-2">
                                 {suggestedQuestions.map((q, i) => (
                                     <button
                                         key={i}
                                         onClick={() => handleSend(q)}
-                                        className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm transition-colors"
+                                        className="flex items-center gap-1.5 bg-secondary hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm transition-colors"
                                     >
                                         <Lightbulb className="size-4 text-amber-500" />
                                         {q}
@@ -224,13 +224,13 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                                     )}
                                     <div className={`max-w-[70%] rounded-2xl p-4 ${msg.role === 'user'
                                         ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white'
-                                        : 'bg-slate-100 text-slate-900'
+                                        : 'bg-secondary text-foreground'
                                         }`}>
                                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                                     </div>
                                     {msg.role === 'user' && (
                                         <div className="size-8 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <User className="size-4 text-slate-600" />
+                                            <User className="size-4 text-muted-foreground" />
                                         </div>
                                     )}
                                 </div>
@@ -240,8 +240,8 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                                     <div className="size-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
                                         <Bot className="size-4 text-white" />
                                     </div>
-                                    <div className="bg-slate-100 rounded-2xl p-4">
-                                        <Loader2 className="size-5 text-blue-600 animate-spin" />
+                                    <div className="bg-secondary rounded-2xl p-4">
+                                        <Loader2 className="size-5 text-primary animate-spin" />
                                     </div>
                                 </div>
                             )}
@@ -251,7 +251,7 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                 </div>
 
                 {/* Input Area */}
-                <div className="border-t border-slate-200 p-4">
+                <div className="border-t border-border p-4">
                     <div className="flex items-center gap-3">
                         <input
                             type="text"
@@ -259,7 +259,7 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                             onChange={(e) => setInput(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                             placeholder="Ask about this repository..."
-                            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="flex-1 bg-secondary border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             disabled={isLoading}
                         />
                         <button

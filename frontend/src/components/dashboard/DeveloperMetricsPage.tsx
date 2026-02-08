@@ -58,10 +58,10 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
     // No repo selected
     if (!selectedRepo) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <FileQuestion className="size-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Select a Repository</h3>
-                <p className="text-slate-600">Choose a repository to view developer metrics.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Select a Repository</h3>
+                <p className="text-muted-foreground">Choose a repository to view developer metrics.</p>
             </div>
         );
     }
@@ -69,9 +69,9 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
     // Loading
     if (loading) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
-                <Loader2 className="size-12 text-blue-600 mx-auto mb-4 animate-spin" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Loading Developer Metrics...</h3>
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
+                <Loader2 className="size-12 text-primary mx-auto mb-4 animate-spin" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Loading Developer Metrics...</h3>
             </div>
         );
     }
@@ -79,10 +79,10 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
     // Error
     if (error) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <AlertTriangle className="size-12 text-amber-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Error Loading Data</h3>
-                <p className="text-slate-600 mb-4">{error}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Error Loading Data</h3>
+                <p className="text-muted-foreground mb-4">{error}</p>
                 <button onClick={fetchData} className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg">
                     <RefreshCw className="size-4" /> Retry
                 </button>
@@ -102,67 +102,67 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Developer Metrics</h2>
-                    <p className="text-slate-600 mt-1">Real contributors from {selectedRepo.name}</p>
+                    <h2 className="text-2xl font-semibold text-foreground">Developer Metrics</h2>
+                    <p className="text-muted-foreground mt-1">Real contributors from {selectedRepo.name}</p>
                 </div>
-                <button onClick={fetchData} className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200">
+                <button onClick={fetchData} className="flex items-center gap-2 bg-secondary text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200">
                     <RefreshCw className="size-4" /> Refresh
                 </button>
             </div>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-slate-200">
+                <div className="bg-card rounded-xl p-5 border border-border">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Total Contributors</span>
-                        <Users className="size-5 text-blue-600" />
+                        <span className="text-muted-foreground text-sm">Total Contributors</span>
+                        <Users className="size-5 text-primary" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{contributors.length}</p>
+                    <p className="text-3xl font-semibold text-foreground">{contributors.length}</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200">
+                <div className="bg-card rounded-xl p-5 border border-border">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Total Commits</span>
+                        <span className="text-muted-foreground text-sm">Total Commits</span>
                         <Code2 className="size-5 text-emerald-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{commits.length}</p>
+                    <p className="text-3xl font-semibold text-foreground">{commits.length}</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200">
+                <div className="bg-card rounded-xl p-5 border border-border">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Unique Authors</span>
+                        <span className="text-muted-foreground text-sm">Unique Authors</span>
                         <GitPullRequest className="size-5 text-purple-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{Object.keys(commitsByAuthor).length}</p>
+                    <p className="text-3xl font-semibold text-foreground">{Object.keys(commitsByAuthor).length}</p>
                 </div>
             </div>
 
             {/* Contributors Table */}
             {contributors.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-4">Contributors</h3>
+                <div className="bg-card rounded-2xl p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4">Contributors</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b border-slate-100">
-                                    <th className="text-left py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Developer</th>
-                                    <th className="text-center py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Contributions</th>
+                                <tr className="border-b border-border/50">
+                                    <th className="text-left py-3 px-4 text-xs font-semibold text-muted-foreground uppercase">Developer</th>
+                                    <th className="text-center py-3 px-4 text-xs font-semibold text-muted-foreground uppercase">Contributions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {contributors.map((dev: any, idx: number) => (
-                                    <tr key={dev.id || idx} className="border-b border-slate-50 hover:bg-slate-50">
+                                    <tr key={dev.id || idx} className="border-b border-slate-50 hover:bg-secondary">
                                         <td className="py-4 px-4">
                                             <div className="flex items-center gap-3">
                                                 <img src={dev.avatar_url} alt={dev.login} className="size-10 rounded-full" />
                                                 <div>
-                                                    <p className="font-medium text-slate-900">{dev.login}</p>
+                                                    <p className="font-medium text-foreground">{dev.login}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="py-4 px-4 text-center">
-                                            <span className="font-semibold text-slate-900">{dev.contributions}</span>
-                                            <span className="text-xs text-slate-500 ml-1">commits</span>
+                                            <span className="font-semibold text-foreground">{dev.contributions}</span>
+                                            <span className="text-xs text-muted-foreground ml-1">commits</span>
                                         </td>
                                     </tr>
                                 ))}
@@ -176,11 +176,11 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
             {contributors.length > 0 && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Knowledge Concentration Risk */}
-                    <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <div className="bg-card rounded-xl p-6 border border-border">
+                        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                             <AlertCircle className="size-5 text-amber-600" />
                             Knowledge Concentration
-                            <span className="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">
+                            <span className="ml-auto text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded-full">
                                 Bus Factor Analysis
                             </span>
                         </h3>
@@ -196,11 +196,11 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                             return (
                                 <div className="space-y-4">
                                     <div className={`p-4 rounded-lg ${riskLevel === 'high' ? 'bg-red-50 border border-red-200' :
-                                        riskLevel === 'medium' ? 'bg-amber-50 border border-amber-200' :
-                                            'bg-emerald-50 border border-emerald-200'
+                                        riskLevel === 'medium' ? 'bg-amber-50 border border-amber-500/30' :
+                                            'bg-emerald-50 border border-emerald-500/30'
                                         }`}>
                                         <div className="flex items-center justify-between mb-2">
-                                            <span className="font-medium text-slate-900">Bus Factor Risk</span>
+                                            <span className="font-medium text-foreground">Bus Factor Risk</span>
                                             <span className={`text-sm font-bold ${riskLevel === 'high' ? 'text-red-600' :
                                                 riskLevel === 'medium' ? 'text-amber-600' :
                                                     'text-emerald-600'
@@ -208,7 +208,7 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                                 {riskLevel.toUpperCase()}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-slate-600">
+                                        <p className="text-sm text-muted-foreground">
                                             {topContributor?.login || 'Top contributor'} owns <strong>{topPercent}%</strong> of project activity
                                         </p>
                                         <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
@@ -221,7 +221,7 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                             />
                                         </div>
                                     </div>
-                                    <div className="text-sm text-slate-600">
+                                    <div className="text-sm text-muted-foreground">
                                         {riskLevel === 'high' ? (
                                             <p>⚠️ <strong>High risk:</strong> Consider cross-training team members and documenting key processes.</p>
                                         ) : riskLevel === 'medium' ? (
@@ -236,8 +236,8 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                     </div>
 
                     {/* Workload Distribution */}
-                    <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <div className="bg-card rounded-xl p-6 border border-border">
+                        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                             <BarChart3 className="size-5 text-purple-600" />
                             Workload Distribution
                         </h3>
@@ -251,7 +251,7 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                     return (
                                         <div key={contributor.login} className="flex items-center gap-3">
                                             <div className="w-24 text-sm text-slate-700 truncate">{contributor.login}</div>
-                                            <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                                            <div className="flex-1 bg-secondary rounded-full h-4 overflow-hidden">
                                                 <div
                                                     className={`h-full rounded-full transition-all ${idx === 0 ? 'bg-purple-500' :
                                                         idx === 1 ? 'bg-purple-400' :
@@ -260,71 +260,71 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                                     style={{ width: `${percentage}%` }}
                                                 />
                                             </div>
-                                            <div className="w-12 text-sm font-medium text-slate-600 text-right">{percentage}%</div>
+                                            <div className="w-12 text-sm font-medium text-muted-foreground text-right">{percentage}%</div>
                                         </div>
                                     );
                                 });
                             })()}
                         </div>
-                        <p className="text-xs text-slate-500 mt-4">Based on commits, PRs, and completed tasks</p>
+                        <p className="text-xs text-muted-foreground mt-4">Based on commits, PRs, and completed tasks</p>
                     </div>
                 </div>
             )}
 
             {/* Quick Stats Grid */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
-                <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <div className="bg-card rounded-xl p-6 border border-border">
+                <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                     <Zap className="size-5 text-amber-600" />
                     Quick Stats
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
-                        <p className="text-2xl font-bold text-blue-600">{commits.length}</p>
-                        <p className="text-xs text-slate-600">Total Commits</p>
+                    <div className="text-center p-3 bg-secondary rounded-lg">
+                        <p className="text-2xl font-bold text-primary">{commits.length}</p>
+                        <p className="text-xs text-muted-foreground">Total Commits</p>
                     </div>
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
+                    <div className="text-center p-3 bg-secondary rounded-lg">
                         <p className="text-2xl font-bold text-purple-600">{prs.length}</p>
-                        <p className="text-xs text-slate-600">Pull Requests</p>
+                        <p className="text-xs text-muted-foreground">Pull Requests</p>
                     </div>
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
+                    <div className="text-center p-3 bg-secondary rounded-lg">
                         <p className="text-2xl font-bold text-emerald-600">{prs.filter((p: any) => p.merged_at).length}</p>
-                        <p className="text-xs text-slate-600">PRs Merged</p>
+                        <p className="text-xs text-muted-foreground">PRs Merged</p>
                     </div>
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
+                    <div className="text-center p-3 bg-secondary rounded-lg">
                         <p className="text-2xl font-bold text-amber-600">{prs.filter((p: any) => p.state === 'open').length}</p>
-                        <p className="text-xs text-slate-600">Open PRs</p>
+                        <p className="text-xs text-muted-foreground">Open PRs</p>
                     </div>
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
+                    <div className="text-center p-3 bg-secondary rounded-lg">
                         <p className="text-2xl font-bold text-red-600">
                             {jiraIssues.filter((i: any) => i.type?.toLowerCase() === 'bug' && i.status?.toLowerCase() !== 'done').length}
                         </p>
-                        <p className="text-xs text-slate-600">Open Bugs</p>
+                        <p className="text-xs text-muted-foreground">Open Bugs</p>
                     </div>
-                    <div className="text-center p-3 bg-slate-50 rounded-lg">
+                    <div className="text-center p-3 bg-secondary rounded-lg">
                         <p className="text-2xl font-bold text-teal-600">{contributors.length}</p>
-                        <p className="text-xs text-slate-600">Contributors</p>
+                        <p className="text-xs text-muted-foreground">Contributors</p>
                     </div>
                 </div>
             </div>
 
             {/* Recent Activity Feed */}
             {commits.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                        <GitCommit className="size-5 text-slate-600" />
+                <div className="bg-card rounded-xl p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                        <GitCommit className="size-5 text-muted-foreground" />
                         Recent Activity
                     </h3>
                     <div className="space-y-3 max-h-64 overflow-y-auto">
                         {commits.slice(0, 10).map((commit: any, idx: number) => (
-                            <div key={idx} className="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg">
-                                <div className="size-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs font-semibold flex-shrink-0">
+                            <div key={idx} className="flex items-start gap-3 p-2 hover:bg-secondary rounded-lg">
+                                <div className="size-8 rounded-full bg-slate-200 flex items-center justify-center text-muted-foreground text-xs font-semibold flex-shrink-0">
                                     {(commit.commit?.author?.name || commit.author?.login || 'U')[0].toUpperCase()}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm text-slate-900 truncate">
+                                    <p className="text-sm text-foreground truncate">
                                         {commit.commit?.message?.split('\n')[0] || 'No message'}
                                     </p>
-                                    <p className="text-xs text-slate-500">
+                                    <p className="text-xs text-muted-foreground">
                                         {commit.commit?.author?.name || commit.author?.login} • {new Date(commit.commit?.author?.date || commit.created_at).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -335,10 +335,10 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
             )}
 
             {contributors.length === 0 && commits.length === 0 && (
-                <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+                <div className="bg-card rounded-2xl p-12 border border-border text-center">
                     <Users className="size-16 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">No Data Found</h3>
-                    <p className="text-slate-600">No contributors or commits found for this repository.</p>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">No Data Found</h3>
+                    <p className="text-muted-foreground">No contributors or commits found for this repository.</p>
                 </div>
             )}
         </div>

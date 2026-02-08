@@ -24,25 +24,25 @@ function getSeverityColor(severity: string) {
         case 'critical': return 'bg-rose-500';
         case 'warning': return 'bg-amber-500';
         case 'normal': return 'bg-emerald-500';
-        default: return 'bg-slate-500';
+        default: return 'bg-secondary0';
     }
 }
 
 function getSeverityBg(severity: string) {
     switch (severity) {
         case 'critical': return 'bg-rose-50 border-rose-200';
-        case 'warning': return 'bg-amber-50 border-amber-200';
-        case 'normal': return 'bg-emerald-50 border-emerald-200';
-        default: return 'bg-slate-50 border-slate-200';
+        case 'warning': return 'bg-amber-50 border-amber-500/30';
+        case 'normal': return 'bg-emerald-50 border-emerald-500/30';
+        default: return 'bg-secondary border-border';
     }
 }
 
 function getStatusBadge(status: string) {
     switch (status) {
         case 'blocked': return 'bg-rose-100 text-rose-700 border-rose-200';
-        case 'needs-review': return 'bg-amber-100 text-amber-700 border-amber-200';
-        case 'changes-requested': return 'bg-blue-100 text-blue-700 border-blue-200';
-        default: return 'bg-slate-100 text-slate-700 border-slate-200';
+        case 'needs-review': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+        case 'changes-requested': return 'bg-primary/20 text-primary border-blue-200';
+        default: return 'bg-secondary text-slate-700 border-border';
     }
 }
 
@@ -56,11 +56,11 @@ export function BottlenecksPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Bottleneck Detection</h2>
-                    <p className="text-slate-600 mt-1">Identify and resolve workflow blockers</p>
+                    <h2 className="text-2xl font-semibold text-foreground">Bottleneck Detection</h2>
+                    <p className="text-muted-foreground mt-1">Identify and resolve workflow blockers</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-all">
+                    <button className="flex items-center gap-2 bg-card border border-border text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-secondary transition-all">
                         <Calendar className="size-4" />
                         Last 7 Days
                     </button>
@@ -75,7 +75,7 @@ export function BottlenecksPage() {
             {criticalCount > 0 && (
                 <div className="bg-gradient-to-r from-rose-500 to-rose-600 rounded-2xl p-5 text-white flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="bg-white/20 p-3 rounded-xl">
+                        <div className="bg-card/20 p-3 rounded-xl">
                             <AlertTriangle className="size-6" />
                         </div>
                         <div>
@@ -83,7 +83,7 @@ export function BottlenecksPage() {
                             <p className="text-rose-100">{totalStuckPRs} PRs are stuck in the pipeline and need attention</p>
                         </div>
                     </div>
-                    <button className="bg-white text-rose-600 px-4 py-2 rounded-xl font-medium hover:bg-rose-50 transition-colors flex items-center gap-2">
+                    <button className="bg-card text-rose-600 px-4 py-2 rounded-xl font-medium hover:bg-rose-50 transition-colors flex items-center gap-2">
                         <Zap className="size-4" />
                         Quick Actions
                     </button>
@@ -92,39 +92,39 @@ export function BottlenecksPage() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Critical Bottlenecks</span>
+                        <span className="text-muted-foreground text-sm">Critical Bottlenecks</span>
                         <AlertTriangle className="size-5 text-rose-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{criticalCount}</p>
+                    <p className="text-3xl font-semibold text-foreground">{criticalCount}</p>
                     <p className="text-xs text-rose-600 mt-1">Requires immediate action</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">PRs Stuck</span>
+                        <span className="text-muted-foreground text-sm">PRs Stuck</span>
                         <GitPullRequest className="size-5 text-amber-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{totalStuckPRs}</p>
+                    <p className="text-3xl font-semibold text-foreground">{totalStuckPRs}</p>
                     <p className="text-xs text-amber-600 mt-1">Across all stages</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Avg Queue Time</span>
-                        <Timer className="size-5 text-blue-600" />
+                        <span className="text-muted-foreground text-sm">Avg Queue Time</span>
+                        <Timer className="size-5 text-primary" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{avgQueueTime.toFixed(1)}h</p>
-                    <p className="text-xs text-blue-600 mt-1">Per stage</p>
+                    <p className="text-3xl font-semibold text-foreground">{avgQueueTime.toFixed(1)}h</p>
+                    <p className="text-xs text-primary mt-1">Per stage</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-5 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-xl p-5 border border-border/60 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600 text-sm">Stale PRs</span>
+                        <span className="text-muted-foreground text-sm">Stale PRs</span>
                         <Clock className="size-5 text-violet-600" />
                     </div>
-                    <p className="text-3xl font-semibold text-slate-900">{stalePRs.length}</p>
+                    <p className="text-3xl font-semibold text-foreground">{stalePRs.length}</p>
                     <p className="text-xs text-violet-600 mt-1">Older than 7 days</p>
                 </div>
             </div>
@@ -132,10 +132,10 @@ export function BottlenecksPage() {
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Pipeline Flow */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Pipeline Flow</h3>
-                        <p className="text-sm text-slate-600">PRs in each stage of the pipeline</p>
+                        <h3 className="font-semibold text-foreground mb-1">Pipeline Flow</h3>
+                        <p className="text-sm text-muted-foreground">PRs in each stage of the pipeline</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={pipelineFlowData}>
@@ -157,10 +157,10 @@ export function BottlenecksPage() {
                 </div>
 
                 {/* Queue Time by Day */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Daily Queue Time</h3>
-                        <p className="text-sm text-slate-600">Hours spent waiting vs in review</p>
+                        <h3 className="font-semibold text-foreground mb-1">Daily Queue Time</h3>
+                        <p className="text-sm text-muted-foreground">Hours spent waiting vs in review</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={queueTimeData}>
@@ -184,10 +184,10 @@ export function BottlenecksPage() {
             </div>
 
             {/* Bottleneck Details */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="mb-6">
-                    <h3 className="font-semibold text-slate-900 mb-1">Bottleneck Analysis</h3>
-                    <p className="text-sm text-slate-600">Detailed breakdown by pipeline stage</p>
+                    <h3 className="font-semibold text-foreground mb-1">Bottleneck Analysis</h3>
+                    <p className="text-sm text-muted-foreground">Detailed breakdown by pipeline stage</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -197,17 +197,17 @@ export function BottlenecksPage() {
                             className={`rounded-xl p-5 border ${getSeverityBg(bottleneck.severity)}`}
                         >
                             <div className="flex items-center justify-between mb-3">
-                                <span className="font-medium text-slate-900">{bottleneck.stage}</span>
+                                <span className="font-medium text-foreground">{bottleneck.stage}</span>
                                 <div className={`size-3 rounded-full ${getSeverityColor(bottleneck.severity)}`} />
                             </div>
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-slate-600">Avg Wait Time</span>
-                                    <span className="font-semibold text-slate-900">{bottleneck.avgTime}h</span>
+                                    <span className="text-sm text-muted-foreground">Avg Wait Time</span>
+                                    <span className="font-semibold text-foreground">{bottleneck.avgTime}h</span>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-slate-600">PRs Stuck</span>
-                                    <span className="font-semibold text-slate-900">{bottleneck.prsStuck}</span>
+                                    <span className="text-sm text-muted-foreground">PRs Stuck</span>
+                                    <span className="font-semibold text-foreground">{bottleneck.prsStuck}</span>
                                 </div>
                             </div>
                         </div>
@@ -216,13 +216,13 @@ export function BottlenecksPage() {
             </div>
 
             {/* Stale PRs */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="font-semibold text-slate-900 mb-1">Stale Pull Requests</h3>
-                        <p className="text-sm text-slate-600">PRs that have been open for too long</p>
+                        <h3 className="font-semibold text-foreground mb-1">Stale Pull Requests</h3>
+                        <p className="text-sm text-muted-foreground">PRs that have been open for too long</p>
                     </div>
-                    <button className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                    <button className="text-sm text-primary hover:text-primary font-medium flex items-center gap-1">
                         View All <ArrowRight className="size-4" />
                     </button>
                 </div>
@@ -231,18 +231,18 @@ export function BottlenecksPage() {
                     {stalePRs.map((pr) => (
                         <div
                             key={pr.id}
-                            className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                            className="flex items-center justify-between p-4 bg-secondary rounded-xl hover:bg-secondary transition-colors"
                         >
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center gap-2">
                                     <AlertCircle className={`size-5 ${pr.age > 10 ? 'text-rose-500' : 'text-amber-500'}`} />
-                                    <span className="font-medium text-slate-900">{pr.id}</span>
+                                    <span className="font-medium text-foreground">{pr.id}</span>
                                 </div>
-                                <span className="text-slate-600">{pr.title}</span>
+                                <span className="text-muted-foreground">{pr.title}</span>
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <span className="text-sm text-slate-600">by {pr.author}</span>
+                                <span className="text-sm text-muted-foreground">by {pr.author}</span>
                                 <span className={`text-sm font-medium ${pr.age > 10 ? 'text-rose-600' : 'text-amber-600'}`}>
                                     {pr.age} days old
                                 </span>

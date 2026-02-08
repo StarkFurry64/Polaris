@@ -48,7 +48,7 @@ export function FeatureCards({ onGenerateAnalysis }: FeatureCardsProps) {
           <div
             key={feature.id}
             onClick={onGenerateAnalysis}
-            className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200/60 hover:border-slate-300 hover:-translate-y-1 cursor-pointer overflow-hidden"
+            className="group relative bg-card rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-border/60 hover:border-slate-300 hover:-translate-y-1 cursor-pointer overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
@@ -57,20 +57,20 @@ export function FeatureCards({ onGenerateAnalysis }: FeatureCardsProps) {
                 <Icon className="size-6 text-white" />
               </div>
               
-              <h3 className="font-semibold text-slate-900 mb-2 flex items-center justify-between">
+              <h3 className="font-semibold text-foreground mb-2 flex items-center justify-between">
                 {feature.title}
-                <ArrowUpRight className="size-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </h3>
               
-              <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                 {feature.description}
               </p>
               
-              <div className="flex items-baseline justify-between pt-4 border-t border-slate-100">
-                <span className="text-sm font-semibold text-slate-900">
+              <div className="flex items-baseline justify-between pt-4 border-t border-border/50">
+                <span className="text-sm font-semibold text-foreground">
                   {feature.stats.label}
                 </span>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-muted-foreground">
                   {feature.stats.value}
                 </span>
               </div>

@@ -37,7 +37,7 @@ const HealthScoreGauge = ({ score, label }: { score: number; label: string }) =>
         <div className="flex flex-col items-center">
             <div className="relative w-32 h-32">
                 <svg className="w-32 h-32 transform -rotate-90">
-                    <circle cx="64" cy="64" r="45" stroke="#e2e8f0" strokeWidth="10" fill="none" />
+                    <circle cx="64" cy="64" r="45" stroke="hsl(240 10% 20%)" strokeWidth="10" fill="none" />
                     <circle
                         cx="64" cy="64" r="45"
                         stroke={getColor(score)}
@@ -50,10 +50,10 @@ const HealthScoreGauge = ({ score, label }: { score: number; label: string }) =>
                     />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-3xl font-bold text-slate-900">{score}</span>
+                    <span className="text-3xl font-bold text-foreground">{score}</span>
                 </div>
             </div>
-            <span className="mt-2 text-sm font-medium text-slate-600">{label}</span>
+            <span className="mt-2 text-sm font-medium text-muted-foreground">{label}</span>
         </div>
     );
 };
@@ -108,18 +108,18 @@ const KPICard = ({
     sparklineData?: number[];
     trend?: 'up' | 'down' | 'stable';
 }) => (
-    <div className="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-lg transition-shadow">
+    <div className="linear-card border-glow p-5 hover:shadow-purple/20 transition-all">
         <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2 text-slate-600 mb-2">
+            <div className="flex items-center gap-2 text-muted-foreground mb-2">
                 <Icon className={`size-5 ${color}`} />
                 <span className="text-sm font-medium">{label}</span>
             </div>
             {sparklineData && trend && (
-                <Sparkline data={sparklineData} color={color.includes('blue') ? '#3b82f6' : color.includes('purple') ? '#8b5cf6' : '#10b981'} trend={trend} />
+                <Sparkline data={sparklineData} color={color.includes('blue') ? '#818cf8' : color.includes('purple') ? '#a78bfa' : '#34d399'} trend={trend} />
             )}
         </div>
         <p className={`text-3xl font-bold ${color}`}>{value}</p>
-        <p className="text-xs text-slate-500 mt-1">{subtext}</p>
+        <p className="text-xs text-muted-foreground mt-1">{subtext}</p>
     </div>
 );
 
@@ -140,10 +140,10 @@ const AIInsightsPanel = ({ insights }: { insights: DetailedInsight[] }) => {
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
     const severityColors = {
-        critical: 'border-red-200 bg-red-50',
-        warning: 'border-amber-200 bg-amber-50',
-        info: 'border-blue-200 bg-blue-50',
-        success: 'border-emerald-200 bg-emerald-50'
+        critical: 'border-red-500/30 bg-red-500/10',
+        warning: 'border-amber-500/30 bg-amber-500/10',
+        info: 'border-primary/30 bg-primary/10',
+        success: 'border-emerald-500/30 bg-emerald-500/10'
     };
 
     const severityIcons = {
@@ -154,11 +154,11 @@ const AIInsightsPanel = ({ insights }: { insights: DetailedInsight[] }) => {
     };
 
     return (
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100">
+        <div className="linear-card border-glow p-6">
             <div className="flex items-center gap-2 mb-4">
-                <Brain className="size-5 text-indigo-600" />
-                <h3 className="font-semibold text-indigo-900">AI-Powered Insights</h3>
-                <span className="ml-auto text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">
+                <Brain className="size-5 text-primary" />
+                <h3 className="font-semibold text-foreground">AI-Powered Insights</h3>
+                <span className="ml-auto text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
                     {insights.length} insights detected
                 </span>
             </div>
@@ -177,17 +177,17 @@ const AIInsightsPanel = ({ insights }: { insights: DetailedInsight[] }) => {
                             <div className="flex-1">
                                 <div className="flex items-center gap-2">
                                     <span className="text-lg">{severityIcons[insight.severity]}</span>
-                                    <h4 className="font-semibold text-slate-900">{insight.title}</h4>
+                                    <h4 className="font-semibold text-foreground">{insight.title}</h4>
                                     {insight.metric && (
-                                        <span className="ml-auto text-sm font-mono bg-white/50 px-2 py-0.5 rounded">
+                                        <span className="ml-auto text-sm font-mono bg-card/50 px-2 py-0.5 rounded">
                                             {insight.metric}
                                         </span>
                                     )}
                                 </div>
-                                <p className="text-sm text-slate-600 mt-1">{insight.explanation}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{insight.explanation}</p>
                             </div>
                             <div className={`transition-transform duration-300 ${expandedIndex === i ? 'rotate-180' : ''}`}>
-                                <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
                             </div>
@@ -195,31 +195,31 @@ const AIInsightsPanel = ({ insights }: { insights: DetailedInsight[] }) => {
 
                         {/* Expanded Content */}
                         {expandedIndex === i && (
-                            <div className="px-4 pb-4 space-y-4 border-t border-white/50 pt-4">
+                            <div className="px-4 pb-4 space-y-4 border-t border-border/50 pt-4">
                                 {/* Solution */}
-                                <div className="bg-white/70 rounded-lg p-4">
+                                <div className="bg-secondary rounded-lg p-4">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <Zap className="size-4 text-blue-600" />
-                                        <h5 className="font-semibold text-slate-800">Recommended Solution</h5>
+                                        <Zap className="size-4 text-primary" />
+                                        <h5 className="font-semibold text-foreground">Recommended Solution</h5>
                                     </div>
-                                    <p className="text-sm text-slate-700">{insight.solution}</p>
+                                    <p className="text-sm text-muted-foreground">{insight.solution}</p>
                                 </div>
 
                                 {/* Impact Comparison */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="bg-red-100/50 rounded-lg p-4 border border-red-200">
+                                    <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/30">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <ArrowDownRight className="size-4 text-red-600" />
-                                            <h5 className="font-semibold text-red-800 text-sm">If Not Addressed</h5>
+                                            <ArrowDownRight className="size-4 text-red-400" />
+                                            <h5 className="font-semibold text-red-400 text-sm">If Not Addressed</h5>
                                         </div>
-                                        <p className="text-sm text-red-700">{insight.impactBefore}</p>
+                                        <p className="text-sm text-red-300">{insight.impactBefore}</p>
                                     </div>
-                                    <div className="bg-emerald-100/50 rounded-lg p-4 border border-emerald-200">
+                                    <div className="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <ArrowUpRight className="size-4 text-emerald-600" />
-                                            <h5 className="font-semibold text-emerald-800 text-sm">After Resolution</h5>
+                                            <ArrowUpRight className="size-4 text-emerald-400" />
+                                            <h5 className="font-semibold text-emerald-400 text-sm">After Resolution</h5>
                                         </div>
-                                        <p className="text-sm text-emerald-700">{insight.impactAfter}</p>
+                                        <p className="text-sm text-emerald-300">{insight.impactAfter}</p>
                                     </div>
                                 </div>
                             </div>
@@ -249,19 +249,19 @@ const RiskAlertsPanel = ({ risks }: { risks: DetailedRisk[] }) => {
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
     const severityConfig = {
-        high: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', badge: 'bg-red-100 text-red-800', icon: '🚨' },
-        medium: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-800', icon: '⚠️' },
-        low: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', badge: 'bg-blue-100 text-blue-800', icon: '💡' }
+        high: { bg: 'bg-red-500/10', border: 'border-red-500/30', text: 'text-red-400', badge: 'bg-red-500/20 text-red-400', icon: '🚨' },
+        medium: { bg: 'bg-amber-500/10', border: 'border-amber-500/30', text: 'text-amber-400', badge: 'bg-amber-500/20 text-amber-400', icon: '⚠️' },
+        low: { bg: 'bg-primary/10', border: 'border-primary/30', text: 'text-primary', badge: 'bg-primary/20 text-primary', icon: '💡' }
     };
 
     if (risks.length === 0) return null;
 
     return (
-        <div className="bg-white rounded-xl p-6 border border-slate-200">
+        <div className="linear-card border-glow p-6">
             <div className="flex items-center gap-2 mb-4">
-                <AlertCircle className="size-5 text-red-500" />
-                <h3 className="font-semibold text-slate-900">Risk Alerts</h3>
-                <span className="ml-auto text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium">
+                <AlertCircle className="size-5 text-red-400" />
+                <h3 className="font-semibold text-foreground">Risk Alerts</h3>
+                <span className="ml-auto text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full font-medium">
                     {risks.length} {risks.length === 1 ? 'alert' : 'alerts'}
                 </span>
             </div>
@@ -290,7 +290,7 @@ const RiskAlertsPanel = ({ risks }: { risks: DetailedRisk[] }) => {
                                         <p className={`text-sm mt-1 ${config.text}`}>{risk.message}</p>
                                     </div>
                                     <div className={`transition-transform duration-300 ${expandedIndex === i ? 'rotate-180' : ''}`}>
-                                        <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                         </svg>
                                     </div>
@@ -299,31 +299,31 @@ const RiskAlertsPanel = ({ risks }: { risks: DetailedRisk[] }) => {
 
                             {/* Expanded Content */}
                             {expandedIndex === i && (
-                                <div className="px-4 pb-4 space-y-4 border-t border-white/50 pt-4">
+                                <div className="px-4 pb-4 space-y-4 border-t border-border/50 pt-4">
                                     {/* Explanation */}
-                                    <div className="bg-white/70 rounded-lg p-4">
+                                    <div className="bg-secondary rounded-lg p-4">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Info className="size-4 text-slate-600" />
-                                            <h5 className="font-semibold text-slate-800">Why This Matters</h5>
+                                            <Info className="size-4 text-muted-foreground" />
+                                            <h5 className="font-semibold text-foreground">Why This Matters</h5>
                                         </div>
-                                        <p className="text-sm text-slate-700">{risk.explanation}</p>
+                                        <p className="text-sm text-muted-foreground">{risk.explanation}</p>
                                     </div>
 
                                     {/* Affected Items */}
                                     {risk.affectedItems && risk.affectedItems.length > 0 && (
-                                        <div className="bg-white/70 rounded-lg p-4">
+                                        <div className="bg-secondary rounded-lg p-4">
                                             <div className="flex items-center gap-2 mb-2">
-                                                <FileText className="size-4 text-slate-600" />
-                                                <h5 className="font-semibold text-slate-800">Affected Items ({risk.affectedItems.length})</h5>
+                                                <FileText className="size-4 text-muted-foreground" />
+                                                <h5 className="font-semibold text-foreground">Affected Items ({risk.affectedItems.length})</h5>
                                             </div>
                                             <div className="space-y-1 max-h-32 overflow-y-auto">
                                                 {risk.affectedItems.slice(0, 5).map((item, idx) => (
-                                                    <div key={idx} className="text-sm text-slate-600 bg-slate-100 rounded px-2 py-1">
+                                                    <div key={idx} className="text-sm text-muted-foreground bg-card rounded px-2 py-1">
                                                         {item}
                                                     </div>
                                                 ))}
                                                 {risk.affectedItems.length > 5 && (
-                                                    <div className="text-xs text-slate-500 mt-1">
+                                                    <div className="text-xs text-muted-foreground mt-1">
                                                         +{risk.affectedItems.length - 5} more items
                                                     </div>
                                                 )}
@@ -332,29 +332,29 @@ const RiskAlertsPanel = ({ risks }: { risks: DetailedRisk[] }) => {
                                     )}
 
                                     {/* Solution */}
-                                    <div className="bg-white/70 rounded-lg p-4">
+                                    <div className="bg-secondary rounded-lg p-4">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <Zap className="size-4 text-blue-600" />
-                                            <h5 className="font-semibold text-slate-800">Recommended Actions</h5>
+                                            <Zap className="size-4 text-primary" />
+                                            <h5 className="font-semibold text-foreground">Recommended Actions</h5>
                                         </div>
-                                        <p className="text-sm text-slate-700 whitespace-pre-line">{risk.solution}</p>
+                                        <p className="text-sm text-muted-foreground whitespace-pre-line">{risk.solution}</p>
                                     </div>
 
                                     {/* Impact Comparison */}
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-red-100/50 rounded-lg p-4 border border-red-200">
+                                        <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/30">
                                             <div className="flex items-center gap-2 mb-2">
-                                                <ArrowDownRight className="size-4 text-red-600" />
-                                                <h5 className="font-semibold text-red-800 text-sm">If Ignored</h5>
+                                                <ArrowDownRight className="size-4 text-red-400" />
+                                                <h5 className="font-semibold text-red-400 text-sm">If Ignored</h5>
                                             </div>
-                                            <p className="text-sm text-red-700">{risk.impactBefore}</p>
+                                            <p className="text-sm text-red-300">{risk.impactBefore}</p>
                                         </div>
-                                        <div className="bg-emerald-100/50 rounded-lg p-4 border border-emerald-200">
+                                        <div className="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
                                             <div className="flex items-center gap-2 mb-2">
-                                                <ArrowUpRight className="size-4 text-emerald-600" />
-                                                <h5 className="font-semibold text-emerald-800 text-sm">After Resolution</h5>
+                                                <ArrowUpRight className="size-4 text-emerald-400" />
+                                                <h5 className="font-semibold text-emerald-400 text-sm">After Resolution</h5>
                                             </div>
-                                            <p className="text-sm text-emerald-700">{risk.impactAfter}</p>
+                                            <p className="text-sm text-emerald-300">{risk.impactAfter}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -719,10 +719,10 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
     // No repo selected state
     if (!selectedRepo) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <FileQuestion className="size-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Select a Repository</h3>
-                <p className="text-slate-600 max-w-md mx-auto">
+                <h3 className="text-xl font-semibold text-foreground mb-2">Select a Repository</h3>
+                <p className="text-muted-foreground max-w-md mx-auto">
                     Choose a repository from the dropdown above to view insights.
                 </p>
             </div>
@@ -732,10 +732,10 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
     // Loading state
     if (loading) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
-                <Loader2 className="size-12 text-blue-600 mx-auto mb-4 animate-spin" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Loading Analytics...</h3>
-                <p className="text-slate-600">Fetching data from GitHub & Jira</p>
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
+                <Loader2 className="size-12 text-primary mx-auto mb-4 animate-spin" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Loading Analytics...</h3>
+                <p className="text-muted-foreground">Fetching data from GitHub & Jira</p>
             </div>
         );
     }
@@ -743,10 +743,10 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
     // Error state
     if (error) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <AlertTriangle className="size-12 text-amber-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Unable to Load Data</h3>
-                <p className="text-slate-600 mb-4">{error}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Unable to Load Data</h3>
+                <p className="text-muted-foreground mb-4">{error}</p>
                 <button onClick={fetchData} className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     <RefreshCw className="size-4" /> Retry
                 </button>
@@ -761,8 +761,8 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-slate-900">Executive Dashboard</h2>
-                    <p className="text-slate-600 mt-1">Real-time insights for {selectedRepo.name}</p>
+                    <h2 className="text-2xl font-bold text-foreground">Executive Dashboard</h2>
+                    <p className="text-muted-foreground mt-1">Real-time insights for {selectedRepo.name}</p>
                 </div>
                 <button onClick={fetchData} className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     <RefreshCw className="size-4" /> Refresh
@@ -771,22 +771,22 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
 
             {/* Health Scores Row */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-white rounded-xl p-6 border border-slate-200 flex items-center justify-center">
+                <div className="bg-card rounded-xl p-6 border border-border flex items-center justify-center">
                     <HealthScoreGauge score={healthScore} label="Overall Health" />
                 </div>
-                <div className="bg-white rounded-xl p-6 border border-slate-200 flex items-center justify-center">
+                <div className="bg-card rounded-xl p-6 border border-border flex items-center justify-center">
                     <HealthScoreGauge
                         score={jiraMetrics.total > 0 ? Math.round((jiraMetrics.done / jiraMetrics.total) * 100) : 0}
                         label="Completion Rate"
                     />
                 </div>
-                <div className="bg-white rounded-xl p-6 border border-slate-200 flex items-center justify-center">
+                <div className="bg-card rounded-xl p-6 border border-border flex items-center justify-center">
                     <HealthScoreGauge
                         score={prs.length > 0 ? Math.round((prs.filter(p => p.merged_at).length / prs.length) * 100) : 0}
                         label="PR Merge Rate"
                     />
                 </div>
-                <div className="bg-white rounded-xl p-6 border border-slate-200 flex items-center justify-center">
+                <div className="bg-card rounded-xl p-6 border border-border flex items-center justify-center">
                     <HealthScoreGauge
                         score={Math.min(100, contributors.length * 10)}
                         label="Team Activity"
@@ -801,7 +801,7 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                     label="Total Commits"
                     value={commits.length}
                     subtext="Recent activity"
-                    color="text-blue-600"
+                    color="text-primary"
                     sparklineData={[12, 19, 15, 22, 18, commits.length]}
                     trend="up"
                 />
@@ -837,9 +837,9 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Velocity Chart */}
-                <div className="bg-white rounded-xl p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                        <Activity className="size-5 text-blue-600" />
+                <div className="bg-card rounded-xl p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                        <Activity className="size-5 text-primary" />
                         Velocity Trend
                     </h3>
                     <ResponsiveContainer width="100%" height={200}>
@@ -857,8 +857,8 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                 </div>
 
                 {/* Issue Distribution */}
-                <div className="bg-white rounded-xl p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <div className="bg-card rounded-xl p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                         <Target className="size-5 text-indigo-600" />
                         Issue Distribution
                     </h3>
@@ -883,7 +883,7 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                             </PieChart>
                         </ResponsiveContainer>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-[200px] text-slate-400">
+                        <div className="flex flex-col items-center justify-center h-[200px] text-muted-foreground">
                             <Target className="size-12 mb-3 opacity-50" />
                             <p className="text-sm font-medium">No Issues Found</p>
                             <p className="text-xs mt-1">This repository has no GitHub Issues</p>
@@ -900,12 +900,12 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
 
             {/* To Do Tasks Section */}
             {jiraIssues.filter(i => ['to do', 'open'].includes(i.status?.toLowerCase())).length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200">
+                <div className="bg-card rounded-xl p-6 border border-border">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                            <CheckCircle className="size-5 text-blue-600" />
+                        <h3 className="font-semibold text-foreground flex items-center gap-2">
+                            <CheckCircle className="size-5 text-primary" />
                             To Do Tasks
-                            <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                            <span className="ml-2 text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
                                 {jiraIssues.filter(i => ['to do', 'open'].includes(i.status?.toLowerCase())).length} items
                             </span>
                         </h3>
@@ -917,30 +917,30 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                             .map((issue: any, idx: number) => (
                                 <div
                                     key={issue.key || idx}
-                                    className="p-4 bg-gradient-to-br from-slate-50 to-blue-50 rounded-lg border border-slate-200 hover:shadow-md transition-shadow"
+                                    className={`p-4 rounded-lg border transition-all hover:border-primary/30 ${idx % 2 === 0 ? 'bg-primary/5 border-primary/20' : 'bg-secondary border-border'}`}
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${issue.priority?.toLowerCase() === 'high' || issue.priority?.toLowerCase() === 'highest'
                                             ? 'bg-red-500'
                                             : issue.priority?.toLowerCase() === 'medium'
                                                 ? 'bg-amber-500'
-                                                : 'bg-blue-500'
+                                                : 'bg-primary'
                                             }`} />
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-xs font-mono text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
+                                                <span className="text-xs font-mono text-primary bg-primary/20 px-1.5 py-0.5 rounded">
                                                     {issue.key || `TASK-${idx + 1}`}
                                                 </span>
                                                 {issue.type?.toLowerCase() === 'bug' && (
-                                                    <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded">
+                                                    <span className="text-xs bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded">
                                                         🐛 Bug
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="font-medium text-slate-900 text-sm line-clamp-2">
+                                            <p className="font-medium text-foreground text-sm line-clamp-2">
                                                 {issue.summary || issue.title || 'Untitled Task'}
                                             </p>
-                                            <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
+                                            <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                                                 {issue.assignee && (
                                                     <span className="flex items-center gap-1">
                                                         <Users className="size-3" />
@@ -949,10 +949,10 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                                                 )}
                                                 {issue.priority && (
                                                     <span className={`px-1.5 py-0.5 rounded ${issue.priority?.toLowerCase() === 'high' || issue.priority?.toLowerCase() === 'highest'
-                                                        ? 'bg-red-100 text-red-700'
+                                                        ? 'bg-red-500/20 text-red-400'
                                                         : issue.priority?.toLowerCase() === 'medium'
-                                                            ? 'bg-amber-100 text-amber-700'
-                                                            : 'bg-slate-100 text-slate-600'
+                                                            ? 'bg-amber-500/20 text-amber-400'
+                                                            : 'bg-secondary text-muted-foreground'
                                                         }`}>
                                                         {issue.priority}
                                                     </span>
@@ -965,7 +965,7 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
                     </div>
                     {jiraIssues.filter(i => ['to do', 'open'].includes(i.status?.toLowerCase())).length > 9 && (
                         <div className="mt-4 text-center">
-                            <span className="text-sm text-slate-500">
+                            <span className="text-sm text-muted-foreground">
                                 +{jiraIssues.filter(i => ['to do', 'open'].includes(i.status?.toLowerCase())).length - 9} more tasks in Jira
                             </span>
                         </div>
@@ -977,16 +977,19 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
             <div className="grid grid-cols-1 gap-6">
                 {/* Recent Commits */}
                 {commits.length > 0 && (
-                    <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <GitCommit className="size-5 text-blue-600" />
+                    <div className="linear-card border-glow p-6">
+                        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                            <GitCommit className="size-5 text-primary" />
                             Recent Commits
+                            <span className="ml-2 text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
+                                {commits.length} commits
+                            </span>
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {commits.slice(0, 6).map((commit: any) => (
-                                <div key={commit.sha} className="p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
-                                    <p className="font-medium text-slate-900 truncate">{commit.commit?.message?.split('\n')[0]}</p>
-                                    <p className="text-sm text-slate-500">{commit.commit?.author?.name} • {new Date(commit.commit?.author?.date).toLocaleDateString()}</p>
+                            {commits.slice(0, 6).map((commit: any, idx: number) => (
+                                <div key={commit.sha} className={`p-3 rounded-lg border transition-all hover:border-primary/30 ${idx % 2 === 0 ? 'bg-primary/5 border-primary/20' : 'bg-secondary border-border'}`}>
+                                    <p className="font-medium text-foreground truncate">{commit.commit?.message?.split('\n')[0]}</p>
+                                    <p className="text-sm text-muted-foreground">{commit.commit?.author?.name} • {new Date(commit.commit?.author?.date).toLocaleDateString()}</p>
                                 </div>
                             ))}
                         </div>
@@ -995,19 +998,22 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
 
                 {/* Recent PRs */}
                 {prs.length > 0 && (
-                    <div className="bg-white rounded-xl p-6 border border-slate-200">
-                        <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <GitPullRequest className="size-5 text-purple-600" />
+                    <div className="linear-card border-glow p-6">
+                        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+                            <GitPullRequest className="size-5 text-accent" />
                             Pull Requests
+                            <span className="ml-2 text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">
+                                {prs.filter((p: any) => p.state === 'open').length} open
+                            </span>
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {prs.slice(0, 6).map((pr: any) => (
-                                <div key={pr.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
+                            {prs.slice(0, 6).map((pr: any, idx: number) => (
+                                <div key={pr.id} className={`flex items-center justify-between p-3 rounded-lg border transition-all hover:border-primary/30 ${idx % 2 === 0 ? 'bg-accent/5 border-accent/20' : 'bg-secondary border-border'}`}>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-medium text-slate-900 truncate">{pr.title}</p>
-                                        <p className="text-sm text-slate-500">#{pr.number} by {pr.user?.login}</p>
+                                        <p className="font-medium text-foreground truncate">{pr.title}</p>
+                                        <p className="text-sm text-muted-foreground">#{pr.number} by {pr.user?.login}</p>
                                     </div>
-                                    <span className={`px-2 py-1 text-xs rounded-full ml-3 ${pr.state === 'open' ? 'bg-emerald-100 text-emerald-700' : 'bg-purple-100 text-purple-700'
+                                    <span className={`px-2 py-1 text-xs rounded-full ml-3 ${pr.state === 'open' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-accent/20 text-accent'
                                         }`}>
                                         {pr.state}
                                     </span>
@@ -1020,18 +1026,18 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
 
             {/* Top Contributors */}
             {contributors.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <div className="bg-card rounded-xl p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                         <Users className="size-5 text-emerald-600" />
                         Top Contributors
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         {contributors.slice(0, 10).map((c: any) => (
-                            <div key={c.id} className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-lg">
+                            <div key={c.id} className="flex items-center gap-3 bg-secondary px-4 py-3 rounded-lg">
                                 <img src={c.avatar_url} alt={c.login} className="size-10 rounded-full" />
                                 <div>
-                                    <p className="font-medium text-slate-900">{c.login}</p>
-                                    <p className="text-xs text-slate-500">{c.contributions} commits</p>
+                                    <p className="font-medium text-foreground">{c.login}</p>
+                                    <p className="text-xs text-muted-foreground">{c.contributions} commits</p>
                                 </div>
                             </div>
                         ))}

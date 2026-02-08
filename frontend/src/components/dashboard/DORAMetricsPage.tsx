@@ -33,11 +33,11 @@ function getRatingColor(rating: string) {
 
 function getRatingBgColor(rating: string) {
     switch (rating) {
-        case 'elite': return 'bg-emerald-50 border-emerald-200 text-emerald-700';
-        case 'high': return 'bg-blue-50 border-blue-200 text-blue-700';
-        case 'medium': return 'bg-amber-50 border-amber-200 text-amber-700';
+        case 'elite': return 'bg-emerald-50 border-emerald-500/30 text-emerald-400';
+        case 'high': return 'bg-blue-50 border-blue-200 text-primary';
+        case 'medium': return 'bg-amber-50 border-amber-500/30 text-amber-400';
         case 'low': return 'bg-rose-50 border-rose-200 text-rose-700';
-        default: return 'bg-slate-50 border-slate-200 text-slate-700';
+        default: return 'bg-secondary border-border text-slate-700';
     }
 }
 
@@ -57,11 +57,11 @@ export function DORAMetricsPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">DORA Metrics</h2>
-                    <p className="text-slate-600 mt-1">DevOps Research & Assessment performance indicators</p>
+                    <h2 className="text-2xl font-semibold text-foreground">DORA Metrics</h2>
+                    <p className="text-muted-foreground mt-1">DevOps Research & Assessment performance indicators</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-all">
+                    <button className="flex items-center gap-2 bg-card border border-border text-slate-700 px-4 py-2.5 rounded-xl font-medium hover:bg-secondary transition-all">
                         <Calendar className="size-4" />
                         Last 30 Days
                     </button>
@@ -89,11 +89,11 @@ export function DORAMetricsPage() {
                     <div className="flex items-center gap-6">
                         <div className="text-center">
                             <p className="text-3xl font-bold text-emerald-300">3/4</p>
-                            <p className="text-sm text-slate-400">Elite Metrics</p>
+                            <p className="text-sm text-muted-foreground">Elite Metrics</p>
                         </div>
                         <div className="text-center">
                             <p className="text-3xl font-bold text-blue-300">1/4</p>
-                            <p className="text-sm text-slate-400">High Metrics</p>
+                            <p className="text-sm text-muted-foreground">High Metrics</p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export function DORAMetricsPage() {
                     return (
                         <div
                             key={metric.name}
-                            className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
+                            className="bg-card rounded-2xl p-5 border border-border/60 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div className={`bg-gradient-to-br ${getRatingColor(metric.rating)} p-2.5 rounded-xl shadow-lg`}>
@@ -121,14 +121,14 @@ export function DORAMetricsPage() {
                                 </span>
                             </div>
 
-                            <p className="text-sm text-slate-600 mb-1">{metric.name}</p>
+                            <p className="text-sm text-muted-foreground mb-1">{metric.name}</p>
                             <div className="flex items-baseline gap-2 mb-2">
-                                <span className="text-2xl font-bold text-slate-900">{metric.current}</span>
-                                <span className="text-sm text-slate-500">{metric.unit}</span>
+                                <span className="text-2xl font-bold text-foreground">{metric.current}</span>
+                                <span className="text-sm text-muted-foreground">{metric.unit}</span>
                             </div>
 
-                            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                                <span className="text-xs text-slate-500">Target: {metric.target} {metric.unit}</span>
+                            <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                                <span className="text-xs text-muted-foreground">Target: {metric.target} {metric.unit}</span>
                                 <div className={`flex items-center gap-1 text-sm font-medium ${isPositiveTrend ? 'text-emerald-600' : 'text-rose-600'}`}>
                                     {isPositiveTrend ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
                                     {metric.trend}
@@ -142,10 +142,10 @@ export function DORAMetricsPage() {
             {/* Charts Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Deployment Frequency Trend */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Deployment Frequency</h3>
-                        <p className="text-sm text-slate-600">Daily deployments over the past week</p>
+                        <h3 className="font-semibold text-foreground mb-1">Deployment Frequency</h3>
+                        <p className="text-sm text-muted-foreground">Daily deployments over the past week</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={deploymentTrendData}>
@@ -169,10 +169,10 @@ export function DORAMetricsPage() {
                 </div>
 
                 {/* Lead Time Breakdown */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Lead Time Breakdown</h3>
-                        <p className="text-sm text-slate-600">Time distribution across delivery stages</p>
+                        <h3 className="font-semibold text-foreground mb-1">Lead Time Breakdown</h3>
+                        <p className="text-sm text-muted-foreground">Time distribution across delivery stages</p>
                     </div>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={leadTimeBreakdownData} layout="vertical">
@@ -196,10 +196,10 @@ export function DORAMetricsPage() {
             </div>
 
             {/* Weekly Trends */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+            <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                 <div className="mb-6">
-                    <h3 className="font-semibold text-slate-900 mb-1">Weekly Performance Trends</h3>
-                    <p className="text-sm text-slate-600">All DORA metrics over the past 4 weeks</p>
+                    <h3 className="font-semibold text-foreground mb-1">Weekly Performance Trends</h3>
+                    <p className="text-sm text-muted-foreground">All DORA metrics over the past 4 weeks</p>
                 </div>
                 <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={weeklyTrendData}>
@@ -226,10 +226,10 @@ export function DORAMetricsPage() {
 
             {/* MTTR Details */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+                <div className="lg:col-span-2 bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                     <div className="mb-6">
-                        <h3 className="font-semibold text-slate-900 mb-1">Incident Recovery Trend</h3>
-                        <p className="text-sm text-slate-600">Daily incidents and average recovery time</p>
+                        <h3 className="font-semibold text-foreground mb-1">Incident Recovery Trend</h3>
+                        <p className="text-sm text-muted-foreground">Daily incidents and average recovery time</p>
                     </div>
                     <ResponsiveContainer width="100%" height={250}>
                         <AreaChart data={mttrIncidentsData}>
@@ -253,8 +253,8 @@ export function DORAMetricsPage() {
                 </div>
 
                 {/* DORA Rating Guide */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
-                    <h3 className="font-semibold text-slate-900 mb-4">DORA Rating Guide</h3>
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
+                    <h3 className="font-semibold text-foreground mb-4">DORA Rating Guide</h3>
                     <div className="space-y-3">
                         {[
                             { rating: 'elite', color: 'bg-emerald-500', label: 'Elite Performer', desc: 'Top tier, multiple deploys/day' },
@@ -262,11 +262,11 @@ export function DORAMetricsPage() {
                             { rating: 'medium', color: 'bg-amber-500', label: 'Medium Performer', desc: 'Monthly to weekly cycle' },
                             { rating: 'low', color: 'bg-rose-500', label: 'Low Performer', desc: 'Less than monthly deployments' },
                         ].map((item) => (
-                            <div key={item.rating} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                            <div key={item.rating} className="flex items-center gap-3 p-3 bg-secondary rounded-lg">
                                 <div className={`size-3 rounded-full ${item.color}`} />
                                 <div>
-                                    <p className="text-sm font-medium text-slate-900">{item.label}</p>
-                                    <p className="text-xs text-slate-500">{item.desc}</p>
+                                    <p className="text-sm font-medium text-foreground">{item.label}</p>
+                                    <p className="text-xs text-muted-foreground">{item.desc}</p>
                                 </div>
                             </div>
                         ))}

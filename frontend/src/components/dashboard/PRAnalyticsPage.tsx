@@ -503,30 +503,30 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
     // No repo selected
     if (!selectedRepo) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <FileQuestion className="size-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Select a Repository</h3>
-                <p className="text-slate-600">Choose a repository to view team & project insights.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Select a Repository</h3>
+                <p className="text-muted-foreground">Choose a repository to view team & project insights.</p>
             </div>
         );
     }
 
     if (loading) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
-                <Loader2 className="size-12 text-blue-600 mx-auto mb-4 animate-spin" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Analyzing Project...</h3>
-                <p className="text-slate-600">Gathering insights from GitHub & Jira</p>
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
+                <Loader2 className="size-12 text-primary mx-auto mb-4 animate-spin" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Analyzing Project...</h3>
+                <p className="text-muted-foreground">Gathering insights from GitHub & Jira</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <div className="bg-card rounded-2xl p-12 border border-border text-center">
                 <AlertTriangle className="size-12 text-amber-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">Error Loading Data</h3>
-                <p className="text-slate-600 mb-4">{error}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Error Loading Data</h3>
+                <p className="text-muted-foreground mb-4">{error}</p>
                 <button onClick={fetchData} className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg">
                     <RefreshCw className="size-4" /> Retry
                 </button>
@@ -539,13 +539,13 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
+                    <h2 className="text-2xl font-semibold text-foreground flex items-center gap-2">
                         <Brain className="size-7 text-indigo-600" />
                         Team & Project Insights
                     </h2>
-                    <p className="text-slate-600 mt-1">AI-powered analysis for {selectedRepo.name}</p>
+                    <p className="text-muted-foreground mt-1">AI-powered analysis for {selectedRepo.name}</p>
                 </div>
-                <button onClick={fetchData} className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200">
+                <button onClick={fetchData} className="flex items-center gap-2 bg-secondary text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200">
                     <RefreshCw className="size-4" /> Refresh
                 </button>
             </div>
@@ -553,24 +553,24 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
             {/* Business Insights Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {businessInsights.map((insight, idx) => (
-                    <div key={idx} className="bg-white rounded-xl p-5 border border-slate-200 hover:shadow-lg transition-shadow">
+                    <div key={idx} className="bg-card rounded-xl p-5 border border-border hover:shadow-lg transition-shadow">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-slate-600 text-sm font-medium">{insight.title}</span>
+                            <span className="text-muted-foreground text-sm font-medium">{insight.title}</span>
                             {insight.trend === 'up' ? (
                                 <ArrowUpRight className="size-5 text-emerald-500" />
                             ) : insight.trend === 'down' ? (
                                 <ArrowDownRight className="size-5 text-red-500" />
                             ) : (
-                                <BarChart3 className="size-5 text-slate-400" />
+                                <BarChart3 className="size-5 text-muted-foreground" />
                             )}
                         </div>
                         <p className={`text-3xl font-bold ${insight.trend === 'up' ? 'text-emerald-600' :
-                            insight.trend === 'down' ? 'text-red-600' : 'text-slate-900'
+                            insight.trend === 'down' ? 'text-red-600' : 'text-foreground'
                             }`}>{insight.value}</p>
                         <p className={`text-xs mt-1 ${insight.trend === 'up' ? 'text-emerald-600' :
-                            insight.trend === 'down' ? 'text-red-600' : 'text-slate-500'
+                            insight.trend === 'down' ? 'text-red-600' : 'text-muted-foreground'
                             }`}>{insight.change}</p>
-                        <p className="text-xs text-slate-500 mt-2">{insight.description}</p>
+                        <p className="text-xs text-muted-foreground mt-2">{insight.description}</p>
                     </div>
                 ))}
             </div>
@@ -578,92 +578,92 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Top Performers */}
-                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-200">
-                    <h3 className="font-semibold text-emerald-900 mb-4 flex items-center gap-2">
+                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-6 border border-emerald-500/30">
+                    <h3 className="font-semibold text-emerald-400 mb-4 flex items-center gap-2">
                         <Award className="size-5 text-emerald-600" />
                         Top Performers
-                        <span className="ml-auto text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
+                        <span className="ml-auto text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full">
                             Based on activity
                         </span>
                     </h3>
                     <div className="space-y-3">
                         {topPerformers.length > 0 ? topPerformers.slice(0, 5).map((performer, idx) => (
-                            <div key={performer.login} className="flex items-center gap-4 p-3 bg-white/70 rounded-lg">
-                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold text-sm">
+                            <div key={performer.login} className="flex items-center gap-4 p-3 bg-card/70 rounded-lg">
+                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-sm">
                                     {idx + 1}
                                 </div>
                                 {performer.avatarUrl ? (
                                     <img src={performer.avatarUrl} alt={performer.login} className="size-10 rounded-full" />
                                 ) : (
-                                    <div className="size-10 rounded-full bg-emerald-200 flex items-center justify-center text-emerald-700 font-semibold">
+                                    <div className="size-10 rounded-full bg-emerald-200 flex items-center justify-center text-emerald-400 font-semibold">
                                         {performer.login[0].toUpperCase()}
                                     </div>
                                 )}
                                 <div className="flex-1 min-w-0">
-                                    <p className="font-medium text-slate-900 flex items-center gap-2">
+                                    <p className="font-medium text-foreground flex items-center gap-2">
                                         {performer.login}
                                         {performer.ranking === 'star' && <Star className="size-4 text-amber-500 fill-amber-500" />}
                                     </p>
-                                    <p className="text-xs text-slate-600">
+                                    <p className="text-xs text-muted-foreground">
                                         {performer.commits} commits • {performer.prsMerged} PRs merged • {performer.issuesCompleted} tasks done
                                     </p>
-                                    <p className="text-xs text-emerald-700 mt-1 italic line-clamp-2">
+                                    <p className="text-xs text-emerald-400 mt-1 italic line-clamp-2">
                                         📋 {performer.workSummary}
                                     </p>
                                 </div>
                                 <div className="text-right flex-shrink-0">
                                     <p className="text-lg font-bold text-emerald-600">{performer.score}</p>
-                                    <p className="text-xs text-slate-500">score</p>
+                                    <p className="text-xs text-muted-foreground">score</p>
                                 </div>
                             </div>
                         )) : (
-                            <p className="text-slate-500 text-center py-4">No performer data available</p>
+                            <p className="text-muted-foreground text-center py-4">No performer data available</p>
                         )}
                     </div>
                 </div>
 
                 {/* Needs Support */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
-                    <h3 className="font-semibold text-amber-900 mb-4 flex items-center gap-2">
+                <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-6 border border-amber-500/30">
+                    <h3 className="font-semibold text-amber-400 mb-4 flex items-center gap-2">
                         <Users className="size-5 text-amber-600" />
                         May Need Support
-                        <span className="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">
+                        <span className="ml-auto text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded-full">
                             Low activity detected
                         </span>
                     </h3>
                     <div className="space-y-3">
                         {needsSupport.length > 0 ? needsSupport.slice(0, 5).map((person) => (
-                            <div key={person.login} className="flex items-start gap-4 p-3 bg-white/70 rounded-lg">
+                            <div key={person.login} className="flex items-start gap-4 p-3 bg-card/70 rounded-lg">
                                 {person.avatarUrl ? (
                                     <img src={person.avatarUrl} alt={person.login} className="size-10 rounded-full opacity-80 flex-shrink-0" />
                                 ) : (
-                                    <div className="size-10 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 font-semibold flex-shrink-0">
+                                    <div className="size-10 rounded-full bg-amber-200 flex items-center justify-center text-amber-400 font-semibold flex-shrink-0">
                                         {person.login[0].toUpperCase()}
                                     </div>
                                 )}
                                 <div className="flex-1 min-w-0">
-                                    <p className="font-medium text-slate-900">{person.login}</p>
-                                    <p className="text-xs text-slate-600">
+                                    <p className="font-medium text-foreground">{person.login}</p>
+                                    <p className="text-xs text-muted-foreground">
                                         {person.commits} commits • {person.issuesCompleted} tasks done
                                     </p>
-                                    <p className="text-xs text-amber-700 mt-1 italic line-clamp-2">
+                                    <p className="text-xs text-amber-400 mt-1 italic line-clamp-2">
                                         📋 {person.workSummary}
                                     </p>
                                 </div>
                                 <div className="text-right flex-shrink-0">
                                     <p className="text-sm font-medium text-amber-600">Check-in recommended</p>
-                                    <p className="text-xs text-slate-500">May be blocked</p>
+                                    <p className="text-xs text-muted-foreground">May be blocked</p>
                                 </div>
                             </div>
                         )) : (
                             <div className="text-center py-4">
                                 <CheckCircle className="size-8 text-emerald-500 mx-auto mb-2" />
-                                <p className="text-slate-600">All team members are active!</p>
+                                <p className="text-muted-foreground">All team members are active!</p>
                             </div>
                         )}
                     </div>
                     {needsSupport.length > 0 && (
-                        <div className="mt-4 p-3 bg-amber-100 rounded-lg">
+                        <div className="mt-4 p-3 bg-amber-500/20 rounded-lg">
                             <p className="text-sm text-amber-800">
                                 <strong>💡 Tip:</strong> Schedule 1-on-1s to identify blockers, unclear requirements, or resource needs.
                             </p>
@@ -673,11 +673,11 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
             </div>
 
             {/* Project Improvement Suggestions */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
-                <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <div className="bg-card rounded-xl p-6 border border-border">
+                <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                     <Rocket className="size-5 text-indigo-600" />
                     Ways to Improve & Complete the Project
-                    <span className="ml-auto text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">
+                    <span className="ml-auto text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
                         {improvements.length} suggestions
                     </span>
                 </h3>
@@ -688,7 +688,7 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
                             <div
                                 key={idx}
                                 className={`p-4 rounded-lg border-2 ${item.priority === 'high' ? 'border-red-200 bg-red-50' :
-                                    item.priority === 'medium' ? 'border-amber-200 bg-amber-50' :
+                                    item.priority === 'medium' ? 'border-amber-500/30 bg-amber-50' :
                                         'border-blue-200 bg-blue-50'
                                     }`}
                             >
@@ -697,22 +697,22 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${item.priority === 'high' ? 'bg-red-100 text-red-700' :
-                                                item.priority === 'medium' ? 'bg-amber-100 text-amber-700' :
-                                                    'bg-blue-100 text-blue-700'
+                                                item.priority === 'medium' ? 'bg-amber-500/20 text-amber-400' :
+                                                    'bg-primary/20 text-primary'
                                                 }`}>
                                                 {item.priority.toUpperCase()}
                                             </span>
-                                            <span className="text-xs text-slate-500">{item.category}</span>
+                                            <span className="text-xs text-muted-foreground">{item.category}</span>
                                         </div>
-                                        <h4 className="font-semibold text-slate-900 text-sm">{item.title}</h4>
-                                        <p className="text-xs text-slate-600 mt-1">{item.description}</p>
+                                        <h4 className="font-semibold text-foreground text-sm">{item.title}</h4>
+                                        <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
                                         <div className="flex gap-4 mt-3 text-xs">
                                             <div>
-                                                <span className="text-slate-500">Impact:</span>
+                                                <span className="text-muted-foreground">Impact:</span>
                                                 <span className="ml-1 text-slate-700">{item.impact.split(' - ')[0]}</span>
                                             </div>
                                             <div>
-                                                <span className="text-slate-500">Effort:</span>
+                                                <span className="text-muted-foreground">Effort:</span>
                                                 <span className="ml-1 text-slate-700">{item.effort}</span>
                                             </div>
                                         </div>
@@ -724,25 +724,25 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
                 ) : (
                     <div className="text-center py-8">
                         <CheckCircle className="size-12 text-emerald-500 mx-auto mb-4" />
-                        <h4 className="font-semibold text-slate-900 mb-2">Project is in Great Shape!</h4>
-                        <p className="text-slate-600">No critical improvements needed at this time.</p>
+                        <h4 className="font-semibold text-foreground mb-2">Project is in Great Shape!</h4>
+                        <p className="text-muted-foreground">No critical improvements needed at this time.</p>
                     </div>
                 )}
             </div>
 
             {/* Business Recommendations */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
-                <h3 className="font-semibold text-indigo-900 mb-4 flex items-center gap-2">
+            <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl p-6 border border-primary/30">
+                <h3 className="font-semibold text-primary mb-4 flex items-center gap-2">
                     <Lightbulb className="size-5 text-indigo-600" />
                     Business Recommendations
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {businessInsights.map((insight, idx) => (
-                        <div key={idx} className="p-4 bg-white/70 rounded-lg">
-                            <h4 className="font-medium text-slate-900 mb-1">{insight.title}</h4>
-                            <p className="text-sm text-slate-600 mb-2">{insight.description}</p>
+                        <div key={idx} className="p-4 bg-card/70 rounded-lg">
+                            <h4 className="font-medium text-foreground mb-1">{insight.title}</h4>
+                            <p className="text-sm text-muted-foreground mb-2">{insight.description}</p>
                             <div className={`text-sm font-medium ${insight.trend === 'up' ? 'text-emerald-600' :
-                                insight.trend === 'down' ? 'text-red-600' : 'text-slate-600'
+                                insight.trend === 'down' ? 'text-red-600' : 'text-muted-foreground'
                                 }`}>
                                 💡 {insight.recommendation}
                             </div>
