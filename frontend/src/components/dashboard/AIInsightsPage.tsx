@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Brain, Send, Sparkles, Lightbulb, RefreshCw, Bot, User, Loader2, FileQuestion } from 'lucide-react';
-import { askAI, getCommits, getPullRequests, getContributors, getJiraIssues } from '@/api/github';
+import { askAI, getCommits, getPullRequests, getContributors, getJiraIssues, getGitHubIssues } from '@/api/github';
 
 interface Message {
     id: string;
@@ -11,10 +11,12 @@ interface Message {
 
 interface SelectedRepo {
     name: string;
+    fullName?: string;
 }
 
 interface AIInsightsPageProps {
     selectedRepo?: SelectedRepo | null;
+    githubToken?: string | null;
 }
 
 const suggestedQuestions = [
@@ -24,7 +26,7 @@ const suggestedQuestions = [
     "What patterns do you see in the commits?",
 ];
 
-export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
+export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -42,12 +44,19 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
         if (!selectedRepo) return;
 
         try {
-            const [commits, prs, contributors, jiraData] = await Promise.all([
-                getCommits(selectedRepo.name),
-                getPullRequests(selectedRepo.name),
-                getContributors(selectedRepo.name),
-                getJiraIssues()
+            const repoFullName = selectedRepo.fullName || selectedRepo.name;
+            const [commits, prs, contributors, issuesData] = await Promise.all([
+                getCommits(repoFullName, githubToken),
+                getPullRequests(repoFullName, githubToken),
+                getContributors(repoFullName, githubToken),
+                getGitHubIssues(repoFullName, githubToken)
             ]);
+
+            // Count bugs based on 'bug' label
+            const bugs = (issuesData || []).filter((i: any) =>
+                i.labels?.some((l: any) => l.name?.toLowerCase().includes('bug'))
+            );
+            const openIssues = (issuesData || []).filter((i: any) => i.state === 'open');
 
             setContext({
                 repo: selectedRepo.name,
@@ -58,10 +67,11 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
                     contributors: contributors.length,
                     topContributors: contributors.slice(0, 5).map((c: any) => c.login)
                 },
-                jira: {
-                    issues: jiraData.length,
-                    bugs: jiraData.filter((i: any) => i.type?.toLowerCase() === 'bug').length,
-                    done: jiraData.filter((i: any) => i.status?.toLowerCase() === 'done').length
+                issues: {
+                    total: (issuesData || []).length,
+                    bugs: bugs.length,
+                    open: openIssues.length,
+                    closed: (issuesData || []).length - openIssues.length
                 }
             });
         } catch (err) {
@@ -170,9 +180,9 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
                     <div className="bg-white rounded-xl p-4 border border-slate-200">
                         <div className="flex items-center gap-2 text-slate-600 mb-1">
                             <Sparkles className="size-4 text-indigo-600" />
-                            <span className="text-sm">Jira Issues</span>
+                            <span className="text-sm">Issues</span>
                         </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.jira?.issues || 0}</p>
+                        <p className="text-2xl font-semibold text-slate-900">{context.issues?.total || 0}</p>
                     </div>
                 </div>
             )}

@@ -7,13 +7,15 @@ import { getContributors, getCommits, getPullRequests, getJiraIssues } from '@/a
 
 interface SelectedRepo {
     name: string;
+    fullName?: string;
 }
 
 interface DeveloperMetricsPageProps {
     selectedRepo?: SelectedRepo | null;
+    githubToken?: string | null;
 }
 
-export function DeveloperMetricsPage({ selectedRepo }: DeveloperMetricsPageProps) {
+export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMetricsPageProps) {
     const [loading, setLoading] = useState(false);
     const [contributors, setContributors] = useState<any[]>([]);
     const [commits, setCommits] = useState<any[]>([]);
@@ -28,10 +30,11 @@ export function DeveloperMetricsPage({ selectedRepo }: DeveloperMetricsPageProps
         setError(null);
 
         try {
+            const repoFullName = selectedRepo.fullName || selectedRepo.name;
             const [contribData, commitsData, prsData, jiraData] = await Promise.all([
-                getContributors(selectedRepo.name),
-                getCommits(selectedRepo.name),
-                getPullRequests(selectedRepo.name),
+                getContributors(repoFullName, githubToken),
+                getCommits(repoFullName, githubToken),
+                getPullRequests(repoFullName, githubToken),
                 getJiraIssues()
             ]);
 

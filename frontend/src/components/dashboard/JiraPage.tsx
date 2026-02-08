@@ -46,9 +46,10 @@ interface Contributor {
 
 interface JiraPageProps {
   selectedRepo: any;
+  githubToken?: string | null;
 }
 
-export function JiraPage({ selectedRepo }: JiraPageProps) {
+export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
   const [issues, setIssues] = useState<JiraIssue[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +70,30 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
   const [emailModalData, setEmailModalData] = useState<{ assignee: string; issue: JiraIssue | null }>({ assignee: '', issue: null });
   const [manualEmail, setManualEmail] = useState('');
 
+  // LocalStorage key for persisting assignments
+  const ASSIGNMENTS_STORAGE_KEY = 'polaris_jira_assignments';
+
+  // Helper to get saved assignments from localStorage
+  const getSavedAssignments = (): Record<string, string> => {
+    try {
+      const saved = localStorage.getItem(ASSIGNMENTS_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  // Helper to save assignment to localStorage
+  const saveAssignment = (issueKey: string, assignee: string) => {
+    try {
+      const current = getSavedAssignments();
+      current[issueKey] = assignee;
+      localStorage.setItem(ASSIGNMENTS_STORAGE_KEY, JSON.stringify(current));
+    } catch (err) {
+      console.error('Failed to save assignment:', err);
+    }
+  };
+
   const loadIssues = async () => {
     setLoading(true);
     setError(null);
@@ -76,7 +101,13 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
       const response = await fetch('http://localhost:3001/api/jira/issues');
       const data = await response.json();
       if (data.success) {
-        setIssues(data.data);
+        // Merge with saved assignments from localStorage
+        const savedAssignments = getSavedAssignments();
+        const issuesWithSavedAssignments = data.data.map((issue: JiraIssue) => ({
+          ...issue,
+          assignee: savedAssignments[issue.key] || issue.assignee
+        }));
+        setIssues(issuesWithSavedAssignments);
       } else {
         throw new Error(data.error || 'Failed to load issues');
       }
@@ -90,7 +121,8 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
   const loadContributors = async () => {
     if (selectedRepo?.name) {
       try {
-        const contribData = await getContributors(selectedRepo.name);
+        const repoFullName = selectedRepo.fullName || selectedRepo.name;
+        const contribData = await getContributors(repoFullName, githubToken);
         setContributors(contribData);
       } catch (err) {
         console.error('Failed to load contributors:', err);
@@ -243,8 +275,20 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
   // Handle email modal submission
   const handleEmailSubmit = async () => {
     if (manualEmail && manualEmail.includes('@') && emailModalData.issue) {
+      const issue = emailModalData.issue;
+      const assignee = emailModalData.assignee;
+
+      // Update local state with the assignee name from email (before @)
+      const assigneeName = manualEmail.split('@')[0];
+      setIssues(prev => prev.map(i =>
+        i.key === issue.key ? { ...i, assignee: assigneeName } : i
+      ));
+
+      // Persist to localStorage
+      saveAssignment(issue.key, assigneeName);
+
       setEmailModalOpen(false);
-      await sendEmailNotification(manualEmail.trim(), emailModalData.assignee, emailModalData.issue);
+      await sendEmailNotification(manualEmail.trim(), assignee, issue);
       setManualEmail('');
       setEmailModalData({ assignee: '', issue: null });
     } else {
@@ -261,10 +305,7 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
     setEmailModalOpen(false);
     setManualEmail('');
     setEmailModalData({ assignee: '', issue: null });
-    toast({
-      title: "✅ Task Assigned",
-      description: `Assigned without email notification`,
-    });
+    // Just close silently - no notification needed when skipping
   };
 
   // Assign issue handler with email notification
@@ -276,6 +317,9 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
       i.key === issueKey ? { ...i, assignee } : i
     ));
     setAssigningIssue(null);
+
+    // Persist assignment to localStorage
+    saveAssignment(issueKey, assignee);
 
     // Send email notification if assigning to someone (not unassigning)
     if (assignee && assignee !== 'Unassigned' && issue) {
@@ -599,51 +643,20 @@ export function JiraPage({ selectedRepo }: JiraPageProps) {
                         {issue.summary}
                       </p>
                       <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
-                        {/* Assignee with dropdown */}
+                        {/* Assignee with direct email input */}
                         <div className="relative">
                           <button
-                            onClick={() => setAssigningIssue(assigningIssue === issue.key ? null : issue.key)}
+                            onClick={() => {
+                              // Directly open email modal for this issue
+                              setEmailModalData({ assignee: issue.assignee || 'Team Member', issue });
+                              setEmailModalOpen(true);
+                            }}
                             className="flex items-center gap-1 hover:text-blue-600 transition-colors"
                           >
                             <Users className="h-3 w-3" />
                             <span>Assignee: <span className="font-medium text-slate-700">{issue.assignee || 'Unassigned'}</span></span>
-                            <ChevronDown className="h-3 w-3" />
+                            <Mail className="h-3 w-3 ml-1 text-blue-500" />
                           </button>
-
-                          {/* Assignment Dropdown */}
-                          {assigningIssue === issue.key && (
-                            <div className="absolute top-full left-0 mt-1 z-50 bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[200px]">
-                              <div className="px-3 py-2 border-b border-slate-100">
-                                <p className="text-xs font-medium text-slate-500 uppercase">Assign to</p>
-                              </div>
-                              <button
-                                onClick={() => handleAssign(issue.key, 'Unassigned')}
-                                className="w-full px-3 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2"
-                              >
-                                <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
-                                  <X className="h-3 w-3 text-slate-500" />
-                                </div>
-                                Unassigned
-                              </button>
-                              {contributors.map((contrib) => (
-                                <button
-                                  key={contrib.login}
-                                  onClick={() => handleAssign(issue.key, contrib.login)}
-                                  className="w-full px-3 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2"
-                                >
-                                  <img
-                                    src={contrib.avatar_url}
-                                    alt={contrib.login}
-                                    className="w-6 h-6 rounded-full"
-                                  />
-                                  {contrib.login}
-                                </button>
-                              ))}
-                              {contributors.length === 0 && (
-                                <p className="px-3 py-2 text-sm text-slate-500">No contributors found</p>
-                              )}
-                            </div>
-                          )}
                         </div>
 
                         {issue.labels && issue.labels.length > 0 && (

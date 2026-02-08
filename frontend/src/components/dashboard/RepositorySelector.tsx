@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Folder, Loader2, RefreshCw, ChevronDown, AlertCircle } from 'lucide-react';
-import { getRepositories } from '@/api/github';
+import { Folder, Loader2, RefreshCw, ChevronDown, Github } from 'lucide-react';
 
 interface Repository {
     name: string;
@@ -12,9 +11,10 @@ interface Repository {
 interface RepositorySelectorProps {
     onRepositorySelect: (repo: Repository | null) => void;
     selectedRepo: Repository | null;
+    githubToken?: string | null;
 }
 
-export function RepositorySelector({ onRepositorySelect, selectedRepo }: RepositorySelectorProps) {
+export function RepositorySelector({ onRepositorySelect, selectedRepo, githubToken }: RepositorySelectorProps) {
     const [repos, setRepos] = useState<Repository[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,37 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
         setLoading(true);
         setError(null);
         try {
-            const data = await getRepositories();
+            let data: Repository[] = [];
+
+            if (githubToken) {
+                // Fetch repos using authenticated user's GitHub token
+                const response = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
+                    headers: {
+                        Authorization: `Bearer ${githubToken}`,
+                        Accept: 'application/vnd.github+json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch repositories');
+                }
+
+                const repos = await response.json();
+                data = repos.map((repo: any) => ({
+                    name: repo.name,
+                    fullName: repo.full_name,
+                    updatedAt: repo.updated_at,
+                    private: repo.private
+                }));
+            } else {
+                // Fallback to backend API (uses GITHUB_OWNER from .env)
+                const response = await fetch('http://localhost:3001/api/github/repos');
+                const result = await response.json();
+                if (result.success) {
+                    data = result.data;
+                }
+            }
+
             if (data.length > 0) {
                 setRepos(data);
             } else {
@@ -39,7 +69,7 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
 
     useEffect(() => {
         fetchRepos();
-    }, []);
+    }, [githubToken]);
 
     const handleSelect = (repo: Repository) => {
         onRepositorySelect(repo);
@@ -52,6 +82,12 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
                 <div className="flex items-center gap-2 text-sm text-slate-600">
                     <Folder className="size-4" />
                     <span className="font-medium">Repository:</span>
+                    {githubToken && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">
+                            <Github className="size-3" />
+                            Your repos
+                        </span>
+                    )}
                 </div>
 
                 <div className="relative flex-1 max-w-md">
@@ -86,10 +122,13 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
                                 <button
                                     key={repo.name}
                                     onClick={() => handleSelect(repo)}
-                                    className={`w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-0 ${selectedRepo?.name === repo.name ? 'bg-blue-50' : ''
+                                    className={`w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-0 flex items-center justify-between ${selectedRepo?.name === repo.name ? 'bg-blue-50' : ''
                                         }`}
                                 >
                                     <span className="font-medium text-slate-900">{repo.name}</span>
+                                    {repo.private && (
+                                        <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">Private</span>
+                                    )}
                                 </button>
                             ))}
                         </div>
