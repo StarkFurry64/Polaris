@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { fetchRepositories, fetchCommits, fetchPullRequests, fetchContributors, fetchContributorEmail } from "./githubClient.js";
+import { fetchRepos, fetchCommits, fetchPullRequests, fetchContributors } from "./githubClient.js";
 import { fetchJiraIssues } from "./jiraClient.js";
 import { aiRouter } from "./routes/ai.js";
 import notificationsRoutes from "./src/routes/notifications.js";
@@ -36,10 +36,11 @@ app.get('/api/health', (req, res) => {
 // GitHub Routes - locked to GITHUB_OWNER
 app.get("/api/github/repos", async (req, res) => {
     try {
-        const repos = await fetchRepositories();
-        res.json({ success: true, data: repos.map(r => ({ name: r.name, fullName: r.full_name, description: r.description, language: r.language })) });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        const repos = await fetchRepos();
+        res.json(repos);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "Failed to fetch repositories" });
     }
 });
 

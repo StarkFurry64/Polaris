@@ -109,10 +109,10 @@ export async function generateExecutiveSummary(allData: any) {
     });
 }
 
-export async function askAI(question: string, context: any = {}) {
+export async function askAI(question: string, repo: string) {
     return apiRequest('/ai/ask', {
         method: 'POST',
-        body: JSON.stringify({ question, context }),
+        body: JSON.stringify({ question, repo }),
     });
 }
 
