@@ -195,15 +195,15 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
 
                             return (
                                 <div className="space-y-4">
-                                    <div className={`p-4 rounded-lg ${riskLevel === 'high' ? 'bg-red-50 border border-red-200' :
-                                        riskLevel === 'medium' ? 'bg-amber-50 border border-amber-500/30' :
-                                            'bg-emerald-50 border border-emerald-500/30'
+                                    <div className={`p-4 rounded-lg ${riskLevel === 'high' ? 'bg-red-500/10 border border-red-500/30' :
+                                        riskLevel === 'medium' ? 'bg-amber-500/10 border border-amber-500/30' :
+                                            'bg-emerald-500/10 border border-emerald-500/30'
                                         }`}>
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="font-medium text-foreground">Bus Factor Risk</span>
-                                            <span className={`text-sm font-bold ${riskLevel === 'high' ? 'text-red-600' :
-                                                riskLevel === 'medium' ? 'text-amber-600' :
-                                                    'text-emerald-600'
+                                            <span className={`text-sm font-bold ${riskLevel === 'high' ? 'text-red-400' :
+                                                riskLevel === 'medium' ? 'text-amber-400' :
+                                                    'text-emerald-400'
                                                 }`}>
                                                 {riskLevel.toUpperCase()}
                                             </span>
@@ -211,7 +211,7 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                         <p className="text-sm text-muted-foreground">
                                             {topContributor?.login || 'Top contributor'} owns <strong>{topPercent}%</strong> of project activity
                                         </p>
-                                        <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
+                                        <div className="w-full bg-secondary rounded-full h-2 mt-2">
                                             <div
                                                 className={`h-2 rounded-full ${riskLevel === 'high' ? 'bg-red-500' :
                                                     riskLevel === 'medium' ? 'bg-amber-500' :
@@ -250,7 +250,7 @@ export function DeveloperMetricsPage({ selectedRepo, githubToken }: DeveloperMet
                                     const percentage = Math.round(((contributor.contributions || 0) / maxContribs) * 100);
                                     return (
                                         <div key={contributor.login} className="flex items-center gap-3">
-                                            <div className="w-24 text-sm text-slate-700 truncate">{contributor.login}</div>
+                                            <div className="w-24 text-sm text-muted-foreground truncate">{contributor.login}</div>
                                             <div className="flex-1 bg-secondary rounded-full h-4 overflow-hidden">
                                                 <div
                                                     className={`h-full rounded-full transition-all ${idx === 0 ? 'bg-purple-500' :

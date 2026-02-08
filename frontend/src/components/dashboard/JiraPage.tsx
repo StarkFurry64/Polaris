@@ -182,11 +182,11 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
     switch (status?.toLowerCase()) {
       case 'done':
       case 'closed':
-        return 'bg-green-100 text-green-700 border-green-200';
+        return 'bg-green-500/20 text-green-400 border-green-500/30';
       case 'in progress':
-        return 'bg-primary/20 text-primary border-blue-200';
+        return 'bg-primary/20 text-primary border-primary/30';
       default:
-        return 'bg-secondary text-slate-700 border-border';
+        return 'bg-secondary text-foreground border-border';
     }
   };
 
@@ -229,7 +229,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
   const statusDistribution = [
     { name: 'Done', value: stats.done, color: '#10b981' },
     { name: 'In Progress', value: stats.inProgress, color: '#3b82f6' },
-    { name: 'To Do', value: stats.todo, color: '#94a3b8' },
+    { name: 'To Do', value: stats.todo, color: '#06b6d4' },
   ].filter(d => d.value > 0);
 
   // Send email notification helper
@@ -416,11 +416,11 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
 
         <Card className="bg-card border-0 shadow-sm">
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground mb-1">
+            <div className="flex items-center gap-2 text-foreground mb-1">
               <Circle className="h-4 w-4" />
               <span className="text-sm">To Do</span>
             </div>
-            <p className="text-2xl font-bold text-muted-foreground">{stats.todo}</p>
+            <p className="text-2xl font-bold text-foreground">{stats.todo}</p>
           </CardContent>
         </Card>
 
@@ -534,7 +534,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                 placeholder="Search issues by key or summary..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 bg-secondary text-foreground placeholder:text-muted-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
 
@@ -543,7 +543,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 bg-secondary text-foreground border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">All Status</option>
                 <option value="to do">To Do</option>
@@ -554,7 +554,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 bg-secondary text-foreground border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">All Types</option>
                 <option value="bug">Bug</option>
@@ -565,7 +565,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
               <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 bg-secondary text-foreground border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">All Priorities</option>
                 <option value="high">High</option>
@@ -654,7 +654,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                             className="flex items-center gap-1 hover:text-primary transition-colors"
                           >
                             <Users className="h-3 w-3" />
-                            <span>Assignee: <span className="font-medium text-slate-700">{issue.assignee || 'Unassigned'}</span></span>
+                            <span>Assignee: <span className="font-medium text-foreground">{issue.assignee || 'Unassigned'}</span></span>
                             <Mail className="h-3 w-3 ml-1 text-blue-500" />
                           </button>
                         </div>
@@ -662,7 +662,7 @@ export function JiraPage({ selectedRepo, githubToken }: JiraPageProps) {
                         {issue.labels && issue.labels.length > 0 && (
                           <div className="flex gap-1">
                             {issue.labels.slice(0, 2).map(label => (
-                              <Badge key={label} variant="secondary" className="text-xs bg-purple-100 text-purple-700">
+                              <Badge key={label} variant="secondary" className="text-xs bg-purple-500/20 text-purple-400">
                                 {label}
                               </Badge>
                             ))}

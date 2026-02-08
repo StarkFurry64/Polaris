@@ -193,7 +193,7 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                 <div className="h-[400px] overflow-y-auto p-6 space-y-4">
                     {messages.length === 0 ? (
                         <div className="text-center py-12">
-                            <Brain className="size-12 text-slate-300 mx-auto mb-4" />
+                            <Brain className="size-12 text-primary mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-foreground mb-2">AI Assistant</h3>
                             <p className="text-muted-foreground mb-6">Ask me anything about {selectedRepo.name}</p>
 
@@ -202,7 +202,7 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                                     <button
                                         key={i}
                                         onClick={() => handleSend(q)}
-                                        className="flex items-center gap-1.5 bg-secondary hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm transition-colors"
+                                        className="flex items-center gap-1.5 bg-secondary hover:bg-primary/20 text-muted-foreground hover:text-foreground px-3 py-2 rounded-lg text-sm transition-colors border border-border hover:border-primary/30"
                                     >
                                         <Lightbulb className="size-4 text-amber-500" />
                                         {q}
@@ -229,7 +229,7 @@ export function AIInsightsPage({ selectedRepo, githubToken }: AIInsightsPageProp
                                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                                     </div>
                                     {msg.role === 'user' && (
-                                        <div className="size-8 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <div className="size-8 bg-secondary rounded-full flex items-center justify-center flex-shrink-0">
                                             <User className="size-4 text-muted-foreground" />
                                         </div>
                                     )}

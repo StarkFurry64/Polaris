@@ -636,7 +636,7 @@ export function ExecutiveDashboard({ selectedRepo, githubToken }: ExecutiveDashb
     const issueDistribution = [
         { name: 'Done', value: jiraMetrics.done, color: '#10b981' },
         { name: 'In Progress', value: jiraMetrics.inProgress, color: '#3b82f6' },
-        { name: 'To Do', value: jiraMetrics.todo, color: '#94a3b8' },
+        { name: 'To Do', value: jiraMetrics.todo, color: '#06b6d4' },
         { name: 'Bugs', value: jiraMetrics.bugs, color: '#ef4444' },
     ].filter(d => d.value > 0);
 

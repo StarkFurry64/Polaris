@@ -663,10 +663,14 @@ export function PRAnalyticsPage({ selectedRepo, githubToken }: TeamInsightsPageP
                         )}
                     </div>
                     {needsSupport.length > 0 && (
-                        <div className="mt-4 p-3 bg-amber-500/20 rounded-lg">
-                            <p className="text-sm text-amber-800">
-                                <strong>💡 Tip:</strong> Schedule 1-on-1s to identify blockers, unclear requirements, or resource needs.
-                            </p>
+                        <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start gap-3">
+                            <span className="text-xl">💡</span>
+                            <div>
+                                <p className="text-sm font-semibold text-amber-400 mb-1">Pro Tip</p>
+                                <p className="text-sm text-amber-300/90">
+                                    Schedule 1-on-1s to identify blockers, unclear requirements, or resource needs.
+                                </p>
+                            </div>
                         </div>
                     )}
                 </div>
