@@ -59,7 +59,7 @@ router.post('/ask', async (req, res) => {
         if (!repo) {
             return res.status(400).json({
                 success: false,
-                error: 'Repository selection required'
+                error: 'Repository selection is required. Please select a repository first.'
             });
         }
 

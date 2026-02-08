@@ -2,19 +2,30 @@ import fetch from "node-fetch";
 
 const GITHUB_API = "https://api.github.com";
 
-export async function fetchRepositories() {
-    const res = await fetch(`${GITHUB_API}/users/${process.env.GITHUB_OWNER}/repos`, {
-        headers: {
-            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-            Accept: "application/vnd.github+json"
-        }
-    });
+export async function fetchRepos() {
+    const res = await fetch(
+        `https://api.github.com/users/${process.env.GITHUB_OWNER}/repos?per_page=100`,
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+                Accept: "application/vnd.github+json"
+            }
+        });
 
     if (!res.ok) {
-        throw new Error("Failed to fetch repositories");
+        const t = await res.text();
+        throw new Error(t);
     }
 
-    return res.json();
+    const repos = await res.json();
+
+    // Filter to only essential fields (STEP 3)
+    return repos.map(repo => ({
+        name: repo.name,
+        full_name: repo.full_name,
+        updated_at: repo.updated_at,
+        private: repo.private
+    }));
 }
 
 export async function fetchCommits(repo) {

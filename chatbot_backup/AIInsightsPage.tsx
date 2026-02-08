@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Brain, Send, Sparkles, Lightbulb, RefreshCw, Bot, User, Loader2, FileQuestion } from 'lucide-react';
-import { askAI, getCommits, getPullRequests, getContributors, getJiraIssues } from '@/api/github';
+import { Brain, Send, Lightbulb, Bot, User, Loader2, FileQuestion } from 'lucide-react';
+import { askAI } from '@/api/github';
 
 interface Message {
     id: string;
@@ -28,46 +28,7 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [context, setContext] = useState<any>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
-    // Fetch real context when repo changes
-    useEffect(() => {
-        if (selectedRepo) {
-            fetchContext();
-        }
-    }, [selectedRepo]);
-
-    const fetchContext = async () => {
-        if (!selectedRepo) return;
-
-        try {
-            const [commits, prs, contributors, jiraData] = await Promise.all([
-                getCommits(selectedRepo.name),
-                getPullRequests(selectedRepo.name),
-                getContributors(selectedRepo.name),
-                getJiraIssues()
-            ]);
-
-            setContext({
-                repo: selectedRepo.name,
-                github: {
-                    commits: commits.length,
-                    prs: prs.length,
-                    openPRs: prs.filter((p: any) => p.state === 'open').length,
-                    contributors: contributors.length,
-                    topContributors: contributors.slice(0, 5).map((c: any) => c.login)
-                },
-                jira: {
-                    issues: jiraData.length,
-                    bugs: jiraData.filter((i: any) => i.type?.toLowerCase() === 'bug').length,
-                    done: jiraData.filter((i: any) => i.status?.toLowerCase() === 'done').length
-                }
-            });
-        } catch (err) {
-            console.error('Failed to fetch context:', err);
-        }
-    };
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -93,6 +54,7 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
         setIsLoading(true);
 
         try {
+            // Send repo name to backend - backend will build context
             const response = await askAI(messageText, selectedRepo.name);
 
             const assistantMessage: Message = {
@@ -107,7 +69,7 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
             const errorMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: 'Sorry, I encountered an error. Please make sure the Featherless AI API key is configured in the backend .env file.',
+                content: 'Sorry, I encountered an error. Please make sure the AI service is configured in the backend .env file.',
                 timestamp: new Date(),
             };
             setMessages(prev => [...prev, errorMessage]);
@@ -135,47 +97,7 @@ export function AIInsightsPage({ selectedRepo }: AIInsightsPageProps) {
                     <h2 className="text-2xl font-semibold text-slate-900">AI Insights</h2>
                     <p className="text-slate-600 mt-1">Ask questions about {selectedRepo.name}</p>
                 </div>
-                <button
-                    onClick={fetchContext}
-                    className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200"
-                >
-                    <RefreshCw className="size-4" /> Refresh Context
-                </button>
             </div>
-
-            {/* Context Summary */}
-            {context && (
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
-                            <Sparkles className="size-4 text-blue-600" />
-                            <span className="text-sm">Commits</span>
-                        </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.commits || 0}</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
-                            <Sparkles className="size-4 text-purple-600" />
-                            <span className="text-sm">PRs</span>
-                        </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.prs || 0}</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
-                            <Sparkles className="size-4 text-emerald-600" />
-                            <span className="text-sm">Contributors</span>
-                        </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.github?.contributors || 0}</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 border border-slate-200">
-                        <div className="flex items-center gap-2 text-slate-600 mb-1">
-                            <Sparkles className="size-4 text-indigo-600" />
-                            <span className="text-sm">Jira Issues</span>
-                        </div>
-                        <p className="text-2xl font-semibold text-slate-900">{context.jira?.issues || 0}</p>
-                    </div>
-                </div>
-            )}
 
             {/* Chat Area */}
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">

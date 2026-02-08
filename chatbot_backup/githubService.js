@@ -28,62 +28,6 @@ async function githubRequest(endpoint, method = 'GET') {
     return response.json();
 }
 
-// Build repository context for AI
-export async function buildRepoContext(owner, repo) {
-    try {
-        // Fetch repository data
-        const repoData = await githubRequest(`/repos/${owner}/${repo}`);
-
-        // Fetch recent commits (limited to 10 for context)
-        const commits = await githubRequest(`/repos/${owner}/${repo}/commits?per_page=10`);
-
-        // Fetch open issues (limited to 20)
-        const issues = await githubRequest(`/repos/${owner}/${repo}/issues?state=open&per_page=20`);
-
-        // Fetch pull requests (limited to 10)
-        const prs = await githubRequest(`/repos/${owner}/${repo}/pulls?state=all&per_page=10`);
-
-        // Build structured context
-        return {
-            repository: {
-                name: repoData.name,
-                fullName: repoData.full_name,
-                description: repoData.description,
-                language: repoData.language,
-                stars: repoData.stargazers_count,
-                forks: repoData.forks_count,
-                openIssues: repoData.open_issues_count,
-                createdAt: repoData.created_at,
-                updatedAt: repoData.updated_at,
-                defaultBranch: repoData.default_branch
-            },
-            recentCommits: commits.slice(0, 10).map(c => ({
-                sha: c.sha.substring(0, 7),
-                message: c.commit.message,
-                author: c.commit.author.name,
-                date: c.commit.author.date
-            })),
-            openIssues: issues.filter(i => !i.pull_request).slice(0, 20).map(i => ({
-                number: i.number,
-                title: i.title,
-                state: i.state,
-                labels: i.labels.map(l => l.name),
-                createdAt: i.created_at
-            })),
-            pullRequests: prs.slice(0, 10).map(pr => ({
-                number: pr.number,
-                title: pr.title,
-                state: pr.state,
-                createdAt: pr.created_at,
-                mergedAt: pr.merged_at
-            }))
-        };
-    } catch (error) {
-        console.error('Error building repo context:', error);
-        throw error;
-    }
-}
-
 // Get authenticated user
 export async function getUser() {
     return githubRequest('/user');
@@ -156,34 +100,6 @@ export async function getContributors(owner, repo) {
         avatarUrl: c.avatar_url,
         url: c.html_url
     }));
-}
-
-// Get issues for a repository
-export async function getIssues(owner, repo, state = 'all', perPage = 50) {
-    const issues = await githubRequest(`/repos/${owner}/${repo}/issues?state=${state}&per_page=${perPage}`);
-    return issues
-        .filter(issue => !issue.pull_request) // Exclude PRs (GitHub API returns PRs as issues too)
-        .map(issue => ({
-            id: issue.id,
-            number: issue.number,
-            title: issue.title,
-            state: issue.state,
-            user: issue.user?.login,
-            labels: issue.labels?.map(l => ({ name: l.name, color: l.color })) || [],
-            assignee: issue.assignee?.login,
-            assignees: issue.assignees?.map(a => a.login) || [],
-            createdAt: issue.created_at,
-            updatedAt: issue.updated_at,
-            closedAt: issue.closed_at,
-            body: issue.body?.slice(0, 500), // Truncate body
-            url: issue.html_url,
-            comments: issue.comments,
-            // Flag critical issues
-            isBug: issue.labels?.some(l => l.name.toLowerCase().includes('bug')),
-            isEnhancement: issue.labels?.some(l => l.name.toLowerCase().includes('enhancement') || l.name.toLowerCase().includes('feature')),
-            isPriority: issue.labels?.some(l => l.name.toLowerCase().includes('priority') || l.name.toLowerCase().includes('urgent') || l.name.toLowerCase().includes('critical')),
-            isStale: (new Date() - new Date(issue.updated_at)) > (14 * 24 * 60 * 60 * 1000) // 14 days
-        }));
 }
 
 // Calculate PR metrics
@@ -259,16 +175,96 @@ export function getLanguageDistribution(repos) {
         .sort((a, b) => b.count - a.count);
 }
 
+/**
+ * Build structured repository context for the chatbot
+ * This function fetches and normalizes GitHub data for a specific repository
+ * 
+ * @param {string} owner - Repository owner
+ * @param {string} repo - Repository name
+ * @returns {Promise<Object>} Structured context object
+ */
+export async function buildRepoContext(owner, repo) {
+    try {
+        // Fetch all GitHub data in parallel
+        const [commits, prs, contributors, readme, repoTree] = await Promise.all([
+            getCommits(owner, repo, 30).catch(e => { console.error('Commits error:', e.message); return []; }),
+            getPullRequests(owner, repo, 'all', 30).catch(e => { console.error('PRs error:', e.message); return []; }),
+            getContributors(owner, repo).catch(e => { console.error('Contributors error:', e.message); return []; }),
+            import('../githubClient.js').then(m => m.fetchReadme(repo)).catch(e => { console.error('README error:', e.message); return null; }),
+            import('../githubClient.js').then(m => m.fetchRepoTree(repo)).catch(e => { console.error('Tree error:', e.message); return { tree: [] }; })
+        ]);
+
+        // Get list of important files from tree
+        const importantFiles = repoTree.tree
+            ?.filter(item => item.type === 'blob')
+            ?.filter(item => {
+                const path = item.path.toLowerCase();
+                return path.includes('readme') ||
+                    path.includes('package.json') ||
+                    path.includes('config') ||
+                    path.endsWith('.md');
+            })
+            ?.slice(0, 5) // Limit to 5 most important files
+            ?.map(item => item.path) || [];
+
+        // Normalize and structure the data
+        const context = {
+            repository: `${owner}/${repo}`,
+            summary: {
+                totalCommits: commits.length,
+                totalPRs: prs.length,
+                openPRs: prs.filter(pr => pr.state === 'open').length,
+                closedPRs: prs.filter(pr => pr.state === 'closed').length,
+                mergedPRs: prs.filter(pr => pr.mergedAt).length,
+                totalContributors: contributors.length
+            },
+            recentCommits: commits.slice(0, 20).map(c => ({
+                sha: c.sha?.substring(0, 7),
+                author: c.author || 'Unknown',
+                message: c.message || 'No message',
+                date: c.date,
+                additions: c.additions,
+                deletions: c.deletions
+            })),
+            pullRequests: prs.slice(0, 15).map(pr => ({
+                number: pr.number,
+                title: pr.title,
+                state: pr.state,
+                author: pr.user || 'Unknown',
+                createdAt: pr.createdAt,
+                updatedAt: pr.updatedAt,
+                mergedAt: pr.mergedAt,
+                additions: pr.additions,
+                deletions: pr.deletions,
+                changedFiles: pr.changedFiles
+            })),
+            contributors: contributors.slice(0, 10).map(c => ({
+                username: c.login,
+                contributions: c.contributions,
+                profileUrl: c.url
+            })),
+            files: {
+                readme: readme ? readme.substring(0, 3000) : 'No README file found in this repository.',
+                importantFiles: importantFiles
+            }
+        };
+
+        return context;
+    } catch (error) {
+        console.error(`Failed to build repo context for ${owner}/${repo}:`, error.message);
+        throw new Error(`Unable to fetch repository data for ${owner}/${repo}`);
+    }
+}
+
 export default {
-    buildRepoContext,
     getUser,
     getRepositories,
     getCommits,
     getPullRequests,
     getContributors,
-    getIssues,
     calculatePRMetrics,
     calculateDeploymentFrequency,
     getContributionDistribution,
-    getLanguageDistribution
+    getLanguageDistribution,
+    buildRepoContext
 };

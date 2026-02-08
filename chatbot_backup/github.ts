@@ -5,7 +5,7 @@ const API_BASE = 'http://localhost:3001/api';
 export async function getRepositories() {
     const res = await fetch(`${API_BASE}/github/repos`);
     const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    return data.success ? data.data : [];
 }
 
 export async function getCommits(repo: string) {
@@ -29,13 +29,6 @@ export async function getContributors(repo: string) {
 // Jira API
 export async function getJiraIssues() {
     const res = await fetch(`${API_BASE}/jira/issues`);
-    const data = await res.json();
-    return data.success ? data.data : [];
-}
-
-// GitHub Issues API
-export async function getGitHubIssues(repo: string) {
-    const res = await fetch(`${API_BASE}/github/repos/${repo}/issues`);
     const data = await res.json();
     return data.success ? data.data : [];
 }

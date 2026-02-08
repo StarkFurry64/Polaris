@@ -5,8 +5,8 @@ import { getRepositories } from '@/api/github';
 interface Repository {
     name: string;
     fullName: string;
-    description: string;
-    language: string;
+    updatedAt: string;
+    private: boolean;
 }
 
 interface RepositorySelectorProps {
@@ -57,19 +57,16 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
                 <div className="relative flex-1 max-w-md">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="w-full flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 hover:bg-slate-100 transition-all"
-                        disabled={loading}
+                        className="w-full flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 hover:bg-slate-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={loading || repos.length === 0}
                     >
                         {loading ? (
                             <>
                                 <Loader2 className="size-4 animate-spin text-blue-600" />
                                 <span className="text-slate-600">Loading repositories...</span>
                             </>
-                        ) : error ? (
-                            <>
-                                <AlertCircle className="size-4 text-red-500" />
-                                <span className="text-red-600">{error}</span>
-                            </>
+                        ) : repos.length === 0 ? (
+                            <span className="text-slate-500 text-sm">Select a repository to begin</span>
                         ) : selectedRepo ? (
                             <>
                                 <span className="font-medium text-slate-900">{selectedRepo.name}</span>
@@ -92,15 +89,7 @@ export function RepositorySelector({ onRepositorySelect, selectedRepo }: Reposit
                                     className={`w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-0 ${selectedRepo?.name === repo.name ? 'bg-blue-50' : ''
                                         }`}
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <span className="font-medium text-slate-900">{repo.name}</span>
-                                        {repo.language && (
-                                            <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">{repo.language}</span>
-                                        )}
-                                    </div>
-                                    {repo.description && (
-                                        <p className="text-xs text-slate-500 mt-1 truncate">{repo.description}</p>
-                                    )}
+                                    <span className="font-medium text-slate-900">{repo.name}</span>
                                 </button>
                             ))}
                         </div>

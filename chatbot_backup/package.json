@@ -13,8 +13,7 @@
         "cors": "^2.8.6",
         "dotenv": "^16.6.1",
         "express": "^4.22.1",
-        "groq-sdk": "^0.8.0",
-        "node-fetch": "^2.7.0",
-        "nodemailer": "^8.0.1"
+        "groq-sdk": "^0.37.0",
+        "node-fetch": "^2.7.0"
     }
 }
